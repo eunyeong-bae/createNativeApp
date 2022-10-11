@@ -1,0 +1,9 @@
+<svg id="icon_deleteall" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+    <defs>
+        <style>
+            .cls-3{fill:#374c5d}
+        </style>
+    </defs>
+    <path id="icon" class="cls-3" d="M2083 1298a4 4 0 0 1-4-4v-25h-2a2 2 0 1 1 0-4h34a2 2 0 1 1 0 4h-2v25a4 4 0 0 1-4 4zm0-4h22v-25h-22zm16-29v-3h-10v3h-4v-4a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v4z" transform="translate(-2074 -1258)"/>
+    <path id="Ellipse_1" data-name="Ellipse 1" class="cls-3" d="M2086.262 1284h3.16a4.991 4.991 0 0 0 8.574 1l-2-2h6v6l-1.87-1.87a7.987 7.987 0 0 1-13.867-3.13zm-.262-2v-6l1.435 1.435a7.992 7.992 0 0 1 14.5 3.564h-3.035a5 5 0 0 0-9.29-1.391L2092 1282z" transform="translate(-2074 -1258)"/>
+</svg>
