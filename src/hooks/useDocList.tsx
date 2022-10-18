@@ -28,7 +28,8 @@ const useDocList = ({folderSeq, listType, listCount, pageNum, sortItem, sortOrde
         let fileList : any = []; 
         let data : any = {};
 
-        if( sortMenuState.contextName === 'HOME'){
+        console.log(sortMenuState.contextName );
+        if( sortMenuState.contextName === 'Home'){
             data = {
                 protocolId: "P544", //"P539"
                 data: {

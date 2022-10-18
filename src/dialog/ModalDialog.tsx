@@ -1,10 +1,11 @@
 import { CommonContext } from '../context/CommonContext';
 import {Dimensions, Text, View} from 'react-native';
 import { AppScreens } from '../navigation';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { Modal, ModalContent } from 'react-native-modals';
 import { CopyDialog} from '../dialog/copyDialog';
 import { MoveDialog} from '../dialog/MoveDialog';
+import { UserInfoDialog } from '../dialog/UserInfoDialog';
 import CommonUtil from '../utils/CommonUtil'
 
 const width = Dimensions.get('window').width;
@@ -13,14 +14,7 @@ const height = Dimensions.get('window').height;
 export const ModalDialog = () => {
     const { centerDialogState} = useContext(CommonContext);
 
-    // useEffect(() => {
-    //     console.log( 'tttttt')
-    // }, [])x
-
-    // useEffect(() => {
-    //     console.log( centerDialogState.dialogName)
-    // }, [ centerDialogState.dialogName])
-    return (
+    return useMemo(() => (
         <Modal
             //isVisible Props에 State 값을 물려주어 On/off control
             visible={ !CommonUtil.strIsNull( centerDialogState.dialogName)}
@@ -36,7 +30,10 @@ export const ModalDialog = () => {
                 { centerDialogState.dialogName === AppScreens.MoveDialog &&
                     <MoveDialog />
                 }
+                { centerDialogState.dialogName === AppScreens.UserInfoDialog &&
+                    <UserInfoDialog />
+                }
             </ModalContent>
         </Modal>
-    )
+    ), [ centerDialogState]);
 }

@@ -1,18 +1,18 @@
 import { CommonContext } from '../context/CommonContext';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Popover, {PopoverMode} from 'react-native-popover-view';
 import {TouchableOpacity, Text, ScrollView, View, Dimensions} from 'react-native';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import CommonUtil from '../utils/CommonUtil';
 import {sortMenuStyleSheet} from '../menu/style/style';
 
-const ActionMenuName = new Map()
-    .set('1','문서 제목')
-    .set('2','최종 수정 날짜')
-    .set('7','최근 조회 문서')
-    .set('O','ONEFFICE')
-    .set('S','ONE SLIDE')
-    .set('','모든 문서 타입')
+// const ActionMenuName = new Map()
+//     .set('1','문서 제목')
+//     .set('2','최종 수정 날짜')
+//     .set('7','최근 조회 문서')
+//     .set('O','ONEFFICE')
+//     .set('S','ONE SLIDE')
+//     .set('','모든 문서 타입')
 
 const docSortMenu : any = [
     {name:'모든 문서 타입', value:''},
@@ -49,7 +49,7 @@ const SortPopOver = (props: any) => {
     const onClickSortTItle = (popOverType: string) => {
         setSelectMenu( popOverType === 'F' ? docSortMenu : popOverType === 'S' ? sortMenuState.sortMenuInfo : moreMenus);
         setSortType( popOverType);
-        setShowPopover( true)
+        setShowPopover( true);
     }
 
     const onClickSortMenu = (sortValue: string) => {
@@ -67,7 +67,8 @@ const SortPopOver = (props: any) => {
         }
         else if( sortType === 'F'){
             fileTypes = sortValue;
-        }else {
+        }
+        else {
             if( sortValue === 'ThumView'){
                 moreMenus[0].visibility = false;
                 moreMenus[1].visibility = true; 
@@ -82,23 +83,28 @@ const SortPopOver = (props: any) => {
         setSortMenu( sortMenuState.contextName, { sortItem:sortItem, fileTypes:fileTypes, sortOrder:sortOrder}, sortMenuState.sortMenuInfo)
     }
 
-    const renderPopOverTitle = () => {
+    const renderPopOverTitle = useCallback(() => {
         return (
             <View style={{width:90, flexDirection:'row', justifyContent:'space-between', alignItems:'center', height:40}}>
-                <TouchableOpacity onPress={ () => onClickSortTItle('S')}>
-                    <View> 
-                        {/*  style={{ flexDirection: 'row'}
-                         <Text style={{ lineHeight: 22, paddingRight: 4}}>{ActionMenuName.get(CommonUtil.strIsNull(sortMenuState.selectedValue) ? '1' : sortMenuState.selectedValue.sortItem)}</Text>
-                        <SvgIcon name={ showPopover && sortType === 'S' ? "DocSortArrowBtn" : "DocSortArrowBtn"} width={20} height={20}/> */}
-                        <SvgIcon name = "sortMenu" width={20} height={20}/>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={ () => onClickSortTItle('F')}>
-                    <View>
-                        <SvgIcon name = "AllDocTypeIcon" width={20} height={20}/>
-                        {/* <Text style={{ lineHeight: 22, paddingRight: 4}}>{ActionMenuName.get(CommonUtil.strIsNull(sortMenuState.selectedValue) ? '' : sortMenuState.selectedValue.fileTypes)}</Text> */}
-                    </View>
-                </TouchableOpacity>
+                { sortMenuState.contextName !== 'Home' &&
+                    <>
+                        <TouchableOpacity onPress={ () => onClickSortTItle('S')}>
+                            <View> 
+                                {/*  style={{ flexDirection: 'row'}
+                                <Text style={{ lineHeight: 22, paddingRight: 4}}>{ActionMenuName.get(CommonUtil.strIsNull(sortMenuState.selectedValue) ? '1' : sortMenuState.selectedValue.sortItem)}</Text>
+                                <SvgIcon name={ showPopover && sortType === 'S' ? "DocSortArrowBtn" : "DocSortArrowBtn"} width={20} height={20}/> */}
+                                <SvgIcon name = "sortMenu" width={20} height={20}/>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={ () => onClickSortTItle('F')}>
+                            <View>
+                                <SvgIcon name = "AllDocTypeIcon" width={20} height={20}/>
+                                {/* <Text style={{ lineHeight: 22, paddingRight: 4}}>{ActionMenuName.get(CommonUtil.strIsNull(sortMenuState.selectedValue) ? '' : sortMenuState.selectedValue.fileTypes)}</Text> */}
+                            </View>
+                        </TouchableOpacity>
+                    </>
+                }
+                
                 <TouchableOpacity onPress={ () => onClickSortTItle('') }>
                     <View>
                         <SvgIcon name = "DocMoreBtn" width={20} height={20}/>
@@ -106,7 +112,7 @@ const SortPopOver = (props: any) => {
                 </TouchableOpacity>
             </View>
         )
-    }
+    }, [ sortMenuState.contextName]);
 
     const renderPopoverItem = (sortItem: any) => {
         return (

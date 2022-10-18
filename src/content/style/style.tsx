@@ -8,9 +8,11 @@ export const MyDocStyles = StyleSheet.create({
     docListContainer:{
         width:windowWidth, 
         height:windowHeight - 100,
-        padding:5,
-        marginHorizontal:5,
+        // padding:5,
+        // marginHorizontal:5,
         flex:1,
+        paddingHorizontal:10,
+        paddingTop: 5,
     },
     docContainer: {
         width: 160,
@@ -60,20 +62,22 @@ export const MyDocListViewStyles = StyleSheet.create({
         height:60,
         padding:10,
         flexDirection:'row',
-        backgroundColor:'#ffffff',
+        borderColor:'#dedede',
+        borderWidth:1,
+        // backgroundColor:'#ffffff',
         borderRadius:10,
         marginBottom:5,
         marginTop:5,
         justifyContent:'space-between',
         alignItems:'center',
-        shadowColor:'#727472',
-        shadowOffset:{
-            width:0,
-            height:2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius:3.84,
-        elevation:5,
+        // shadowColor:'#727472',
+        // shadowOffset:{
+        //     width:0,
+        //     height:2
+        // },
+        // shadowOpacity: 0.25,
+        // shadowRadius:3.84,
+        // elevation:5,
     },
     docListStyle: { 
         width: windowWidth - 80, 

@@ -2,10 +2,17 @@ import { RouteProp} from "@react-navigation/native"; // 전체 네비게이션�
 import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack";
 
 export enum AppScreens {
+    MyDoc = 'MyDoc',
+    CopyDialog = "CopyDialog",
+    MoveDialog = "MoveDialog",
+    FavoriteDoc = 'FavoriteDoc',
+    SecurityDoc = 'SecurityDoc',
+    TrashDoc = 'TrashDoc',
+    UserInfoDialog = 'UserInfoDialog',
+
     Login = 'Login',
     Home = 'Home',
     Splash = 'Splash',
-    MyDoc = 'MyDoc',
     GroupDoc = 'GroupDoc',
     CompanyDoc = 'CompanyDoc',
     ShareDoc = 'ShareDoc',
@@ -16,20 +23,22 @@ export enum AppScreens {
     LastViewDoc = "LastViewDoc",
     CategoryDoc = "CategoryDoc",
     TrashBinContent = "TrashBinContent",
-    CopyDialog = "CopyDialog",
-    MoveDialog = "MoveDialog",
-    FavoriteDoc = 'FavoriteDoc',
-    SecurityDoc = 'SecurityDoc',
-    TrashDoc = 'TrashDoc',
-    Main = 'Main'
+    Main = 'Main',
     // Auth = 'Auth'
 }
   
 export type AppStackParamList = {
+    MyDoc: undefined;
+    CopyDialog: undefined;
+    MoveDialog: undefined;
+    FavoriteDoc: undefined;
+    SecurityDoc: undefined;
+    TrashDoc: undefined;
+    UserInfoDialog: undefined;
+
     Splash: undefined;
     Login: undefined;
     Home: undefined;
-    MyDoc: undefined;
     GroupDoc: undefined;
     CompanyDoc: undefined;
     ShareDoc: undefined;
@@ -38,11 +47,6 @@ export type AppStackParamList = {
     LastViewDoc: undefined;
     CategoryDoc: undefined;
     TrashBinContent: undefined;
-    CopyDialog: undefined;
-    MoveDialog: undefined;
-    FavoriteDoc: undefined;
-    SecurityDoc: undefined;
-    TrashDoc: undefined;
     Main: undefined;
 };
 

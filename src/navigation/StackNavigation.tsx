@@ -4,6 +4,7 @@ import { Stack, AppScreens} from './';
 import Splash from '../splash'
 import Login from '../login';
 import Home from '..//home';
+// import Home from '../content/Home';
 import MyDoc from '../content/MyDoc_F';
 import { createDrawerNavigator, DrawerItemList} from '@react-navigation/drawer';
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -71,7 +72,8 @@ const StackNanigation = () => {
             />
             <Stack.Screen 
                 name={ AppScreens.Main}
-                component={ DrawerNavigation}
+                // component={ DrawerNavigation}
+                component={ MyDoc}
                 options={{ headerShown: false}}
             />
 
@@ -86,7 +88,7 @@ const StackNanigation = () => {
                 component={Login}
                 options={{headerShown: false}}
             />
-            {/* <Stack.Screen
+            <Stack.Screen
                 name={AppScreens.Home}
                 component={Home}
                 options={{headerShown: false}}
@@ -95,7 +97,7 @@ const StackNanigation = () => {
                 name={AppScreens.MyDoc}
                 component={MyDoc}
                 options={{headerShown: false}}
-            /> */}
+            />
             {/* <Stack.Screen
                 name={AppScreens.GroupDoc}
                 component={GroupDoc}

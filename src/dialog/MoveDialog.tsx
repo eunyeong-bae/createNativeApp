@@ -127,6 +127,7 @@ export const MoveDialog = () => {
                 navigation={ null}
                 fullpath={ fullpath}
                 setFullpath={ setFullpath}
+                sortMenu= { null}
             />
             <View style={ dialogStyles.mainContainer}>
                 <View style={ dialogStyles.docBoxListContainer}>

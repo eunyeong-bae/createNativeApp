@@ -45,6 +45,27 @@ export default class CommonFnUtil{
          return copyDocument;
     }
 
+    public static updateDocumentFolder = async ( protocolId: any, dataInfo: any) => {
+        let updateDocumentFolder: any = [];
+        const data: any = {
+            protocolId: protocolId,
+            data: dataInfo
+        };
+
+        await Adapter.fetch.protocol( data)
+         .then( res => {
+            if( res && res.result) { 
+                updateDocumentFolder = res;
+            }
+         })
+         .catch( error => {
+            updateDocumentFolder = error;
+             console.log( error);
+         })
+
+         return updateDocumentFolder;
+    }
+
     public static searchDataList = async( sendata : any) => {
         let searchDataList : any = [];
 
@@ -342,15 +363,6 @@ export default class CommonFnUtil{
         return 'newWindow|CopyDialog';
     }
 
-    public static onClickRemove = async() => {
-        // console.log(' onClickRemove');
-        return 'newWindow|RemoveDialog';
-    }
-    
-    public static onClickSetFavCatergory = async() => {
-        // console.log(' onClickCategory');
-        return 'newWindow|SetFavCategoryDialog';
-    }
     public static onClickSetTag= async() => {
         // console.log(' onClickCategory');
         return 'newWindow|SetTagDialog';
@@ -359,32 +371,47 @@ export default class CommonFnUtil{
         // console.log(' onClickCategory');
         return 'newWindow|SetPasswordDialog';
     }
-    public static onClickSetViewOnly = async() => {
-        // console.log(' onClickCategory');
-        return 'newWindow|SetViewOnlyDialog';
-    }
-    public static onClickAddOwnForm= async() => {
-        // console.log(' onClickCategory');
-        // return 'newWindow|SetViewOnlyDialog';
-    }
-    public static onClickShare = () => {
-        // console.log(' onClickCategory');
-        return 'nextActionMenu|shareSubMenu';
-    }
-    
-    public static onClickRename = async() => {
-        // console.log(' onClickRename');
-        return 'newWindow|RenameDialog';
-    }
     
     public static onClickRelatedDoc = async() => {
         // console.log(' onClickRelateDoc');
         return 'newWindow|RelatedDocDialog';
     }
-    
+
     public static onClickDetailDocInfo = async() => {
         // console.log(' onClickDocInfoView');
         return 'nextActionMenu|detailDocInfoSubMenu';
+    }
+    public static onClickShare = () => {
+        // console.log(' onClickCategory');
+        return 'nextActionMenu|shareSubMenu';
+    }
+
+    public static onClickAddOwnForm= async() => {
+        // console.log(' onClickCategory');
+        return 'dialog|addOwnForm';
+    }
+    
+    public static onClickRename = async() => {
+        // console.log(' onClickRename');
+        return 'dialog|rename';
+    }
+
+    public static onClickNewFolder = async() => {
+        return 'dialog|newFolder';
+    }
+
+    public static onClickRemove = async() => {
+        // console.log(' onClickRemove');
+        return 'dialog|remove';
+    }
+
+    public static onClickSetFavCatergory = async() => {
+        // console.log(' onClickCategory');
+        return 'toast|setFavorite';
+    }
+    public static onClickSetViewOnly = async() => {
+        // console.log(' onClickCategory');
+        return 'toast|setViewOnly';
     }
     
     // public static onClickFolderInfoView = async( selectedTarget : any) => {

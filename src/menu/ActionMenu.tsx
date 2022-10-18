@@ -1,12 +1,12 @@
 import { ActionSheetCustom} from '@alessiocancian/react-native-actionsheet'
-import React, {Component, useContext, useState, useEffect, useRef, useMemo} from 'react';
-import {View,Text,Dimensions, Touchable, StyleSheet, TouchableOpacity, FlatList, ScrollView} from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import React, {useContext, useState, useEffect, useRef, useMemo} from 'react';
+import {View,Text, StyleSheet, TouchableOpacity} from 'react-native';
 import CommonFnUtil from '../utils/CommonFnUtil';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import CommonUtil from '../utils/CommonUtil';
 import {sortMenuStyles, moreMenuStyles} from '../menu/style/style';
 import { CommonContext } from '../context/CommonContext';
+import Toast from 'react-native-toast-message';
 
 {/*
    1.어떤 문서함인지
@@ -43,28 +43,24 @@ import { CommonContext } from '../context/CommonContext';
    }
 */}
 
-
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
-
 const docTypes = ['allDocType','oneffice','oneffieSlide']
 const MyDocSortType = ['DocTitle','LastModifiedDate','LastViewedDate'];
 const ShareDocSortType = ['DocTitle','LastModifiedDate','Owner','SharedDate','LastViewedDate'];
 
 const myDocMenuInfo:any = {    
-    'share':{name:'원커넥트',auth: 'Read',rightMenu:true,icon:'ActionShare',clickEvent: CommonFnUtil.onClickShare},
-    'linkCopy':{name:'링크 복사',auth:'Read',rightMenu:false,icon:'ActionLinkCopy',clickEvent: CommonFnUtil.linkCopyEvent},
-    'ONECHAMBER(PDF)':{name:'PDF', auth:'Read',rightMenu:false,icon:'ActionOneSave',clickEvent: CommonFnUtil.onClickOneChamberSave},
-    'move':{name:'이동',auth: 'Read',rightMenu:false,icon:'ActionMove',clickEvent: CommonFnUtil.onClickMoveOpen},
-    'copy':{name:'사본 만들기',auth:'Update',rightMenu:false,icon:'ActionCopy',clickEvent: CommonFnUtil.onClickCopy},
-    'changeName':{name:'이름 변경', auth:'Read',rightMenu:false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRename},
-    'addOwnForm':{name:'나만의 양식 추가',auth: 'Read',rightMenu:false,icon:'ActionSetViewOnly',clickEvent: CommonFnUtil.onClickAddOwnForm},
-    'delete':{name:'삭제',auth:'Update',rightMenu:false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRemove},
-    'setFavorite':{name:'중요 표시', auth:'Read',rightMenu:true,icon:'ActionCategory',clickEvent: CommonFnUtil.onClickSetFavCatergory},
-    'relatedDoc':{name:'연관 문서',auth: 'Read',rightMenu:false,icon:'ActionRelateDoc',clickEvent: CommonFnUtil.onClickRelatedDoc},
-    'setViewOnly':{name:'읽기 전용 설정',auth:'Update',rightMenu:true,icon:'ActionSetViewOnly',clickEvent: CommonFnUtil.onClickSetViewOnly},
-    'setPassword':{name:'보안 설정', auth:'Read',rightMenu:true,icon:'ActionSetPW',clickEvent: CommonFnUtil.onClickSetPassword},
-    'setTag':{name:'태그 설정', auth:'Read',rightMenu:false,icon:'ActionSetViewOnly',clickEvent: CommonFnUtil.onClickSetTag},
+    'share':{name:'원커넥트',auth: 'Read',rightMenu: true,icon:'ActionShare',clickEvent: CommonFnUtil.onClickShare},
+    'linkCopy':{name:'링크 복사',auth:'Read',rightMenu: false,icon:'ActionLinkCopy',clickEvent: CommonFnUtil.linkCopyEvent},
+    'ONECHAMBER(PDF)':{name:'PDF', auth:'Read',rightMenu: false,icon:'ActionOneSave',clickEvent: CommonFnUtil.onClickOneChamberSave},
+    'move':{name:'이동',auth: 'Read',rightMenu: false,icon:'ActionMove',clickEvent: CommonFnUtil.onClickMoveOpen},
+    'copy':{name:'사본 만들기',auth:'Update',rightMenu: false,icon:'ActionCopy',clickEvent: CommonFnUtil.onClickCopy},
+    'changeName':{name:'이름 변경', auth:'Read',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRename},
+    'addOwnForm':{name:'나만의 양식 추가',auth: 'Read',rightMenu: false,icon:'ActionSetViewOnly',clickEvent: CommonFnUtil.onClickAddOwnForm},
+    'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRemove},
+    'setFavorite':{name:'중요 표시', auth:'Read',rightMenu: false,icon: ['ActionCategoryOff', 'ActionCategoryOn'],clickEvent: CommonFnUtil.onClickSetFavCatergory},
+    'relatedDoc':{name:'연관 문서',auth: 'Read',rightMenu: false,icon: 'ActionRelateDoc',clickEvent: CommonFnUtil.onClickRelatedDoc},
+    'setViewOnly':{name:'읽기 전용 설정',auth:'Update',rightMenu: false,icon:['ActionSetViewOnly', 'ActionCategoryOn'],clickEvent: CommonFnUtil.onClickSetViewOnly},
+    'setPassword':{name:'보안 설정', auth:'Read',rightMenu: true,icon:'ActionSetPW',clickEvent: CommonFnUtil.onClickSetPassword},
+    'setTag':{name:'태그 설정', auth:'Read',rightMenu: false,icon:'ActionSetViewOnly',clickEvent: CommonFnUtil.onClickSetTag},
     'DocInfo':{name:'문서 정보', auth:'Read',rightMenu: false,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDetailDocInfo},
     'DocHistory':{name:'문서 이력', auth:'Read',rightMenu: false,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDetailDocInfo},
     'openLink' : { name: '오픈링크', icon: 'OpenLink', rightItem : true, menuEvent: CommonFnUtil.onClickOnOffLink},
@@ -77,11 +73,15 @@ const ActionMenu = () => {
     const moreMenus = ['share','linkCopy','ONECHAMBER(PDF)','move','copy','changeName','addOwnForm','delete','setFavorite','relatedDoc','setViewOnly','setPassword','setTag','DocInfo','DocHistory'];
     const shareSubMenu = ['openLink','groupNuserShare']; //'openLinkRead', 'openLinkUpdate',
 
-    const { selectedTargetState, setSelectedTarget, centerDialogState, setCenterDialog, actionMenuState, setIsActionMenu} = useContext(CommonContext);
+    const { selectedTargetState, setSelectedTarget, centerDialogState, setCenterDialog, actionMenuState, setIsActionMenu, alertDialogState, setAlertDialog} = useContext(CommonContext);
     // const [ clickMenu, setClickMenu] = useState([]);
     const [ options, setOptions] = useState([]);
     const [ menus, setMenus] = useState( []);
-    const [ nextActionMenu, setNextActionMenu] = useState( ''); // 서브메뉴 체크용도 아직 구현되지않음
+    const [ nextActionMenu, setNextActionMenu] = useState( ''); // 서브메뉴 체크용
+    const [ isClickToastMenu, setIsClickToastMenu] = useState({
+        setFavorite: false,
+        setReadOnly: false
+    });
     const actionSheetRef = useRef( null);
 
     useEffect(() => {
@@ -93,11 +93,12 @@ const ActionMenu = () => {
             }
 
             actionSheetRef.current.show(); //액션 메뉴 열어주려면 있어야함
-        } 
-        // else{
-        //     hiddenActionMenu();
-        // }
+        }
     }, [ actionMenuState.isActionMenu, nextActionMenu]);
+    
+    useEffect(()=> {
+        searchClickMenu();
+    }, [ menus]);
 
     // useEffect(() => {
     //     if( actionMenuState.isActionMenu){
@@ -105,17 +106,11 @@ const ActionMenu = () => {
     //     }
     // },[options]);
 
-    useEffect(()=> {
-        searchClickMenu();
-    }, [ menus]);
-
-
-
     const hiddenActionMenu = () => {
         setIsActionMenu( false, null);
         
         actionSheetRef.current.hide();
-    }
+    };
 
     const searchClickMenu = () => {
 
@@ -167,25 +162,9 @@ const ActionMenu = () => {
     //         //     options = options.concat( subItemRender(clickMenu[i]));
     //         // }
     //     }
-
-    //     menus = 
-    //     <ScrollView style={{ flexDirection:'row', justifyContent:'space-around'}} horizontal={ true} >
-    //         {options}
-    //     </ScrollView>;
-    //     // <>
-    //     //     <FlatList 
-    //     //         data={ null}
-    //     //         renderItem={ options}
-    //     //         keyExtractor={ (item, index) => item }//item.fileUID}
-    //     //         horizontal={ true}
-    //     //         onEndReached={ onEndReached}
-    //     //         onEndReachedThreshold={ 0.8}
-    //     //         // ListFooterComponent={} rn 에서 제공하는 로딩 컴포넌트
-    //     //     />
-    //     // </>;
-
     //     return options;
     // } 
+    
     const renderMoreMenu = ( clickMenu:any) => {
         //배열을 n 개로 나누기
         const division = ( array: any, n: number) => {
@@ -213,7 +192,17 @@ const ActionMenu = () => {
                             <View style={ moreMenuStyles.menuIconContainer}>
                                 { !CommonUtil.strIsNull( myDocMenuInfo[menus[i][j]].icon) &&
                                     <View style={ moreMenuStyles.menuItemContainer}>
-                                        <SvgIcon name={ myDocMenuInfo[menus[i][j]].icon} width={20} height={20}/>
+                                        { typeof myDocMenuInfo[menus[i][j]].icon === 'string' ?
+                                             <SvgIcon name={ myDocMenuInfo[menus[i][j]].icon} width={20} height={20}/>
+                                            : 
+                                             <>
+                                                { myDocMenuInfo[menus[i][j]].name === '중요 표시' ?
+                                                <SvgIcon name={ isClickToastMenu.setFavorite ? myDocMenuInfo[menus[i][j]].icon[1] : myDocMenuInfo[menus[i][j]].icon[0]} width={20} height={20}/>
+                                                :
+                                                <SvgIcon name={ isClickToastMenu.setReadOnly ? myDocMenuInfo[menus[i][j]].icon[1] : myDocMenuInfo[menus[i][j]].icon[0]} width={20} height={20}/>
+                                                }
+                                             </>
+                                        }
                                         <Text style={{ fontSize: 11, paddingTop:5}}>{ myDocMenuInfo[menus[i][j]].name}</Text>
                                     </View>
                                 }
@@ -233,10 +222,8 @@ const ActionMenu = () => {
 
             options.push( menuContainer);
         }
-    
-    
         return options;
-    }
+    };
 
     const onClickActionMenuItemMore = async( menuName : string) => {
         const returnVal = await myDocMenuInfo[ menuName].clickEvent();
@@ -260,6 +247,67 @@ const ActionMenu = () => {
             // setOptions( renderMoreMenu( clickMenu));
             setNextActionMenu( naviVal[1]);
         }
+        else if( naviVal[0] === 'dialog'){
+            //inputAlert or alert
+            let alertName = '';
+            let alertItem = {};
+
+            if( naviVal[1] === 'rename' || naviVal[1] === 'addOwnForm' || naviVal[1] === 'newFolder') {
+                alertName = 'inputAlert';
+                alertItem = {
+                    title: naviVal[1] === 'rename' ? '이름 변경' : naviVal[1] === 'addOwnForm' ? '나만의 양식 추가' : '새 폴더 추가',
+                    menuNM: naviVal[1]
+                };
+            }
+            else {
+                alertName = 'alert';
+                alertItem = {
+                    title : naviVal[1] === 'remove' ? '삭제' : '없음',
+                    description : 'blahblahblahblah'
+                }
+            }
+
+            
+            setOptions( []);
+            
+            hiddenActionMenu();
+
+
+            setTimeout(() => {
+                setAlertDialog( alertName, alertItem);
+            },500)
+            
+        }
+        else if( naviVal[0] === 'toast') {
+            
+            let textMsg = null;
+
+            if( naviVal[1] === 'setFavorite') {
+                console.log( isClickToastMenu.setFavorite);
+                textMsg = !isClickToastMenu.setFavorite ? '중요문서로 설정되었습니다.' : '중요문서 설정이 해제되었습니다.';
+                setIsClickToastMenu({
+                    ...isClickToastMenu,
+                    setFavorite: !isClickToastMenu.setFavorite
+                });
+            }
+            else if( naviVal[1] === 'setViewOnly') {
+                textMsg = !isClickToastMenu.setReadOnly ?  '읽기 전용로 설정되었습니다.' : '읽기 전용이 해제되었습니다.';
+                setIsClickToastMenu({
+                    ...isClickToastMenu,
+                    setReadOnly: !isClickToastMenu.setReadOnly
+                });
+            }
+            Toast.show({
+                type: 'success',
+                text1: textMsg,
+                visibilityTime: 3000,
+                autoHide: true,
+            });
+
+            setOptions( []);
+            
+            hiddenActionMenu();
+        }
         // const actionValue = await menuInfo[menuName].menuEvent( selectedTargetState.selectedTarget);
 
         // if( !CommonUtil.objectIsNull( actionValue)){
@@ -273,68 +321,62 @@ const ActionMenu = () => {
         // }
     }
 
-    const rightItemRender = ( menuName : string) => {
-        let content : any = null;
+    // 공유 꺼짐 같은 오른쪽 메뉴
+    // const rightItemRender = ( menuName : string) => {
+    //     let content : any = null;
 
-        if( menuName === 'share' || menuName === 'setPassword'){
-            content = (
-                        <View style={{flexDirection:'row'}}>
-                            <Text style={{paddingTop:3}}>꺼짐</Text>
-                            <SvgIcon name="R_menuNextPageBtn" width={22} height={20} />
-                        </View>
-                      )
-        }else if( menuName === 'setFavorite' || menuName === 'setViewOnly'){
-            content = (
-                <SvgIcon name="R_menuSwitchON" width={42} height={32} />
-            )
-        }else if( menuName === 'detailDocInfo'){
-            content = (
-                <SvgIcon name="R_menuNextPageBtn" width={22} height={20}/>
-            )
-        }
+    //     if( menuName === 'share' || menuName === 'setPassword'){
+    //         content = (
+    //                     <View style={{flexDirection:'row'}}>
+    //                         <Text style={{paddingTop:3}}>꺼짐</Text>
+    //                         <SvgIcon name="R_menuNextPageBtn" width={22} height={20} />
+    //                     </View>
+    //                   )
+    //     }else if( menuName === 'setFavorite' || menuName === 'setViewOnly'){
+    //         content = (
+    //             <SvgIcon name="R_menuSwitchON" width={42} height={32} />
+    //         )
+    //     }else if( menuName === 'detailDocInfo'){
+    //         content = (
+    //             <SvgIcon name="R_menuNextPageBtn" width={22} height={20}/>
+    //         )
+    //     }
 
-        return (
-            <>
-                {content}
-            </>
-        )
-    }
+    //     return (
+    //         <>
+    //             {content}
+    //         </>
+    //     )
+    // }
 
-    // useEffect(() => {
-    //     console.log( actionMenuState);
-    //     console.log( nextActionMenu);
-    //     console.log( options);
-    //     console.log( actionSheetRef);
-    // }, [actionMenuState.isActionMenu, nextActionMenu, options])
+    // const subItemRender = ( menuType : string) => {
+    //     let subOptions : any = [];
 
-    const subItemRender = ( menuType : string) => {
-        // let subOptions : any = [];
+    //     if( menuType === 'openLink' && selectedTargetState.selectedTarget.flagOpen){
+    //         const subMenus = [ 'openLinkRead', 'openLinkUpdate'];
 
-        // if( menuType === 'openLink' && selectedTargetState.selectedTarget.flagOpen){
-        //     const subMenus = [ 'openLinkRead', 'openLinkUpdate'];
+    //         for( let i=0; i<subMenus.length; i++){
+    //             subOptions.push(
+    //                     <View key={subMenus[i]} style={ actionMenuStyleSheet.actionMenuItem}>
+    //                         <TouchableOpacity onPress={ onClickMenu.bind( this, subMenus[i])}>
+    //                             <View style={ [actionMenuStyleSheet.actionMenuLineBox, {width: Dimensions.get('window').width - 52}]}>
+    //                                 <View style={ actionMenuStyleSheet.actionMenuItemContent}>
+    //                                     <View style={{width: 22, height: 22}}/>
+    //                                 </View>
+    //                                 <View style={ actionMenuStyleSheet.actionMenuItemContent}>
+    //                                     <Text style={ actionMenuStyleSheet.actionMenuItemTitle}>{menuInfo[subMenus[i]].name}</Text>
+    //                                     {   selectedTargetState.selectedTarget.openAuth === menuInfo[subMenus[i]].value &&
+    //                                         rightItemRender( 'openLinkCheck')}
+    //                                 </View>
+    //                             </View>
+    //                         </TouchableOpacity>
+    //                     </View>
+    //             )
+    //         }
+    //     }
 
-        //     for( let i=0; i<subMenus.length; i++){
-        //         subOptions.push(
-        //                 <View key={subMenus[i]} style={ actionMenuStyleSheet.actionMenuItem}>
-        //                     <TouchableOpacity onPress={ onClickMenu.bind( this, subMenus[i])}>
-        //                         <View style={ [actionMenuStyleSheet.actionMenuLineBox, {width: Dimensions.get('window').width - 52}]}>
-        //                             <View style={ actionMenuStyleSheet.actionMenuItemContent}>
-        //                                 <View style={{width: 22, height: 22}}/>
-        //                             </View>
-        //                             <View style={ actionMenuStyleSheet.actionMenuItemContent}>
-        //                                 <Text style={ actionMenuStyleSheet.actionMenuItemTitle}>{menuInfo[subMenus[i]].name}</Text>
-        //                                 {   selectedTargetState.selectedTarget.openAuth === menuInfo[subMenus[i]].value &&
-        //                                     rightItemRender( 'openLinkCheck')}
-        //                             </View>
-        //                         </View>
-        //                     </TouchableOpacity>
-        //                 </View>
-        //         )
-        //     }
-        // }
-
-        // return subOptions;
-    }
+    //     return subOptions;
+    // }
 
     return useMemo(() => (
         <>

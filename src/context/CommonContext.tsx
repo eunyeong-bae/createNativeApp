@@ -46,6 +46,10 @@ const CommonContext = createContext<CommonContextType>({
         selectedValue : null,
         sortMenuInfo : null
     },
+    alertDialogState: {
+        alertName : '',
+        alertItem : null
+    },
     
     setCurrentFolder : ( targetFolder : null) : void => {},
     setTargetFullPath : ( fullPathUIDs : [], fullPathNames : [], treeTypes : []) : void => {},
@@ -53,6 +57,7 @@ const CommonContext = createContext<CommonContextType>({
     setMultiSelected : ( selectedTarget : [], index : []) : void => {},
     setCenterDialog : ( dialogName : string, dialogItem : any) : void => {},
     setRightDialog : ( dialogName : string, dialogItem : any) : void => {},
+    setAlertDialog : ( alertName : string, alertItem : any) : void => {},
     // setIsActionMenu : ( isActionMenu : boolean, setIsActionMenu : any, contextName : '', navigation : any) : void => {},
     setIsActionMenu : (navigation:any ) : void => {},
     setReViewDoc : ( isVisible : boolean, onClickFileView : any, onClickClose : any, onClickChangeTarget : any, setIsActionMenu : any) : void => {},
@@ -66,6 +71,7 @@ const CommonProvider = ({children} : CommonProviderProps): JSX.Element => {
     const [multiSelectedState, setMultiSelectedState] = useState<MultiSelectedState>({ selectedTargets : [], indexs : []});
     const [centerDialogState, setCenterDialogState] = useState<CenterDialogState>({ dialogName : '', dialogItem : null});
     const [rightDialogState, setRightDialogState] = useState<RightDialogState>({ dialogName : '', dialogItem : null});
+    const [alertDialogState, setAlertDialogState] = useState<AlertDialogState>({ alertName : '', alertItem : null});
     // const [actionMenuState, setIsActionMenuState] = useState<ActionMenuState>({ isActionMenu : false, setIsActionMenu : null, contextName : '', navigation : null});
     const [actionMenuState, setIsActionMenuState] = useState<ActionMenuState>({ isActionMenu : false, navigation:null});
     const [reViewDocState, setReViewDocState] = useState<ReViewDocState>({ isVisible : false, onClickFileView : null, onClickClose : null, onClickChangeTarget : null, setIsActionMenu : null});
@@ -95,6 +101,10 @@ const CommonProvider = ({children} : CommonProviderProps): JSX.Element => {
         setRightDialogState({...rightDialogState, dialogName, dialogItem});
     },[rightDialogState, setRightDialogState]);
 
+    const setAlertDialog = useCallback(( alertName : '', alertItem: any) : void => {
+        setAlertDialogState({...alertDialogState, alertName, alertItem});
+    }, [alertDialogState, setAlertDialogState]);
+
     // const setIsActionMenu = useCallback(( isActionMenu : boolean, setIsActionMenu : any, contextName : string, navigation : any) : void => {
     //     setIsActionMenuState({...actionMenuState, isActionMenu, setIsActionMenu, contextName, navigation});
     // },[actionMenuState, setIsActionMenuState]);
@@ -118,6 +128,7 @@ const CommonProvider = ({children} : CommonProviderProps): JSX.Element => {
             multiSelectedState,
             centerDialogState,
             rightDialogState,
+            alertDialogState,
             actionMenuState,
             reViewDocState,
             sortMenuState,
@@ -127,6 +138,7 @@ const CommonProvider = ({children} : CommonProviderProps): JSX.Element => {
             setMultiSelected,
             setCenterDialog,
             setRightDialog,
+            setAlertDialog,
             setIsActionMenu,
             setReViewDoc,
             setSortMenu

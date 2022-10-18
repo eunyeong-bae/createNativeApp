@@ -11,8 +11,7 @@ interface sortMenuInfo {
 }
 
 const SortMenu = ( props : sortMenuInfo) => {
-    const {sortMenuState} = useContext(CommonContext);
-    const {sortMenu, ViewModeCheck} = props;
+    const {ViewModeCheck} = props;
 
     return (
         <View>

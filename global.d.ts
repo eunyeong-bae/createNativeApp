@@ -56,6 +56,11 @@ type RightDialogState = {
     dialogItem : any
 }
 
+type AlertDialogState = {
+    alertName : string,
+    alertItem : any
+}
+
 type ActionMenuState = {
     isActionMenu : boolean,
     // setIsActionMenu : any,
@@ -91,6 +96,8 @@ type CommonContextType = {
     setCenterDialog : any,
     rightDialogState : RightDialogState,
     setRightDialog : any,
+    alertDialogState : AlertDialogState,
+    setAlertDialog : any,
     actionMenuState : ActionMenuState
     setIsActionMenu : any,
     reViewDocState : ReViewDocState,

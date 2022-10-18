@@ -58,7 +58,8 @@ export { default as ListCategoryIcon } from '../../assets/icons/listIcons/ic_cat
 
 export { default as ActionReqAuth } from '../../assets/icons/actionMenuIcons/ic_auth_none.svg';
 export { default as ActionCopy } from '../../assets/icons/actionMenuIcons/ic_chat_copy.svg';
-export { default as ActionCategory } from '../../assets/icons/actionMenuIcons/ic_draw_bookmark_off.svg';
+export { default as ActionCategoryOff } from '../../assets/icons/actionMenuIcons/ic_draw_bookmark_off.svg';
+export { default as ActionCategoryOn } from '../../assets/oneffice/homeIcons/icon_folder_bookmark.svg';
 export { default as ActionTrashBin } from '../../assets/icons/actionMenuIcons/ic_func_del_none.svg';
 export { default as ActionLinkCopy } from '../../assets/icons/actionMenuIcons/ic_func_link_none.svg';
 export { default as ActionMove } from '../../assets/icons/actionMenuIcons/ic_func_move_none.svg';
@@ -72,6 +73,9 @@ export { default as ActionRestore } from '../../assets/icons/actionMenuIcons/ic_
 export { default as ActionDown } from '../../assets/icons/actionMenuIcons/ic_sheet_save.svg';
 export { default as ActionOneSave } from '../../assets/icons/actionMenuIcons/ic_sheet_onech_none.svg';
 export { default as ActionGroupNUserShare } from '../../assets/icons/actionMenuIcons/ic_sheet_sharing.svg';
+export { default as UserInfoICon} from '../../assets/oneffice/homeIcons/icon_user.svg';
+export { default as AppInfoICon} from '../../assets/oneffice/homeIcons/icon_info.svg';
+export { default as AppSettingIcon} from '../../assets/oneffice/homeIcons/btn_setting_none.svg';
 
 //oneffice icon ~ 
 export {default as HomeMenuBtn} from '../../assets/oneffice/homeIcons/btn-menu-none.svg';
@@ -96,10 +100,8 @@ export {default as DocListFolderIcon} from '../../assets/oneffice/homeIcons/icon
 export {default as DocMoreBtn} from '../../assets/oneffice/homeIcons/btn_more_none.svg';
 export {default as AllDocTypeIcon} from '../../assets/oneffice/homeIcons/icon_oneffice_sele.svg';
 export {default as sortFilterIcon} from '../../assets/oneffice/homeIcons/icon-folder.svg';
-
 export {default as CheckAllBtnOff} from '../../assets/oneffice/homeIcons/btn_check_off.svg';
 export {default as CheckAllBtnOn} from '../../assets/oneffice/homeIcons/btn_check_on.svg';
-
 export {default as inputCloseBtn} from '../../assets/oneffice/homeIcons/btn_cancel.svg';
 
 //actionsheetmenu & popovermenu icons

@@ -13,16 +13,10 @@ import useDocList from '../hooks/useDocList';
 import FullPath from '../fullPath/index';
 
 const myDocMenuInfo : any = {    
-    'sortMenu' : [
-        {name : '문서 제목', value: '1'},
-        {name : '최종 수정 날짜', value: '2'},
-        {name : '최근 조회 문서', value: '7'}
-    ],
     'headerInfo' : {
         //롱클릭 시, visibility : true 로 변경? 해준다는 가정하에 일단 작성
         leftBtn : [
-            // {iconName :'HomeMenuBtn', visibility : true},
-            {iconName : 'UserInfoICon', visibility : true},
+            {iconName :'HomeMenuBtn', visibility : true},
             {iconName : 'CommonCloseBtn', visibility : false},
         ],
         rightBtn: [
@@ -39,10 +33,10 @@ const myDocMenuInfo : any = {
     }
 };
 
-const CONTEXT_NAME = "MyDoc";
+const CONTEXT_NAME = "Home";
 
-const MyDoc = ( props : any) => {
-    const { sortMenuState, setSortMenu, targetFullPathState, setTargetFullPath, alertDialogState, setAlertDialog} = useContext(CommonContext);
+const Home = ( props : any) => {
+    const { sortMenuState, setSortMenu} = useContext(CommonContext);
     
     const { navigation} = props;
 
@@ -63,34 +57,24 @@ const MyDoc = ( props : any) => {
         includeFolder: true,
         includeDoc: true
     });
-    const { folderSeq, pageNum, sortItem, sortOrder, fileTypes} = reqListData;
+    const {sortItem, sortOrder, fileTypes} = reqListData;
 
     //딱 한번 실행 됌 
     useLayoutEffect( () => {
         if( CommonUtil.strIsNull( sortMenuState.contextName) || sortMenuState.contextName !== CONTEXT_NAME) {
-            setSortMenu( CONTEXT_NAME, { sortItem:'1', fileTypes:'', sortOrder:'d'}, myDocMenuInfo[ 'sortMenu'])
-            setTargetFullPath( [''], ['내 문서함'], null)
+            setSortMenu( CONTEXT_NAME, { sortItem:'1', fileTypes:'', sortOrder:'d'}, null);
         }
-        // setDataList(reqListData);
-        // setHeaderDataInfo();
     }, []);
 
     useEffect(() => { // unmount, context Api 초기화
         // if( CommonUtil.strIsNull( sortMenuState.contextName) || sortMenuState.contextName !== CONTEXT_NAME) {
-        //     setSortMenu( CONTEXT_NAME, { sortItem:'1', fileTypes:'', sortOrder:'d'}, myDocMenuInfo[ 'sortMenu']);
+        //     setSortMenu( CONTEXT_NAME, { sortItem:'1', fileTypes:'', sortOrder:'d'}, null);
         // }
-        if(sortMenuState.selectedValue != null && (sortItem !== sortMenuState.selectedValue.sortItem || fileTypes !== sortMenuState.selectedValue.fileTypes ||  sortOrder !== sortMenuState.selectedValue.sortOrder)) {
+        if(sortMenuState.selectedValue != null &&  (sortItem !== sortMenuState.selectedValue.sortItem || fileTypes !== sortMenuState.selectedValue.fileTypes ||  sortOrder !== sortMenuState.selectedValue.sortOrder)) {
             setDataList({ ...reqListData, pageNum: 1, sortItem:sortMenuState.selectedValue.sortItem, fileTypes:sortMenuState.selectedValue.fileTypes, sortOrder: sortMenuState.selectedValue.sortOrder, dataList: []});
             flatListRef.current.scrollToOffset({ animated: false, offset: 0 }); //스크롤 초기화
         }
     }, [ sortMenuState]);
-
-    useEffect(() => {
-        if( reqListData.dataList && reqListData.dataList.length > 0 && targetFullPathState.fullPathUIDs.length > 0) {
-            //pageNum:1 은 어디선가 스크롤 값이 자동으로 바뀌면서 onEndReached() 함수가 실행되고 있어서 pageNum값이 늘어나서 생겨난 문제, 일시적으로 추가함
-            setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
-        }
-    }, [ targetFullPathState]);
 
     const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
@@ -131,23 +115,22 @@ const MyDoc = ( props : any) => {
         <SafeAreaView>
             <View style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, backgroundColor:'#ffffff'}}>
                 <CommonHeader
-                     headerName = { '내 문서함'} 
+                     headerName = { 'ONEFFICE'} 
                      multiSelectedState = { null}
                      setMultiSelected = { null}
                      headerMenuInfo={ myDocMenuInfo.headerInfo}
                      contextName={ CONTEXT_NAME}
                      headerDataInfo={ null}
                      navigation = { navigation}
-                     sortMenu = { myDocMenuInfo['sortMenu']}
+                     sortMenu = { null}
                      ViewModeCheck={ ViewModeCheck}
                 />
 
                 <CommonDocBoxList navigation={ navigation} />
-                
-                {
-                    targetFullPathState.fullPathUIDs.length > 1 && 
-                    <FullPath />
-                }
+
+                <View style={{borderBottomWidth:1, borderBottomColor:'#dedede'}}>
+                    <Text>최근 조회 문서</Text>
+                </View>
                 {/* <View style={{flexDirection:'row',justifyContent:'space-between',height:40,alignItems:'center',backgroundColor:'#eee',paddingLeft:10,paddingRight:10}}>
                     <SortMenu 
                         contextName = { CONTEXT_NAME}
@@ -185,4 +168,4 @@ const MyDoc = ( props : any) => {
     ), [ reqListData.dataList, listViewMode]);
 }
 
-export default MyDoc;
+export default Home;

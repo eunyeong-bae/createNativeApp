@@ -37,7 +37,7 @@ const menuInfo: any = {
     // 'comment': { name: '댓글', icon: 'ActionComment', rightItem : false, menuEvent: CommonFnUtil.onClickComment },
     // 'move': { name: '이동', icon: 'ActionMove', rightItem : false, menuEvent: CommonFnUtil.onClickMoveOpen },
     // 'remove': { name: '삭제', icon: 'ActionTrashBin', rightItem : false, auth: 'delete' ,menuEvent: CommonFnUtil.onClickRemove },
-    // 'category': { name: '중요표시', icon: 'ActionCategory', rightItem : false, menuEvent: CommonFnUtil.onClickCategory },
+    // 'category': { name: '중요표시', icon: 'ActionCategoryOff', rightItem : false, menuEvent: CommonFnUtil.onClickCategory },
     // 'rename': { name: '이름변경', icon: 'ActionReName', rightItem : false, menuEvent: CommonFnUtil.onClickRename },
     // 'relate': { name: '연관문서', icon: 'ActionRelateDoc', rightItem : false, menuEvent: CommonFnUtil.onClickRelateDoc },
     // 'docInfoView': { name: '정보보기', icon: 'ActionInfo', rightItem : false, menuEvent: CommonFnUtil.onClickDocInfoView },
