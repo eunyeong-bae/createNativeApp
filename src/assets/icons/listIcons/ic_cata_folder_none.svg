@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+    <path data-name="패스 5170" d="M103 177H87a1.975 1.975 0 0 1-2-1.945V162a2 2 0 0 1 2-2h4.086a1.514 1.514 0 0 1 1.06.438l1.928 1.927a.5.5 0 0 0 .353.146H103a1.975 1.975 0 0 1 2 1.945v10.6a1.975 1.975 0 0 1-2 1.944zm-16-16a1 1 0 0 0-1 1v13.056a.975.975 0 0 0 1 .944h16a.975.975 0 0 0 1-.945v-10.6a.975.975 0 0 0-1-.945h-8.573a1.49 1.49 0 0 1-1.06-.439l-1.928-1.926a.5.5 0 0 0-.353-.146z" transform="translate(-84 -158)" style="fill:#3c77ea"/>
+    <g data-name="그룹 54035" transform="translate(-616.5 -792)">
+        <circle data-name="타원 9012" cx="1" cy="1" r="1" transform="translate(622 800)" style="stroke:transparent;fill:#3c77ea;stroke-miterlimit:10"/>
+        <circle data-name="타원 9012" cx="1" cy="1" r="1" transform="translate(622 803)" style="stroke:transparent;fill:#3c77ea;stroke-miterlimit:10"/>
+        <circle data-name="타원 9012" cx="1" cy="1" r="1" transform="translate(622 806)" style="stroke:transparent;fill:#3c77ea;stroke-miterlimit:10"/>
+        <path data-name="선 1588" transform="translate(626 801)" style="stroke:#3c77ea;stroke-linecap:round;fill:none" d="M0 0h7"/>
+        <path data-name="선 1588" transform="translate(626 804)" style="stroke:#3c77ea;stroke-linecap:round;fill:none" d="M0 0h7"/>
+        <path data-name="선 1588" transform="translate(626 807)" style="stroke:#3c77ea;stroke-linecap:round;fill:none" d="M0 0h7"/>
+    </g>
+</svg>

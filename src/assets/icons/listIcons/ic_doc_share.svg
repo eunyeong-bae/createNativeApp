@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+    <g data-name="그룹 33440">
+        <path data-name="패스 54281" d="M652.251 193a2 2 0 1 1 2-2 2 2 0 0 1-2 2zm0-3a1 1 0 1 0 1 1 1 1 0 0 0-1-1z" style="fill:#3c3f50" transform="translate(-645.25 -186.5)"/>
+        <path data-name="패스 54284" d="M647.751 198a.5.5 0 0 1-.5-.5 3.5 3.5 0 0 1 3.5-3.5h1.5a.5.5 0 0 1 0 1h-1.5a2.5 2.5 0 0 0-2.5 2.5.5.5 0 0 1-.5.5z" style="fill:#3c3f50" transform="translate(-645.25 -186.5)"/>
+        <g data-name="그룹 56126">
+            <path data-name="선 2998" d="M2 2.5a.5.5 0 0 1-.354-.146l-2-2a.5.5 0 0 1 0-.707.5.5 0 0 1 .707 0l2 2A.5.5 0 0 1 2 2.5z" transform="translate(7.5 11.5)" style="fill:#fc6d51"/>
+            <path data-name="선 3001" d="M2 2.5a.5.5 0 0 1-.354-.146l-2-2a.5.5 0 0 1 0-.707.5.5 0 0 1 .707 0l2 2A.5.5 0 0 1 2 2.5z" transform="translate(9.5 8)" style="fill:#1e92ff"/>
+            <path data-name="선 2999" d="M4 .5H0A.5.5 0 0 1-.5 0 .5.5 0 0 1 0-.5h4a.5.5 0 0 1 .5.5.5.5 0 0 1-.5.5z" transform="translate(7.5 11.5)" style="fill:#fc6d51"/>
+            <path data-name="선 3000" d="M4 .5H0A.5.5 0 0 1-.5 0 .5.5 0 0 1 0-.5h4a.5.5 0 0 1 .5.5.5.5 0 0 1-.5.5z" transform="translate(7.5 10)" style="fill:#1e92ff"/>
+        </g>
+    </g>
+</svg>
