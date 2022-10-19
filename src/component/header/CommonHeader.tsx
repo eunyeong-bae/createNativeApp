@@ -5,6 +5,7 @@ import SvgIcon from '../../component/svgIcon/SvgIcon';
 import CommonUtil from '../../utils/CommonUtil';
 import CommonFnUtil from '../../utils/CommonFnUtil';
 import SortMenu from '../../menu/SortMenu';
+import Toast from 'react-native-toast-message';
 
 interface CommonHeaderInfo {
     headerName: any, // 가운데 표시 될 이름
@@ -19,6 +20,10 @@ interface CommonHeaderInfo {
     sortMenu: any,
     ViewModeCheck?: any // 문서 보기 모드 ( 리스트/썸넬)
 }
+
+const callFunctions = new Map()
+    .set('MoveDialog', CommonFnUtil.moveDocumentFolder)
+    .set('CopyDialog', CommonFnUtil.copyDocument)
 
 const CommonHeader = (props: CommonHeaderInfo) => {
     const { headerName, multiSelectedState, setMultiSelected, headerMenuInfo, contextName, headerDataInfo, sortMenu, ViewModeCheck, navigation, fullpath, setFullpath} = props;
@@ -36,54 +41,31 @@ const CommonHeader = (props: CommonHeaderInfo) => {
     };
     
     // console.log( centerDialogState.dialogName)
-    const onClickRightBtn = ( location: any, docData: any) => { // 아이콘 이벤트
+    const onClickRightBtn = ( location: any) => { // 아이콘 이벤트
         let resultData:any = null;
 
-        if( docData && location === 'dialog') {
-            if( centerDialogState.dialogName === 'MoveDialog'){
-                const isFolder = docData.doc_type === '0';
-                const protocolId = isFolder ? 'P624' : 'P619';
-                const dataInfo = isFolder ? 
-                    {
-                        "folder_no": docData.docUID,
-                        "new_folder_no": fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1],
-                    }
-                :
-                    {
-                        "docUID": docData.docUID,
-                        "folder_id": fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1],
-                    };
-    
-                resultData = CommonFnUtil.moveDocumentFolder( protocolId, dataInfo);
-    
-                // if( resultData) {
-                //     alert( 'success');
-    
-                //     setFullpath({ fullPathUIDs : [ ''], fullPathNames : [ '내 문서함'], treeTypes : []});
-                //     setCenterDialog('', null);
-                // }
-            } else if( centerDialogState.dialogName === 'CopyDialog'){
-                const protocolId = 'P528';
-                const dataInfo = {
-                    "docUID": docData.docUID, 
-                    "folder_no": fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1], 
-                    "doc_title": headerDataInfo.docTitle, 
-                    "bContentCopy": false, 
-                    "isRemoveSektch": false 
-                };
-
-                resultData = CommonFnUtil.copyDocument( protocolId, dataInfo);
-
-            } else {
-                //pdf
+        if( location === 'dialog') {
+            switch( centerDialogState.dialogName) {
+                case 'MoveDialog':
+                    resultData = CommonFnUtil.moveDocumentFolder( selectedTargetState.selectedTarget, props);
+                    break; 
+                case 'CopyDialog':
+                    resultData = CommonFnUtil.copyDocument( selectedTargetState.selectedTarget, props);
+                    break; 
+                // case 'PdfDialog':
+                //     break; 
+                default:
+                    return;
             }
 
-            if( resultData) {
-                alert( 'success');
-
-                setFullpath({ fullPathUIDs : [ ''], fullPathNames : [ '내 문서함'], treeTypes : []});
-                setCenterDialog('', null);
-            }
+            setTimeout(() => {
+                if( resultData) {
+                    console.log( resultData);
+    
+                    setFullpath({ fullPathUIDs : [ ''], fullPathNames : [ '내 문서함'], treeTypes : []});
+                    setCenterDialog('', null);
+                }
+            }, 300);
 
         } else{
 
@@ -138,7 +120,7 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                         headerMenuInfo.rightDialogBtn.map(( btnInfo: any) => {
                             if(btnInfo.visibility){
                                 return(
-                                    <TouchableOpacity key={ btnInfo.iconName} onPress={ onClickRightBtn.bind( this, 'dialog', selectedTargetState.selectedTarget)}>
+                                    <TouchableOpacity key={ btnInfo.iconName} onPress={ onClickRightBtn.bind( this, 'dialog')}>
                                         <View>
                                             <SvgIcon name = { btnInfo.iconName} width={20} height={20}/>
                                         </View>
@@ -156,7 +138,7 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                             headerMenuInfo.rightBtn.map( ( btnInfo: any) => {
                                 if( btnInfo.visibility){
                                     return (
-                                        <TouchableOpacity key={btnInfo.iconName} onPress={ onClickRightBtn.bind( this, 'home', '')}>
+                                        <TouchableOpacity key={btnInfo.iconName} onPress={ onClickRightBtn.bind( this, 'home')}>
                                             <View>
                                                 <SvgIcon name = { btnInfo.iconName} width={20} height={20}/>
                                             </View>

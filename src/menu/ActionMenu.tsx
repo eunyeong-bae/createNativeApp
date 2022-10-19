@@ -187,7 +187,7 @@ const ActionMenu = () => {
         for( let i=0; i<menus.length; i++){
             for(let j=0; j<menus[i].length;j++){
                 menuContent.push(
-                    <TouchableOpacity key={ myDocMenuInfo[menus[i][j]]} onPress={() => onClickActionMenuItemMore(menus[i][j])}>
+                    <TouchableOpacity key={ myDocMenuInfo[menus[i][j]].name} onPress={() => onClickActionMenuItemMore(menus[i][j])}>
                         <View style={ moreMenuStyles.container}>
                             <View style={ moreMenuStyles.menuIconContainer}>
                                 { !CommonUtil.strIsNull( myDocMenuInfo[menus[i][j]].icon) &&
@@ -214,7 +214,7 @@ const ActionMenu = () => {
 
             let menuContainer = [];
                 menuContainer.push(
-                    <View style={{ flexDirection:'row', justifyContent:'space-around'}}>
+                    <View key={'action'} style={{ flexDirection:'row', justifyContent:'space-around'}}>
                         { menuContent}
                     </View>
                 );
@@ -266,12 +266,9 @@ const ActionMenu = () => {
                     description : 'blahblahblahblah'
                 }
             }
-
             
             setOptions( []);
-            
             hiddenActionMenu();
-
 
             setTimeout(() => {
                 setAlertDialog( alertName, alertItem);
@@ -398,7 +395,7 @@ const ActionMenu = () => {
                 theme={"ios"}
             />
         </>
-        ), [  options]); //actionMenuState.isActionMenu, nextActionMenu,
+    ), [  options]); //actionMenuState.isActionMenu, nextActionMenu,
 }
 
 const styles={

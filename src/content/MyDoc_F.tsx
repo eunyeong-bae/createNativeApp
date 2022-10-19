@@ -42,7 +42,7 @@ const myDocMenuInfo : any = {
 const CONTEXT_NAME = "MyDoc";
 
 const MyDoc = ( props : any) => {
-    const { sortMenuState, setSortMenu, targetFullPathState, setTargetFullPath, alertDialogState, setAlertDialog} = useContext(CommonContext);
+    const { sortMenuState, setSortMenu, targetFullPathState, setTargetFullPath, alertDialogState, setAlertDialog, centerDialogState} = useContext(CommonContext);
     
     const { navigation} = props;
 
@@ -92,11 +92,16 @@ const MyDoc = ( props : any) => {
         }
     }, [ targetFullPathState]);
 
+    useEffect(() => {
+        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
+        setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+    }, [ centerDialogState]);
+
     const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
     };
 
-    const renderListItem = ( data : any) => {
+    const renderListItem =  ( data : any) => {
         if( listViewMode){
             return (
                 <CardListItem data={ data.item}
@@ -128,6 +133,8 @@ const MyDoc = ( props : any) => {
     }
     
     return useMemo(() => (
+        <>
+        {console.log(alertDialogState)}
         <SafeAreaView>
             <View style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, backgroundColor:'#ffffff'}}>
                 <CommonHeader
@@ -181,8 +188,8 @@ const MyDoc = ( props : any) => {
                 </View>
             </View>  
         </SafeAreaView>
-
-    ), [ reqListData.dataList, listViewMode]);
+    </>
+    ), [ reqListData.dataList, listViewMode, alertDialogState]);
 }
 
 export default MyDoc;

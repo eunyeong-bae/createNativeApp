@@ -17,49 +17,21 @@ const AlertDialog = () => {
     };
 
     const onClickConfirm = () => {
-        console.log('click');
         console.log( selectedTargetState);
 
         let resultData : any = null;
 
         if( !CommonUtil.strIsNull( inputVal) && inputVal !== selectedTargetState.selectedTarget.doc_name) {
-            switch( alertDialogState.alertItem.menuNm) {
-                case 'rename':
-                    const isFolder = selectedTargetState.selectedTarget.doc_type === '0';
-                    const protocolId = isFolder ? 'P623' : 'P618';
-                    const dataInfo = isFolder ? 
-                        {
-                            folder_no: selectedTargetState.selectedTarget.docUID,
-                            folder_name: inputVal,
-                            notSeqName : "1"
-                        }
-                        : 
-                        {
-                            docUID: selectedTargetState.selectedTarget.docUID,
-                            doc_name: inputVal,
-                            bIsEditorMode : "true"
-                        };
-                    
-                    resultData = CommonFnUtil.updateDocumentFolder( protocolId, dataInfo);
-                    
-                    Toast.show({
-                        type: 'success',
-                        text1: '이름이 변경되었습니다.',
-                        visibilityTime: 3000,
-                        autoHide: true
-                    });
 
+            resultData = CommonFnUtil.updateDocumentFolder( alertDialogState.alertItem.menuNM, inputVal, selectedTargetState.selectedTarget);
+
+            setTimeout(() => {
+                if( resultData) { 
+                    selectedTargetState.selectedTarget.doc_name = inputVal;
+    
                     setAlertDialog( '', null);
-                    break;
-
-                case 'newFolder':
-                    
-                    break;
-                case 'addOwnForm':
-                    break;
-                default:
-                    return;
-            }
+                }
+            }, 500);
         }
         else {
             Toast.show({
