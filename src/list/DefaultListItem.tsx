@@ -9,7 +9,7 @@ import { CommonContext } from '../context/CommonContext';
 const width = Dimensions.get('window').width;
 
 const DefaultListItem = ( props:any) => {
-    const { setIsActionMenu, actionMenuState, setSelectedTarget, selectedTargetState} = useContext(CommonContext);
+    const { setIsActionMenu, setSelectedTarget, selectedTargetState} = useContext(CommonContext);
     const { targetFullPathState, setTargetFullPath} = !props.fullpath ? useContext(CommonContext) : {targetFullPathState : props.fullpath, setTargetFullPath : props.setFullPath} ;
     
     const onClickActionMenu = () => {
@@ -27,6 +27,7 @@ const DefaultListItem = ( props:any) => {
             tempTarget.fullPathNames.push( data.doc_name);
             
             setTargetFullPath( tempTarget.fullPathUIDs, tempTarget.fullPathNames, []);
+
         }else{
             return;
         }
@@ -38,31 +39,31 @@ const DefaultListItem = ( props:any) => {
             doc_type: 0 // folder , 1 // doc
             important: 0//x, 1// o
         */
-            <View style={MyDocListViewStyles.docListContainer} key={props.data.fileUID}>
-                <TouchableOpacity onPress={ onClickFolder.bind( this, props.data)}>
-                    <View style={ MyDocListViewStyles.docListStyle}>
-                        <View style ={MyDocListViewStyles.ThumImg}>
-                            <SvgIcon name={ props.data.doc_type === '0' ? "DocListFolderIcon" : props.data.file_type === 'O' ? "DocTitleIconOne" : "DocTItleIconPre"} width={22} height={22} />
-                        </View>
-                        <View style={MyDocListViewStyles.docInfo}>
-                            <Text style={MyDocListViewStyles.title} numberOfLines={1}>{ props.data.doc_name}</Text>
-                            <Text style={MyDocListViewStyles.text}>{ props.data.mod_name} {'|'} { props.data.mod_date.split(' ')[0]}</Text>
-                        </View>
+        <View style={MyDocListViewStyles.docListContainer} key={props.data.fileUID}>
+            <TouchableOpacity onPress={ onClickFolder.bind( this, props.data)}>
+                <View style={ MyDocListViewStyles.docListStyle}>
+                    <View style ={MyDocListViewStyles.ThumImg}>
+                        <SvgIcon name={ props.data.doc_type === '0' ? "DocListFolderIcon" : props.data.file_type === 'O' ? "DocTitleIconOne" : "DocTItleIconPre"} width={22} height={22} />
                     </View>
-                </TouchableOpacity>
-                
-                {
-                    !props.fullpath ?
-                        <TouchableHighlight onPress={onClickActionMenu}>
-                            <View>
-                                <SvgIcon name="DocMoreBtn" width={22} height={22}/>
-                            </View> 
-                        </TouchableHighlight>
-                    :
-                    <View></View>
-                }
-            </View>
-    ), [ props.data, selectedTargetState]);
+                    <View style={MyDocListViewStyles.docInfo}>
+                        <Text style={MyDocListViewStyles.title} numberOfLines={1}>{ props.data.doc_name}</Text>
+                        <Text style={MyDocListViewStyles.text}>{ props.data.mod_name} {'|'} { props.data.mod_date.split(' ')[0]}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+            
+            {
+                !props.fullpath ?
+                    <TouchableHighlight onPress={onClickActionMenu}>
+                        <View>
+                            <SvgIcon name="DocMoreBtn" width={22} height={22}/>
+                        </View> 
+                    </TouchableHighlight>
+                :
+                <View></View>
+            }
+        </View>
+    ), [ props.data, props.data.doc_name, selectedTargetState]);
 } 
 
 export default DefaultListItem;

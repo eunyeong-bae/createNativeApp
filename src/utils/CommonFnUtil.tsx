@@ -1,31 +1,73 @@
 import Adapter from '../ecmadapter';
 import CommonUtil from './CommonUtil';
 import * as CommonMsgUtil from './CommonMsgUtil';
-
+import Toast from 'react-native-toast-message';
 
 export default class CommonFnUtil{
     /* 폴더/문서 이동 api */
-    public static moveDocumentFolder = async( protocolId: any, dataInfo: any) => {
-        let moveDocumentFolder: any = [];
-        const data: any = {
+    public static moveDocumentFolder = async( docData: any, props : any) => {
+        const { fullpath} = props;
+
+        const isFolder = docData.doc_type === '0';
+        const protocolId = isFolder ? 'P624' : 'P619';
+        const dataInfo = isFolder ? 
+            {
+                "folder_no": docData.docUID,
+                "new_folder_no": fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1],
+            }
+        :
+            {
+                "docUID": docData.docUID,
+                "folder_id": fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1],
+            };
+        
+        const data = {
             protocolId: protocolId,
             data: dataInfo
         };
+       
+        let moveDocumentFolder: any = [];
 
         await Adapter.fetch.protocol( data)
          .then( res => {
             if( res && res.list) {
                 moveDocumentFolder = res.list;
+
+                Toast.show({
+                    type:'success',
+                    text1: '이동되었습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
             }
          })
          .catch( error => {
             console.log( error);
+
+            moveDocumentFolder = false;
+            Toast.show({
+                type:'error',
+                text1: docData.folder_no === fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1] ? '이동대상 폴더와 현재 폴더가 동일합니다.' : '이동에 실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
          })
 
          return moveDocumentFolder;
     }
 
-    public static copyDocument = async ( protocolId: any, dataInfo: any) => {
+    public static copyDocument = async ( docData: any , props : any) => {
+        const { headerDataInfo, fullpath} = props;
+
+        const protocolId = 'P528';
+        const dataInfo = {
+            "docUID": docData.docUID, 
+            "folder_no": fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1], 
+            "doc_title": headerDataInfo.docTitle, 
+            "bContentCopy": false, 
+            "isRemoveSektch": false 
+        };
+        
         let copyDocument: any = [];
         const data: any = {
             protocolId: protocolId,
@@ -36,17 +78,60 @@ export default class CommonFnUtil{
          .then( res => {
             if( res && res.list) { 
                 copyDocument = res.list;
+
+                Toast.show({
+                    type:'success',
+                    text1: '복사되었습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
             }
          })
          .catch( error => {
              console.log( error);
+             copyDocument = false;
+
+             Toast.show({
+                type:'success',
+                text1: '복사 실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
          })
 
          return copyDocument;
     }
 
-    public static updateDocumentFolder = async ( protocolId: any, dataInfo: any) => {
+    public static updateDocumentFolder = async ( alertName: any, newName: any, docData: any) => {
+        let isFolder = null;
+        let protocolId = null;
+        let dataInfo = null;
+
+        switch( alertName) {
+            case 'rename':
+                isFolder = docData.doc_type === '0';
+                protocolId = isFolder ? 'P623' : 'P618';
+                dataInfo = isFolder ? 
+                     {
+                        folder_no: docData.docUID,
+                        folder_name: newName,
+                        notSeqName : "1"
+                     }
+                    : 
+                     {
+                        docUID: docData.docUID,
+                        doc_name: newName,
+                        bIsEditorMode : "true"
+                     };
+                break;
+            case 'newFolder':
+                break;
+            default:
+                break;
+        }
+
         let updateDocumentFolder: any = [];
+
         const data: any = {
             protocolId: protocolId,
             data: dataInfo
@@ -56,18 +141,32 @@ export default class CommonFnUtil{
          .then( res => {
             if( res && res.result) { 
                 updateDocumentFolder = res;
+
+                Toast.show({
+                    type:'success',
+                    text1: alertName === 'rename' ? '이름 변경되었습니다.' : alertName === 'newFolder' ? '새 폴더 생성되었습니다' : 'ㅎㅎ',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
             }
          })
          .catch( error => {
-            updateDocumentFolder = error;
-             console.log( error);
+            console.log( error);
+            updateDocumentFolder = false;
+
+            Toast.show({
+                type:'error',
+                text1: '실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
          })
 
          return updateDocumentFolder;
     }
 
     public static searchDataList = async( sendata : any) => {
-        let searchDataList : any = [];
+        let searchDataList : any = [];                                          
 
         const data : any = {
             protocolId : 'P791',
