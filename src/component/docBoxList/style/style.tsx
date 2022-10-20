@@ -7,7 +7,7 @@ export const dialogStyles = StyleSheet.create({
     container: {
         width: width - 10,
         height: height - 240,
-        backgroundColor:'#ffffff',
+        // backgroundColor:'#ffffff',
     },
     header:{
         width:'100%',
@@ -20,7 +20,7 @@ export const dialogStyles = StyleSheet.create({
     folderListContainer: {
         width: '100%',
         height: height - 420,
-        backgroundColor: '#ffffff',
+        // backgroundColor: '#ffffff',
         paddingLeft:4,
         paddingTop: 5,
     },
@@ -31,8 +31,9 @@ export const dialogStyles = StyleSheet.create({
         justifyContent:'space-around',
         paddingLeft:10,
         paddingRight:10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd'
+        // borderWidth: 1,
+        // borderColor: '#DCE7FB', //#E4ECF9
+        backgroundColor:'#EFF3FB'
     },
     docBoxList: {
         paddingTop: 14,
@@ -46,8 +47,8 @@ export const dialogStyles = StyleSheet.create({
         color: '#000000'
     },
     sharedTextStyle: {
-        borderWidth:1, 
-        borderColor:'red',
+        // borderWidth:1, 
+        // borderColor:'red',
         fontSize: 14,
         padding:3,
         borderRadius: 10,

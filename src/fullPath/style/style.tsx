@@ -2,10 +2,12 @@ import { StyleSheet, Dimensions} from 'react-native';
 
 export const fullPathStyleSheet = StyleSheet.create({
     fullPathContaier : {
-        height: 54,
+        height: 45,
         backgroundColor: '#fff',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderBottomWidth:1,
+        borderBottomColor:'#eee'
     },
     startBlurEffect : {
         width: 12
@@ -14,9 +16,9 @@ export const fullPathStyleSheet = StyleSheet.create({
 
     },
     fullPathContent : {
-        height: 54,
+        height: 45,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     fullPathText : {
         fontSize: 17

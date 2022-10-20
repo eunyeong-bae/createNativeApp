@@ -40,23 +40,23 @@ const FullPath = ( props: pathInfo) => { //값을 받을 수도 있고 받지 �
 
     return (
         <View style={ fullPathStyleSheet.fullPathContaier}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator = {true}>
-            <View style={ fullPathStyleSheet.startBlurEffect}/>
-                { targetFullPathState.fullPathUIDs.map(( fullPathUID : string, index : number) => {
-                    return( <View key={ 'path'+ fullPathUID} style={ fullPathStyleSheet.fullPathContent}>
-                                <TouchableOpacity onPress={ onClickFolder.bind( this, fullPathUID)}>
-                                    <Text style={ (index === targetFullPathState.fullPathUIDs.length -1 ? fullPathStyleSheet.fullPathLastText : fullPathStyleSheet.fullPathText)}>{targetFullPathState.fullPathNames[index]}</Text>
-                                </TouchableOpacity>
-                                { (index < targetFullPathState.fullPathUIDs.length -1) &&
-                                    <SvgIcon name="NextSB" width={16} height={16} style={ fullPathStyleSheet.fullPathNextIcon}/>
-                                }
-                            </View>
-                    )
-                 })
-                }
-            <View style={ fullPathStyleSheet.endBlurEffect}/>
-        </ScrollView>
-    </View>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator = {true}>
+                <View style={ fullPathStyleSheet.startBlurEffect}/>
+                    { targetFullPathState.fullPathUIDs.map(( fullPathUID : string, index : number) => {
+                        return( <View key={ 'path'+ fullPathUID} style={ fullPathStyleSheet.fullPathContent}>
+                                    <TouchableOpacity onPress={ onClickFolder.bind( this, fullPathUID)}>
+                                        <Text style={ (index === targetFullPathState.fullPathUIDs.length -1 ? fullPathStyleSheet.fullPathLastText : fullPathStyleSheet.fullPathText)}>{targetFullPathState.fullPathNames[index]}</Text>
+                                    </TouchableOpacity>
+                                    { (index < targetFullPathState.fullPathUIDs.length -1) &&
+                                        <SvgIcon name="NextSB" width={16} height={16} style={ fullPathStyleSheet.fullPathNextIcon}/>
+                                    }
+                                </View>
+                        )
+                    })
+                    }
+                <View style={ fullPathStyleSheet.endBlurEffect}/>
+            </ScrollView>
+        </View>
     )
 }
 

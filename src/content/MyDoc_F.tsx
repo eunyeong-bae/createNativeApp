@@ -134,60 +134,58 @@ const MyDoc = ( props : any) => {
     
     return useMemo(() => (
         <>
-        {console.log(alertDialogState)}
-        <SafeAreaView>
-            <View style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, backgroundColor:'#ffffff'}}>
-                <CommonHeader
-                     headerName = { '내 문서함'} 
-                     multiSelectedState = { null}
-                     setMultiSelected = { null}
-                     headerMenuInfo={ myDocMenuInfo.headerInfo}
-                     contextName={ CONTEXT_NAME}
-                     headerDataInfo={ null}
-                     navigation = { navigation}
-                     sortMenu = { myDocMenuInfo['sortMenu']}
-                     ViewModeCheck={ ViewModeCheck}
-                />
+        {/* {console.log(alertDialogState)} */}
+        <View style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, backgroundColor:'#fff', paddingTop: 40}}>
+            <CommonHeader
+                    headerName = { '내 문서함'} 
+                    multiSelectedState = { null}
+                    setMultiSelected = { null}
+                    headerMenuInfo={ myDocMenuInfo.headerInfo}
+                    contextName={ CONTEXT_NAME}
+                    headerDataInfo={ null}
+                    navigation = { navigation}
+                    sortMenu = { myDocMenuInfo['sortMenu']}
+                    ViewModeCheck={ ViewModeCheck}
+            />
 
-                <CommonDocBoxList navigation={ navigation} />
-                
-                {
-                    targetFullPathState.fullPathUIDs.length > 1 && 
-                    <FullPath />
-                }
-                {/* <View style={{flexDirection:'row',justifyContent:'space-between',height:40,alignItems:'center',backgroundColor:'#eee',paddingLeft:10,paddingRight:10}}>
-                    <SortMenu 
-                        contextName = { CONTEXT_NAME}
-                        selectedValue = { null}
-                        sortMenu = { myDocMenuInfo['sortMenu']}
-                    />
-                    <View style={{flexDirection:'row'}}>
-                        <TouchableOpacity onPress={ViewModeCheck}>
-                            <SvgIcon name={ !listViewMode ? 'DocThumbViewBtn' : 'DocListViewBtn' } width={20} height={20}/>
-                        </TouchableOpacity>
-                    </View>
-                </View> */}
-                
-                <View style={MyDocStyles.docListContainer}>
-                    {
-                        reqListData.dataList.length > 0 ? 
-                        <FlatList 
-                            ref={ flatListRef}
-                            data={ reqListData.dataList}
-                            renderItem={ renderListItem}
-                            keyExtractor={ (item, index) => item.fileUID}
-                            onEndReached={ onEndReached}
-                            onEndReachedThreshold={ 0.9}
-                            // ListFooterComponent={} rn 에서 제공하는 로딩 컴포넌트
-                        />
-                        : 
-                        <View>
-                            <Text>등록된 문서가 없습니다.</Text>
-                        </View>
-                    }
+            <CommonDocBoxList navigation={ navigation} />
+            
+            {
+                targetFullPathState.fullPathUIDs.length > 1 && 
+                <FullPath />
+            }
+            {/* <View style={{flexDirection:'row',justifyContent:'space-between',height:40,alignItems:'center',backgroundColor:'#eee',paddingLeft:10,paddingRight:10}}>
+                <SortMenu 
+                    contextName = { CONTEXT_NAME}
+                    selectedValue = { null}
+                    sortMenu = { myDocMenuInfo['sortMenu']}
+                />
+                <View style={{flexDirection:'row'}}>
+                    <TouchableOpacity onPress={ViewModeCheck}>
+                        <SvgIcon name={ !listViewMode ? 'DocThumbViewBtn' : 'DocListViewBtn' } width={20} height={20}/>
+                    </TouchableOpacity>
                 </View>
-            </View>  
-        </SafeAreaView>
+            </View> */}
+            
+            <View style={MyDocStyles.docListContainer}>
+                {
+                    reqListData.dataList.length > 0 ? 
+                    <FlatList 
+                        ref={ flatListRef}
+                        data={ reqListData.dataList}
+                        renderItem={ renderListItem}
+                        keyExtractor={ (item, index) => item.fileUID + index}
+                        onEndReached={ onEndReached}
+                        onEndReachedThreshold={ 0.9}
+                        // ListFooterComponent={} rn 에서 제공하는 로딩 컴포넌트
+                    />
+                    : 
+                    <View>
+                        <Text>등록된 문서가 없습니다.</Text>
+                    </View>
+                }
+            </View>
+        </View>
     </>
     ), [ reqListData.dataList, listViewMode, alertDialogState]);
 }
