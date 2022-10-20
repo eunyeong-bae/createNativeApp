@@ -100,12 +100,6 @@ const ActionMenu = () => {
         searchClickMenu();
     }, [ menus]);
 
-    // useEffect(() => {
-    //     if( actionMenuState.isActionMenu){
-    //         actionSheetRef.current.show();
-    //     }
-    // },[options]);
-
     const hiddenActionMenu = () => {
         setIsActionMenu( false, null);
         
@@ -375,6 +369,12 @@ const ActionMenu = () => {
     //     return subOptions;
     // }
 
+    const onCloseEvent = (index : any) =>{
+        if(index == -1){
+            setIsActionMenu( false, null);
+        }
+    }
+
     return useMemo(() => (
         <>
             <ActionSheetCustom
@@ -390,8 +390,9 @@ const ActionMenu = () => {
                     </View>
                 }
                 options={ options}
-                // onPress={test }
+                onPress={ onCloseEvent }
                 styles={ styles}
+                cancelButtonIndex={-1}
                 theme={"ios"}
             />
         </>
@@ -408,6 +409,10 @@ const styles={
     buttonBox : {
         opacity: 1,
         backgroundColor: '#fff'
+    },
+    cancelButtonBox : {
+        opacity: 0,
+        display: 'none'
     }
 }
 

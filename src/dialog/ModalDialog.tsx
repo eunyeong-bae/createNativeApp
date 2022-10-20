@@ -12,14 +12,14 @@ const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 export const ModalDialog = () => {
-    const { centerDialogState} = useContext(CommonContext);
+    const { centerDialogState} = useContext( CommonContext);
 
     return useMemo(() => (
         <Modal
             //isVisible Props에 State 값을 물려주어 On/off control
             visible={ !CommonUtil.strIsNull( centerDialogState.dialogName)}
-            useNativeDriver={true}
-            hideModalContentWhileAnimating={true}
+            useNativeDriver={ true}
+            hideModalContentWhileAnimating={ true}
             // onBackdropPress={ this.onClickClose}
             style={{ flex: 1, justifyContent: "center", alignItems: "center", height: 400, width: 400, margin: 0, zIndex: 9999}}
         >{console.log( centerDialogState.dialogName)}

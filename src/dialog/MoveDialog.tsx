@@ -8,7 +8,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import {dialogStyles} from './style/style';
 import CommonUtil from '../utils/CommonUtil';
-import SvgIcon from '../component/svgIcon/SvgIcon';
 import CommonHeader from '../component/header/CommonHeader';
 import FullPath from '../fullPath/index';
 import DefaultListItem from '../list/DefaultListItem';

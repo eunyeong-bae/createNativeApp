@@ -7,7 +7,8 @@ export const dialogStyles = StyleSheet.create({
     container: {
         width: width - 10,
         height: height - 240,
-        backgroundColor:'white',
+        backgroundColor:'#fff',
+        // backgroundColor:'white',
     },
     header:{
         width:'100%',
@@ -19,19 +20,18 @@ export const dialogStyles = StyleSheet.create({
     },
     folderListContainer: {
         width: '100%',
-        height: height - 420,
-        // padding: 5,
-        backgroundColor: '#eee',
+        height: height - 410,
         paddingLeft:4,
-        paddingTop: 5,
+        paddingTop: 10,
     },
     docBoxListContainer: {
         width:'100%', 
         height:50, 
         flexDirection:'row', 
         justifyContent:'space-around',
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd'
+        // borderWidth: 1,
+        // borderColor: '#DCE7FB', //#E4ECF9
+        backgroundColor:'#EFF3FB'
     },
     docBoxList: {
         paddingTop: 14,
@@ -41,6 +41,6 @@ export const dialogStyles = StyleSheet.create({
     },
     docBoxListText: {
         fontSize: 17,
-        fontWeight: 'bold',
+        fontWeight: '600',
     },
 });

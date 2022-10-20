@@ -1,11 +1,11 @@
 import { CommonContext } from '../../context/CommonContext';
-import React, { useContext } from 'react';
-import {TouchableOpacity, View, Text, Image} from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import {TouchableOpacity, View, Text, Image, Dimensions, StyleSheet} from 'react-native';
 import SvgIcon from '../../component/svgIcon/SvgIcon';
 import CommonUtil from '../../utils/CommonUtil';
 import CommonFnUtil from '../../utils/CommonFnUtil';
 import SortMenu from '../../menu/SortMenu';
-import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface CommonHeaderInfo {
     headerName: any, // 가운데 표시 될 이름
@@ -21,13 +21,21 @@ interface CommonHeaderInfo {
     ViewModeCheck?: any // 문서 보기 모드 ( 리스트/썸넬)
 }
 
-const callFunctions = new Map()
-    .set('MoveDialog', CommonFnUtil.moveDocumentFolder)
-    .set('CopyDialog', CommonFnUtil.copyDocument)
+// const callFunctions = new Map()
+//     .set('MoveDialog', CommonFnUtil.moveDocumentFolder)
+//     .set('CopyDialog', CommonFnUtil.copyDocument)
 
 const CommonHeader = (props: CommonHeaderInfo) => {
     const { headerName, multiSelectedState, setMultiSelected, headerMenuInfo, contextName, headerDataInfo, sortMenu, ViewModeCheck, navigation, fullpath, setFullpath} = props;
     const { centerDialogState, setCenterDialog, actionMenuState, setIsActionMenu, selectedTargetState, setSelectedTarget} = useContext(CommonContext);
+
+    useEffect(()=>{
+        (async() => {
+            const userData : any = await AsyncStorage.getItem( 'baseData');
+            console.log( JSON.parse(userData));
+        })();
+       
+    },[]);
 
     const onClickLeftBtn = ( iconName: any) => { // 문서함 뒤로가기 or 팝업 닫기 버튼
         // console.log( actionMenuState)
@@ -74,7 +82,7 @@ const CommonHeader = (props: CommonHeaderInfo) => {
 
     return (
         <View style={{width: '100%', height:40,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:10,paddingRight:10}}>
-            <View style={{ width:120, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
+            <View style={{width: (headerMenuInfo.rightDialogBtn && Dimensions.get('window').width - 200), flexDirection: 'row', justifyContent:'space-between', alignItems:'center',}}>
                 { !CommonUtil.objectIsNull( headerMenuInfo.leftBtn) && 
                     <View>
                         { 
@@ -98,7 +106,7 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                         <Image source={ require('../../assets/oneffice/images/oneffice-bi.png')} style={{ width:50, height:24}}/> 
                         : 
                         <View>
-                            <Text style={{ textAlign:'center',fontSize:20,fontWeight:'600'}}>{ multiSelectedState ? headerMenuInfo.centerText.title : headerName}</Text>
+                            <Text style={{ marginLeft: (headerMenuInfo.rightBtn && 7), textAlign:'center',fontSize:20,fontWeight:'600'}}>{ multiSelectedState ? headerMenuInfo.centerText.title : headerName}</Text>
                             { multiSelectedState && 
                                  <>
                                     <TouchableOpacity>
