@@ -1,16 +1,15 @@
 import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
-import { View, Dimensions, SafeAreaView, Text, FlatList} from 'react-native';
+import { View, Dimensions, Text, FlatList} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
-import SvgIcon from '../component/svgIcon/SvgIcon';
 import { MyDocStyles} from './style/style';
 import CardListItem from '../list/CardListItem';
 import DefaultListItem from '../list/DefaultListItem';
 import CommonUtil from '../utils/CommonUtil';
 import { CommonContext } from '../context/CommonContext';
-import SortMenu from '../menu/SortMenu';
 import useDocList from '../hooks/useDocList';
 import FullPath from '../fullPath/index';
+import FloatingMenu from '../menu/FloatingMenu';
 
 const myDocMenuInfo : any = {    
     'sortMenu' : [
@@ -95,7 +94,7 @@ const MyDoc = ( props : any) => {
     useEffect(() => {
         //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
         setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
-    }, [ centerDialogState]);
+    }, [ centerDialogState, alertDialogState]);
 
     const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
@@ -185,9 +184,10 @@ const MyDoc = ( props : any) => {
                     </View>
                 }
             </View>
+            <FloatingMenu />
         </View>
     </>
-    ), [ reqListData.dataList, listViewMode, alertDialogState]);
+    ), [ reqListData.dataList, listViewMode]); //alertDialogState
 }
 
 export default MyDoc;

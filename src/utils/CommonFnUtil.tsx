@@ -102,35 +102,27 @@ export default class CommonFnUtil{
          return copyDocument;
     }
 
-    public static updateDocumentFolder = async ( alertName: any, newName: any, docData: any) => {
+    public static updateDocumentFolderName = async (newName: any, docData: any) => {
         let isFolder = null;
         let protocolId = null;
         let dataInfo = null;
 
-        switch( alertName) {
-            case 'rename':
-                isFolder = docData.doc_type === '0';
-                protocolId = isFolder ? 'P623' : 'P618';
-                dataInfo = isFolder ? 
-                     {
-                        folder_no: docData.docUID,
-                        folder_name: newName,
-                        notSeqName : "1"
-                     }
-                    : 
-                     {
-                        docUID: docData.docUID,
-                        doc_name: newName,
-                        bIsEditorMode : "true"
-                     };
-                break;
-            case 'newFolder':
-                break;
-            default:
-                break;
-        }
+        isFolder = docData.doc_type === '0';
+        protocolId = isFolder ? 'P623' : 'P618';
+        dataInfo = isFolder ? 
+                    {
+                    folder_no: docData.docUID,
+                    folder_name: newName,
+                    notSeqName : "1"
+                    }
+                : 
+                    {
+                    docUID: docData.docUID,
+                    doc_name: newName,
+                    bIsEditorMode : "true"
+                    };
 
-        let updateDocumentFolder: any = [];
+        let updateDocumentFolderName: any = [];
 
         const data: any = {
             protocolId: protocolId,
@@ -140,11 +132,11 @@ export default class CommonFnUtil{
         await Adapter.fetch.protocol( data)
          .then( res => {
             if( res && res.result) { 
-                updateDocumentFolder = res;
+                updateDocumentFolderName = res;
 
                 Toast.show({
-                    type:'success',
-                    text1: alertName === 'rename' ? '이름 변경되었습니다.' : alertName === 'newFolder' ? '새 폴더 생성되었습니다' : 'ㅎㅎ',
+                    type: 'success',
+                    text1: '이름 변경되었습니다.',
                     visibilityTime: 1000,
                     autoHide: true
                 });
@@ -152,7 +144,7 @@ export default class CommonFnUtil{
          })
          .catch( error => {
             console.log( error);
-            updateDocumentFolder = false;
+            updateDocumentFolderName = false;
 
             Toast.show({
                 type:'error',
@@ -162,7 +154,45 @@ export default class CommonFnUtil{
             });
          })
 
-         return updateDocumentFolder;
+         return updateDocumentFolderName;
+    }
+
+    public static createNewFolder = async( newName: any, folderPath: any) => {
+        let createNewFolder: any = [];
+        let protocolId = 'P530';
+        let dataInfo = {"parentFolderUID": folderPath, "folder_name": newName, "notSeqName": "1"};
+
+        const data: any = {
+            protocolId: protocolId,
+            data: dataInfo
+        };
+
+        await Adapter.fetch.protocol( data)
+         .then( res => {
+            if( res && res.folder) { 
+                createNewFolder = res;
+
+                Toast.show({
+                    type: 'success',
+                    text1: '생성되었습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+            }
+         })
+         .catch( error => {
+            console.log( error);
+            createNewFolder = false;
+
+            Toast.show({
+                type:'error',
+                text1: '실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
+         })
+        
+        return createNewFolder;
     }
 
     public static searchDataList = async( sendata : any) => {

@@ -12,6 +12,7 @@ import CommonHeader from '../component/header/CommonHeader';
 import FullPath from '../fullPath/index';
 import DefaultListItem from '../list/DefaultListItem';
 import useDocList from '../hooks/useDocList';
+import FloatingMenu from '../menu/FloatingMenu';
 
 const CONTEXT_NAME = 'moveDialog';
 const DOCUMENT_BOX_LIST = [ //MAP
@@ -168,6 +169,7 @@ export const MoveDialog = () => {
                     }
                 </View>
             </View>
+            <FloatingMenu />
         </View>
     ), [ reqListData.dataList]);
 }

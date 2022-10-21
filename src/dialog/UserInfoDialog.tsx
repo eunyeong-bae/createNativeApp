@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Dimensions} from 'react-native';
 import CommonHeader from '../component/header/CommonHeader';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import CommonUtil from '../utils/CommonUtil';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const CONTEXT_NAME = 'UserInfo';
 const UserInfoDialogHdInfo : any = {
@@ -26,6 +27,25 @@ const UserInfos : any = [
 ];
 
 export const UserInfoDialog = () => {
+    const [ userInfos, setUserInfos] = useState({
+        empName: '',
+        compName: '',
+        deptName: '',
+    }); 
+
+    useEffect(()=>{
+        (async() => {
+            const userData : any = await AsyncStorage.getItem( 'baseData');
+            setUserInfos({
+                empName: JSON.parse(userData).result.empName,
+                compName: JSON.parse(userData).result.compName,
+                deptName: JSON.parse(userData).result.deptName,
+            })
+            console.log( JSON.parse(userData));
+        })();
+       
+    },[]);
+
     return (
         <View style={dialogStyles.container}>
             <CommonHeader 
@@ -45,7 +65,10 @@ export const UserInfoDialog = () => {
                     <SvgIcon name="UserInfoICon" width={20} height={20} />
                 </View>
                 <View style={ dialogStyles.userListCon}>
-                { !CommonUtil.objectIsNull( UserInfos) && 
+                    <Text>{userInfos.empName}</Text>
+                    <Text>{userInfos.deptName}</Text>
+                    <Text>{userInfos.compName}</Text>
+                {/* { !CommonUtil.objectIsNull( UserInfos) && 
                     UserInfos.map((info: any) => {
                         return (
                             <View key={ info.name} style={ dialogStyles.userList}>
@@ -54,7 +77,7 @@ export const UserInfoDialog = () => {
                             </View>
                         )
                     })    
-                }
+                } */}
                 </View>
             </View>
         </View>
@@ -63,25 +86,25 @@ export const UserInfoDialog = () => {
 
 const dialogStyles = StyleSheet.create({
     container:{
-        width: Dimensions.get('window').width - 140,
-        height: 300,
+        width: 200,
+        height: 200,
         backgroundColor:'pink'
     },
     mainContainer: {
-        height: '85%',
+        height: '100%',
         borderWidth:1,
         borderColor:'red'
     },
     userListCon: {
-        height: 190,
+        height: '100%',
         borderWidth:1,
         borderColor:'blue'
     },
-    userList: {
-        height: 45,
-        flexDirection:'row',
-        alignItems:'center',
-        borderWidth:1,
-        borderColor:'black'
-    },
+    // userList: {
+    //     height: 45,
+    //     flexDirection:'row',
+    //     alignItems:'center',
+    //     borderWidth:1,
+    //     borderColor:'black'
+    // },
 })
