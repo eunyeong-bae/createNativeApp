@@ -4,7 +4,6 @@ import { ModalDialog } from '../dialog/ModalDialog';
 import ActionMenu from '../menu/ActionMenu';
 import AlertDialog from '../alertDialog/AlertDialog';
 import Toast, { BaseToast, ErrorToast} from 'react-native-toast-message';
-import FloatingMenu from '../menu/FloatingMenu';
 // import Dialog from '../dialog';
 // import ActionMenuClass from '../menu';
 // import ReViewDoc from '../dialog/ReViewDoc'
@@ -59,7 +58,6 @@ export default function CommonState(){
             <ModalDialog />
             <AlertDialog />
             <ActionMenu />
-            <FloatingMenu />
             <Toast config={ toastConfig}/>
         </>
     )

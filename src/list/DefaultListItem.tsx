@@ -1,12 +1,9 @@
 import React, { useContext, useMemo} from 'react';
-import {View, Text, Image, TouchableOpacity, Dimensions} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {MyDocListViewStyles} from '../content/style/style';
-import ThumbnailImg from '../thumbnailImg';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { CommonContext } from '../context/CommonContext';
-
-const width = Dimensions.get('window').width;
 
 const DefaultListItem = ( props:any) => {
     const { setIsActionMenu, setSelectedTarget, selectedTargetState} = useContext(CommonContext);

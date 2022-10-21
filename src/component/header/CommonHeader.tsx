@@ -1,11 +1,10 @@
 import { CommonContext } from '../../context/CommonContext';
-import React, { useContext, useEffect } from 'react';
-import {TouchableOpacity, View, Text, Image, Dimensions, StyleSheet} from 'react-native';
+import React, { useContext } from 'react';
+import {TouchableOpacity, View, Text, Image, Dimensions} from 'react-native';
 import SvgIcon from '../../component/svgIcon/SvgIcon';
 import CommonUtil from '../../utils/CommonUtil';
 import CommonFnUtil from '../../utils/CommonFnUtil';
 import SortMenu from '../../menu/SortMenu';
-import AsyncStorage from '@react-native-community/async-storage';
 
 interface CommonHeaderInfo {
     headerName: any, // 가운데 표시 될 이름
@@ -28,14 +27,6 @@ interface CommonHeaderInfo {
 const CommonHeader = (props: CommonHeaderInfo) => {
     const { headerName, multiSelectedState, setMultiSelected, headerMenuInfo, contextName, headerDataInfo, sortMenu, ViewModeCheck, navigation, fullpath, setFullpath} = props;
     const { centerDialogState, setCenterDialog, actionMenuState, setIsActionMenu, selectedTargetState, setSelectedTarget} = useContext(CommonContext);
-
-    useEffect(()=>{
-        (async() => {
-            const userData : any = await AsyncStorage.getItem( 'baseData');
-            console.log( JSON.parse(userData));
-        })();
-       
-    },[]);
 
     const onClickLeftBtn = ( iconName: any) => { // 문서함 뒤로가기 or 팝업 닫기 버튼
         // console.log( actionMenuState)

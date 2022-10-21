@@ -1,19 +1,33 @@
-import React, { useEffect, useState} from 'react';
-import { View, StyleSheet, LogBox, SafeAreaView, Dimensions} from 'react-native';
+import { CommonContext } from '../context/CommonContext';
+import React, { useContext, useEffect, useState} from 'react';
+import { View, StyleSheet, LogBox, Dimensions} from 'react-native';
 import ActionButton, { ActionButtonItem } from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const FloatingMenu = () => {
+    const { setAlertDialog} = useContext( CommonContext);
     const [ isBtnClicked, setBtnClicked] = useState( false);
 
     useEffect(() => {
         LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
     }, [])
 
-    const onClickSubMenu = () => {
+    const onClickSubMenu = ( type : any) => {
         setBtnClicked( !isBtnClicked);
 
-        alert('click');
+        switch( type) { 
+            case 'folder':
+                setAlertDialog( 'inputAlert', { title: '새 폴더 추가', menuNM: 'newFolder'});
+                break;
+            case 'doc':
+                alert('clickced')
+                break;
+            case 'forms':
+                alert('clickced')
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -22,13 +36,13 @@ const FloatingMenu = () => {
         {/* #9cd3e0 */}
             <View style={ styles.container}>
                 <ActionButton buttonColor= { isBtnClicked ? '#B5CAF0' : '#3498db'} zIndex={ 2} autoInactive={ true} onPress={() => ( setBtnClicked( !isBtnClicked))}>
-                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#3498db' title="CreateNewFolder" onPress={ onClickSubMenu}>
+                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#3498db' title="CreateNewFolder" onPress={ onClickSubMenu.bind( this, 'folder')}>
                         <Icon name="folder-outline" style={ styles.actionButtonIcon} />
                     </ActionButton.Item>
-                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#3498db' title="CreateNewDoc" onPress={ onClickSubMenu}>
+                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#3498db' title="CreateNewDoc" onPress={ onClickSubMenu.bind( this, 'doc')}>
                         <Icon name="document-text-outline" style={ styles.actionButtonIcon} />
                     </ActionButton.Item>
-                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#3498db' title="DocumentForms" onPress={ onClickSubMenu}>
+                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#3498db' title="DocumentForms" onPress={ onClickSubMenu.bind( this, 'forms')}>
                         <Icon name="documents-outline" style={ styles.actionButtonIcon} />
                     </ActionButton.Item>
                 </ActionButton>

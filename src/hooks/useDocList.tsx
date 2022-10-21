@@ -48,7 +48,7 @@ const useDocList = ({folderSeq, listType, listCount, pageNum, sortItem, sortOrde
                 }
             }
         }
-        else if( sortMenuState.contextName === 'TRASH_BOX'){
+        else if( sortMenuState.contextName === 'TrashDoc'){
             data = {
                 protocolId: "P550", //"P539"
                 data: {

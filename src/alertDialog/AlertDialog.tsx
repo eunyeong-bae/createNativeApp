@@ -7,7 +7,7 @@ import CommonUtil from '../utils/CommonUtil';
 import Toast from 'react-native-toast-message';
 
 const AlertDialog = () => {
-    const { alertDialogState, setAlertDialog, selectedTargetState} = useContext( CommonContext);
+    const { alertDialogState, setAlertDialog, selectedTargetState, targetFullPathState} = useContext( CommonContext);
     const [ inputVal, setInputVal] = useState( '');
 
     const onClickCancel = () => {
@@ -17,29 +17,42 @@ const AlertDialog = () => {
     };
 
     const onClickConfirm = () => {
-        console.log( selectedTargetState);
-
         let resultData : any = null;
 
-        if( !CommonUtil.strIsNull( inputVal) && inputVal !== selectedTargetState.selectedTarget.doc_name) {
+        if( CommonUtil.strIsNull( inputVal) && ( inputVal === (selectedTargetState && selectedTargetState.selectedTarget.doc_name)
+                || inputVal === (targetFullPathState && targetFullPathState.fullPathNames[targetFullPathState.fullPathUIDs.length - 1]))) {
 
-            resultData = CommonFnUtil.updateDocumentFolder( alertDialogState.alertItem.menuNM, inputVal, selectedTargetState.selectedTarget);
-
-            setTimeout(() => {
-                if( resultData) { 
-                    selectedTargetState.selectedTarget.doc_name = inputVal;
-    
-                    setAlertDialog( '', null);
-                }
-            }, 500);
-        }
-        else {
             Toast.show({
                 type: 'error',
                 text1: '다시 입력해주세요.',
                 visibilityTime: 3000,
                 autoHide: true
-            })
+            });
+        }
+        else {
+            switch( alertDialogState.alertItem.menuNM) { 
+                case 'rename':
+                    resultData = CommonFnUtil.updateDocumentFolderName( inputVal, selectedTargetState.selectedTarget);
+                    break;
+                case 'newFolder':
+                    resultData = CommonFnUtil.createNewFolder( inputVal, targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1]);
+                    break;
+                case 'newDocument':
+                    break;
+            
+            }
+            setTimeout(() => {
+                if( resultData) { 
+                    if( alertDialogState.alertItem.menuNM === 'rename') {
+                        selectedTargetState.selectedTarget.doc_name = inputVal;
+                    }
+
+                    setAlertDialog( '', null);
+                }
+                else {
+                    return;
+                }
+            }, 500);
         }
 
         setInputVal( '');
