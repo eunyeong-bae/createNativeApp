@@ -6,8 +6,8 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import { CommonContext } from '../context/CommonContext';
 
 const DefaultListItem = ( props:any) => {
-    const { setIsActionMenu, setSelectedTarget, selectedTargetState} = useContext(CommonContext);
-    const { targetFullPathState, setTargetFullPath} = !props.fullpath ? useContext(CommonContext) : {targetFullPathState : props.fullpath, setTargetFullPath : props.setFullPath} ;
+    const { sortMenuState, setIsActionMenu, setSelectedTarget, selectedTargetState, actionMenuState} = useContext(CommonContext);
+    const { targetFullPathState, setTargetFullPath} = !props.fullpath ? useContext(CommonContext) : {targetFullPathState : props.fullpath, setTargetFullPath : props.setFullpath} ;
     
     const onClickActionMenu = () => {
         setIsActionMenu( true, props.navigation);
@@ -36,15 +36,25 @@ const DefaultListItem = ( props:any) => {
             doc_type: 0 // folder , 1 // doc
             important: 0//x, 1// o
         */
-        <View style={MyDocListViewStyles.docListContainer} key={props.data.fileUID}>
+        <View style={ MyDocListViewStyles.docListContainer} key={ props.data.fileUID}>
             <TouchableOpacity onPress={ onClickFolder.bind( this, props.data)}>
                 <View style={ MyDocListViewStyles.docListStyle}>
-                    <View style ={MyDocListViewStyles.ThumImg}>
+                    <View style ={ MyDocListViewStyles.ThumImg}>
                         <SvgIcon name={ props.data.doc_type === '0' ? "DocListFolderIcon" : props.data.file_type === 'O' ? "DocTitleIconOne" : "DocTItleIconPre"} width={22} height={22} />
                     </View>
-                    <View style={MyDocListViewStyles.docInfo}>
-                        <Text style={MyDocListViewStyles.title} numberOfLines={1}>{ props.data.doc_name}</Text>
-                        <Text style={MyDocListViewStyles.text}>{ props.data.mod_name} {'|'} { props.data.mod_date.split(' ')[0]}</Text>
+                    <View style={ MyDocListViewStyles.docInfo}>
+                        <Text style={ MyDocListViewStyles.title} numberOfLines={1}>{ props.data.doc_name}</Text>
+                        { sortMenuState && sortMenuState.contextName !== 'TrashDoc' 
+                            ? <Text style={ MyDocListViewStyles.text}>{ props.data.mod_name} {'|'} { props.data.mod_date}</Text>
+                            : <Text style={ MyDocListViewStyles.text}>{ props.data.creatorName} {'|'} { props.data.delete_date}</Text>
+                        }
+                        {/* { sortMenuState && sortMenuState.contextName !== 'TrashDoc' 
+                            ? <Text style={ MyDocListViewStyles.text}>{ props.data.mod_name} {'|'} { props.data.mod_date.split(' ')[0]}</Text>
+                            : <Text style={ MyDocListViewStyles.text}>{ actionMenuState.isActionMenu ? props.data.mod_name: props.data.creatorName} {'|'} 
+                                { actionMenuState.isActionMenu ? props.data.mod_date.split(' ')[0] : props.data.delete_date.split(' ')[0]}</Text>
+                        }
+                        휴지통 조회한 데이터와 더보기메뉴 클릭시, 현재 선택한 문서 정보 리스트가 달라서 생긴 이슈  
+                        */}
                     </View>
                 </View>
             </TouchableOpacity>

@@ -3,7 +3,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import Adapter from '../ecmadapter';
 import CommonUtil from '../utils/CommonUtil';
 
-const useDocList = ({folderSeq, listType, listCount, pageNum, sortItem, sortOrder, fileTypes, dataList, includeFolder, includeDoc} : any) => {
+const useDocList = ({folderSeq, listType, listCount, pageNum, sortItem, sortOrder, fileTypes, dataList, includeFolder, includeDoc, contextName} : any) => {
     const { sortMenuState} = useContext( CommonContext);
 
     const [ reqListData, setReqListData] = useState({
@@ -17,19 +17,20 @@ const useDocList = ({folderSeq, listType, listCount, pageNum, sortItem, sortOrde
         dataList: dataList,
         includeFolder: includeFolder,
         includeDoc: includeDoc,
+        contextName: contextName
     });
 
     useEffect(()=>{
         setDataList( reqListData);
     },[]);
 
-    const setDataList = useCallback(async({ folderSeq, listType, listCount, pageNum, sortItem, sortOrder, fileTypes, dataList, includeFolder, includeDoc} : any) => {
+    const setDataList = async({ folderSeq, listType, listCount, pageNum, sortItem, sortOrder, fileTypes, dataList, includeFolder, includeDoc} : any) => {
        
         let fileList : any = []; 
         let data : any = {};
 
-        console.log(sortMenuState.contextName );
-        if( sortMenuState.contextName === 'Home'){
+        console.log(sortMenuState.contextName,reqListData.contextName );
+        if( reqListData.contextName === 'Home'){
             data = {
                 protocolId: "P544", //"P539"
                 data: {
@@ -48,7 +49,7 @@ const useDocList = ({folderSeq, listType, listCount, pageNum, sortItem, sortOrde
                 }
             }
         }
-        else if( sortMenuState.contextName === 'TrashDoc'){
+        else if( reqListData.contextName === 'TrashDoc'){
             data = {
                 protocolId: "P550", //"P539"
                 data: {
@@ -97,7 +98,7 @@ const useDocList = ({folderSeq, listType, listCount, pageNum, sortItem, sortOrde
         const tempList = [...dataList, ...fileList]; //기존에 있던거랑 합쳐주기위해서
         setReqListData({...reqListData, folderSeq, listType, listCount, pageNum, sortItem, sortOrder, fileTypes, dataList: tempList, includeFolder, includeDoc})
         
-    }, [ reqListData]);
+    };
 
     return {
         reqListData,
