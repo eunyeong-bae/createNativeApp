@@ -4,7 +4,10 @@ import * as CommonMsgUtil from './CommonMsgUtil';
 import Toast from 'react-native-toast-message';
 
 export default class CommonFnUtil{
-    /* 폴더/문서 이동 api */
+    /* ONEFFICE APIS 
+        프로토콜 추가 시, AsyncStorage 안에 바로 바로 업데이트가 안되서, 로그아웃하고 다시 진입해야 리스트에 들어감!
+        프로토콜 리스트는 baseData. 안에 들어가기 때문
+    */
     public static moveDocumentFolder = async( docData: any, props : any) => {
         const { fullpath} = props;
 

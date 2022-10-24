@@ -6,6 +6,9 @@ import CommonHeader from '../component/header/CommonHeader';
 import useDocList from '../hooks/useDocList';
 import FullPath from '../fullPath/index';
 import DefaultListItem from '../list/DefaultListItem';
+import CommonFlatList from '../component/CommonFlatList';
+import FloatingMenu from '../menu/FloatingMenu';
+
 /**
  * 문서함 카테고리 
  * 문서함 > p621, 004a04, 폴더 리스트 조회 사용
@@ -34,6 +37,7 @@ const copyDialogHeaderInfo : any = {
 
 export const CopyDialog = () => {
     const flatListRef = useRef<any>();
+    const [ isLoading, setLoading] = useState( false);
     const [ inputTxt, setInputTxt] = useState( null);
     const { selectedTargetState} = useContext( CommonContext);
 
@@ -73,24 +77,20 @@ export const CopyDialog = () => {
         }
     }, [ inputTxt]);
 
-    const renderListItem = ( data: any) => {
-        return (
-            <DefaultListItem data={ data.item}
-                             key={ data.item.fileUID}
-                             index={ data.index}
-                             // 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐
-                             fullpath={ fullpath} 
-                             setFullPath={ setFullpath}
-                            //  navigation= {}
-            />
-        )
-    };
-
     const onChangeText = ( text : any) => {
         setInputTxt( text);
         console.log( text)
     }; 
 
+
+    const onEndReached = () => {
+        if( isLoading) {
+            return;
+        }else {
+            setLoading( true);
+            setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
+        }
+    };
     return useMemo(() => (
         <View style={dialogStyles.container}>
             <CommonHeader 
@@ -103,6 +103,7 @@ export const CopyDialog = () => {
                 navigation={ null}
                 fullpath={ fullpath}
                 setFullpath={ setFullpath}
+                sortMenu ={ null}
             />
             <View style={ dialogStyles.mainContainer}>
                 <TextInput style={{  width: width - 40, height: 40, margin:10, padding:10, borderBottomWidth:1, }}
@@ -122,13 +123,12 @@ export const CopyDialog = () => {
                 <View style={ dialogStyles.folderListContainer}>
                     {
                         reqListData.dataList.length > 0 ?
-                            <FlatList
-                                ref={ flatListRef} 
-                                data={ reqListData.dataList}
-                                renderItem={ renderListItem}
-                                keyExtractor={ (item, index) => item.fileUID}
-                                // onEndReached={ onEndReached}
-                                initialScrollIndex={ 0}
+                            <CommonFlatList
+                                flatListRef ={ flatListRef}
+                                reqListData ={ reqListData}
+                                onEndReached={ onEndReached}
+                                fullpath={ fullpath}
+                                setFullpath={ setFullpath}
                             />
                         :
                             <View>
@@ -137,6 +137,7 @@ export const CopyDialog = () => {
                     }
                 </View>
             </View>
+            <FloatingMenu />
         </View>
     ), [ reqListData.dataList]);
 }

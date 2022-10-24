@@ -13,6 +13,7 @@ import FullPath from '../fullPath/index';
 import DefaultListItem from '../list/DefaultListItem';
 import useDocList from '../hooks/useDocList';
 import FloatingMenu from '../menu/FloatingMenu';
+import CommonFlatList from '../component/CommonFlatList';
 
 const CONTEXT_NAME = 'moveDialog';
 const DOCUMENT_BOX_LIST = [ //MAP
@@ -74,9 +75,6 @@ export const MoveDialog = () => {
         flatListRef.current?.scrollToOffset({animated: false, offset: 0});
 
         setFullPath({ fullPathUIDs : [ ''], fullPathNames : [ '내 문서함'], treeTypes : []});
-        
-        // if( reqListData.dataList && reqListData.dataList.length > 0) { //dataList: [] 이면 
-        // }
 
     }, [ DocBoxListType]);
 
@@ -84,36 +82,14 @@ export const MoveDialog = () => {
         setDocBoxListType( listType);
     };
 
-    const renderListItem = ( data: any) => {
-        return (
-            <DefaultListItem data={ data.item}
-                             key={ data.item.fileUID}
-                             index={ data.index}
-                             // 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐
-                             fullpath={ fullpath} 
-                             setFullPath={ setFullpath}
-                            //  navigation= {}
-            />
-        )
+    const onEndReached = () => {
+        if( isLoading) {
+            return;
+        }else {
+            setLoading( true);
+            setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
+        }
     };
-
-    // const onEndReached = () => {
-    //     if( isLoading) {
-    //         return;
-    //     }else {
-    //         setLoading( true);
-    //         setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
-    //     }
-    // };
-
-    // const onScroll = (e : any) => {
-    //     const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
-    //     const distanceFromBottom = contentSize.height - layoutMeasurement.height - contentOffset.y;
-    //     console.log( distanceFromBottom)
-    //     // if( distanceFromBottom < 72) {
-    //     //     setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
-    //     // }
-    // };
 
     return useMemo(() => (
         <View style={dialogStyles.container}>
@@ -154,13 +130,12 @@ export const MoveDialog = () => {
                 <View style={ dialogStyles.folderListContainer}>
                     {
                         reqListData.dataList.length > 0 ?
-                            <FlatList
-                                ref={flatListRef} 
-                                data={ reqListData.dataList}
-                                renderItem={ renderListItem}
-                                keyExtractor={ (item, index) => item.fileUID}
-                                // onEndReached={ onEndReached}
-                                initialScrollIndex={ 0}
+                            <CommonFlatList
+                                flatListRef ={ flatListRef}
+                                reqListData ={ reqListData}
+                                onEndReached={ onEndReached}
+                                fullpath={ fullpath}
+                                setFullpath={ setFullpath}
                             />
                         :
                             <View>
