@@ -35,7 +35,7 @@ const AlertDialog = () => {
                     resultData = CommonFnUtil.updateDocumentFolderName( inputVal, selectedTargetState.selectedTarget);
                     break;
                 case 'newFolder':
-                    resultData = CommonFnUtil.createNewFolder( inputVal, targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1]);
+                    resultData = CommonFnUtil.createNewFolder( inputVal, alertDialogState.alertItem.folderId);
                     break;
                 case 'newDocument':
                     break;

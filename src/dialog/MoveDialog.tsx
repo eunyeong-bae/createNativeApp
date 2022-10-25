@@ -4,16 +4,16 @@
     * 공유한/공유받은 > p627, 001a23(includeFolder: true, includeDoc: false 추가/ listType: 공유한 1, 공유받은 2, 공유한/받은 3 으로 구분)
 */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {dialogStyles} from './style/style';
 import CommonUtil from '../utils/CommonUtil';
 import CommonHeader from '../component/header/CommonHeader';
 import FullPath from '../fullPath/index';
-import DefaultListItem from '../list/DefaultListItem';
 import useDocList from '../hooks/useDocList';
 import FloatingMenu from '../menu/FloatingMenu';
 import CommonFlatList from '../component/CommonFlatList';
+import { CommonContext } from '../context/CommonContext';
 
 const CONTEXT_NAME = 'moveDialog';
 const DOCUMENT_BOX_LIST = [ //MAP
@@ -34,6 +34,7 @@ const moveDialogHeaderInfo : any = {
 };
 
 export const MoveDialog = () => {
+    const { alertDialogState} = useContext( CommonContext);
     const [ isLoading, setLoading] = useState( false);
     const [ DocBoxListType, setDocBoxListType] = useState( '');
 
@@ -77,6 +78,11 @@ export const MoveDialog = () => {
         setFullPath({ fullPathUIDs : [ ''], fullPathNames : [ '내 문서함'], treeTypes : []});
 
     }, [ DocBoxListType]);
+
+    useEffect(() => {
+        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
+        setDataList({...reqListData, folderSeq: fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+    }, [ alertDialogState.alertItem]);
 
     const onClickDocBox = ( listType : any) => {
         setDocBoxListType( listType);
@@ -144,7 +150,7 @@ export const MoveDialog = () => {
                     }
                 </View>
             </View>
-            <FloatingMenu />
+            <FloatingMenu fullpath={ fullpath}  />
         </View>
     ), [ reqListData.dataList]);
 }

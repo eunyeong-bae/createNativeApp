@@ -1,12 +1,19 @@
 import { CommonContext } from '../context/CommonContext';
 import React, { useContext, useEffect, useState} from 'react';
 import { View, StyleSheet, LogBox, Dimensions} from 'react-native';
-import ActionButton, { ActionButtonItem } from 'react-native-action-button';
+import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const FloatingMenu = () => {
+interface FloatingMenuProps {
+    fullpath? : any
+}
+
+const FloatingMenu = ( props: FloatingMenuProps) => {
     const { setAlertDialog} = useContext( CommonContext);
     const [ isBtnClicked, setBtnClicked] = useState( false);
+
+    const { fullpath} = props;
+    const { targetFullPathState} = Object.keys(props).length === 0 ? useContext(CommonContext) : { targetFullPathState : fullpath} ;
 
     useEffect(() => {
         LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
@@ -17,7 +24,7 @@ const FloatingMenu = () => {
 
         switch( type) { 
             case 'folder':
-                setAlertDialog( 'inputAlert', { title: '새 폴더 추가', menuNM: 'newFolder'});
+                setAlertDialog( 'inputAlert', { title: '새 폴더 추가', menuNM: 'newFolder', folderId: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1]});
                 break;
             case 'doc':
                 alert('clickced')
