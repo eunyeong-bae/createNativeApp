@@ -1,11 +1,10 @@
 import { CommonContext } from '../context/CommonContext';
 import React, { useEffect, useState, useCallback, useMemo, useRef, useContext } from 'react';
-import { View, Text, Dimensions, FlatList, TextInput} from 'react-native';
+import { View, Text, Dimensions, TextInput} from 'react-native';
 import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
 import useDocList from '../hooks/useDocList';
 import FullPath from '../fullPath/index';
-import DefaultListItem from '../list/DefaultListItem';
 import CommonFlatList from '../component/CommonFlatList';
 import FloatingMenu from '../menu/FloatingMenu';
 
@@ -37,6 +36,7 @@ const copyDialogHeaderInfo : any = {
 
 export const CopyDialog = () => {
     const flatListRef = useRef<any>();
+    const { alertDialogState} = useContext( CommonContext);
     const [ isLoading, setLoading] = useState( false);
     const [ inputTxt, setInputTxt] = useState( null);
     const { selectedTargetState} = useContext( CommonContext);
@@ -76,6 +76,11 @@ export const CopyDialog = () => {
             copyDialogHeaderInfo.copyDataInfo.docTitle = inputTxt;
         }
     }, [ inputTxt]);
+
+    useEffect(() => {
+        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
+        setDataList({...reqListData, folderSeq: fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+    }, [ alertDialogState.alertItem]);
 
     const onChangeText = ( text : any) => {
         setInputTxt( text);
@@ -137,7 +142,7 @@ export const CopyDialog = () => {
                     }
                 </View>
             </View>
-            <FloatingMenu />
+            <FloatingMenu fullpath={ fullpath} />
         </View>
     ), [ reqListData.dataList]);
 }
