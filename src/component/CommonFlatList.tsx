@@ -1,11 +1,22 @@
-import React, { useCallback} from 'react';
-import { FlatList } from 'react-native';
+import React, { useState, useCallback} from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import CardListItem from '../list/CardListItem';
 import DefaultListItem from '../list/DefaultListItem';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import SvgIcon from '../component/svgIcon/SvgIcon';
+import CommonFnUtil from '../utils/CommonFnUtil';
+
+const hiddenItemLists:any = {    
+    'setFavorite':{name:'중요 표시', auth:'Read',rightMenu: false,icon: ['ActionCategoryOff', 'ActionCategoryOn'],clickEvent: CommonFnUtil.onClickSetFavCatergory},
+    'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRemove},
+};
 
 const CommonFlatList = ( props: any) => {
     const { flatListRef, reqListData, listViewMode, navigation, onEndReached, fullpath, setFullpath} = props;
-    
+    const [ isClickToastMenu, setIsClickToastMenu] = useState({
+        setFavorite: false,
+        setReadOnly: false
+    });
     /**
      * flatlist 최적화하기 
      * 1. 인라인 화살표 함수 사용X
@@ -47,9 +58,47 @@ const CommonFlatList = ( props: any) => {
         )
     };
 
+    const renderHiddenItem = ( data : any) => {
+        return (
+            <View style={styles.rowBack}>
+                <TouchableOpacity
+                    style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                    onPress={() => alert('left')}
+                    // onPress={() => closeRow(rowMap, data.item.key)}
+                >
+                    <SvgIcon name="ActionCategoryOff" width={ 20} height={ 20} />
+                </TouchableOpacity>
+                
+                <TouchableOpacity
+                    style={[styles.backRightBtn, styles.backRightBtnRight]}
+                    onPress={() => alert('right')}
+                    // onPress={() => deleteRow(rowMap, data.item.key)}
+                >
+                    <SvgIcon name="ActionReName" width={ 20} height={ 20} />
+                </TouchableOpacity>
+
+            </View>
+        );
+    };
+
     return (
         <>
-            <FlatList 
+            <SwipeListView 
+                useFlatList={ true}
+                data={ reqListData.dataList}
+                renderItem={ fullpath ? dialogRenderListItem : renderListItem}
+                renderHiddenItem={ renderHiddenItem}
+                leftOpenValue={ 40}
+                rightOpenValue={ -40}
+                keyExtractor={ keyExtractor}
+                onEndReached={ onEndReached}
+                onEndReachedThreshold={ 0.9}
+                initialNumToRender = { 10}
+                maxToRenderPerBatch ={ 10}
+                windowSize= { 21}
+                removeClippedSubviews = { true}
+            />
+            {/* <FlatList 
                 ref={ flatListRef}
                 data={ reqListData.dataList}
                 renderItem={ fullpath ? dialogRenderListItem : renderListItem}
@@ -61,9 +110,49 @@ const CommonFlatList = ( props: any) => {
                 windowSize= { 21}
                 removeClippedSubviews = { true}
                 // ListFooterComponent={} rn 에서 제공하는 로딩 컴포넌트
-            />
+            /> */}
         </>
     )
 };
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'white',
+        flex: 1,
+    },
+    backTextWhite: {
+        color: '#FFF',
+    },
+    rowFront: {
+        alignItems: 'center',
+        backgroundColor: '#CCC',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        justifyContent: 'center',
+        height: 50,
+    },
+    rowBack: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+    },
+    backRightBtn: {
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: 0,
+        bottom: 0,
+        width: 40,
+        backgroundColor:'yellow'
+    },
+    backRightBtnLeft: {
+        left: 0
+    },
+    backRightBtnRight: {
+        right: 0
+    },
+});
 
 export default CommonFlatList;
