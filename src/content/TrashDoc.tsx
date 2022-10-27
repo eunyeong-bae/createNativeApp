@@ -1,10 +1,8 @@
-import React, { useContext, useCallback, useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
-import { View, Dimensions, Text, FlatList} from 'react-native';
+import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { View, Dimensions, Text, SafeAreaView} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
 import { MyDocStyles} from './style/style';
-import CardListItem from '../list/CardListItem';
-import DefaultListItem from '../list/DefaultListItem';
 import CommonUtil from '../utils/CommonUtil';
 import { CommonContext } from '../context/CommonContext';
 import useDocList from '../hooks/useDocList';
@@ -19,7 +17,7 @@ const trashDocMenuInfo : any = {
         //롱클릭 시, visibility : true 로 변경? 해준다는 가정하에 일단 작성
         leftBtn : [
             // {iconName :'HomeMenuBtn', visibility : true},
-            {iconName : 'UserInfoICon', visibility : true},
+            // {iconName : 'UserInfoICon', visibility : true},
             {iconName : 'CommonCloseBtn', visibility : false},
         ],
         rightBtn: [
@@ -104,38 +102,40 @@ const TrashDoc = ( props : any) => {
     return useMemo(() => (
         <>
         {/* {console.log(alertDialogState)} */}
-        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, backgroundColor:'#fff', paddingTop: 40}}>
-            <CommonHeader
-                    headerName = { '휴지통'} 
-                    multiSelectedState = { null}
-                    setMultiSelected = { null}
-                    headerMenuInfo={ trashDocMenuInfo.headerInfo}
-                    contextName={ CONTEXT_NAME}
-                    headerDataInfo={ null}
-                    navigation = { navigation}
-                    sortMenu = { trashDocMenuInfo['sortMenu']}
-                    ViewModeCheck={ ViewModeCheck}
-            />
+        <SafeAreaView style={{ backgroundColor: '#EFF3FB', height: Dimensions.get('window').height}}>
+            <View style={{marginLeft:10, padding:5, flex:1, justifyContent:'center', alignItems:'center', width: Dimensions.get('window').width - 20, height: '100%', backgroundColor:'#EFF3FB'}}>
+                <CommonHeader
+                        headerName = { '휴지통'} 
+                        multiSelectedState = { null}
+                        setMultiSelected = { null}
+                        headerMenuInfo={ trashDocMenuInfo.headerInfo}
+                        contextName={ CONTEXT_NAME}
+                        headerDataInfo={ null}
+                        navigation = { navigation}
+                        sortMenu = { trashDocMenuInfo['sortMenu']}
+                        ViewModeCheck={ ViewModeCheck}
+                />
 
-            <CommonDocBoxList navigation={ navigation} />
-            
-            <View style={ MyDocStyles.docListContainer}>
-                {
-                    reqListData.dataList.length > 0 ? 
-                    <CommonFlatList 
-                        flatListRef ={ flatListRef}
-                        reqListData ={ reqListData}
-                        listViewMode={ listViewMode}
-                        navigation={ navigation}
-                        onEndReached={ onEndReached}
-                    />
-                    : 
-                    <View>
-                        <Text>등록된 문서가 없습니다.</Text>
-                    </View>
-                }
+                <CommonDocBoxList navigation={ navigation} />
+                
+                <View style={ MyDocStyles.docListContainer}>
+                    {
+                        reqListData.dataList.length > 0 ? 
+                        <CommonFlatList 
+                            flatListRef ={ flatListRef}
+                            reqListData ={ reqListData}
+                            listViewMode={ listViewMode}
+                            navigation={ navigation}
+                            onEndReached={ onEndReached}
+                        />
+                        : 
+                        <View>
+                            <Text>등록된 문서가 없습니다.</Text>
+                        </View>
+                    }
+                </View>
             </View>
-        </View>
+        </SafeAreaView>
     </>
     ), [ reqListData.dataList, listViewMode]);
 }

@@ -25,26 +25,26 @@ const docSortMenu : any = [
 const moreMenus: any = [
     {name:'썸네일 보기', iconName:'DocThumbViewBtn', value:'ThumView', visibility: true},
     {name:'리스트 보기', iconName:'DocListViewBtn', value:'listView', visibility: false},
-    {name:'휴지통', value:'trash', visibility: false},
+    {name:'전체삭제', value:'trash', visibility: false},
     {name:'이동', value:'move', visibility: false},
-    {name:'복원', value:'restore', visibility: false},
+    {name:'복원', value:'restore', visibility: false },
 ]
 
 const SortPopOver = (props: any) => {
-    const { sortMenuState, setSortMenu} = useContext(CommonContext);
-    const [ showPopover, setShowPopover] = useState(false);
-    const [ sortType, setSortType] = useState('');
+    const { sortMenuState, setSortMenu} = useContext( CommonContext);
+    const [ showPopover, setShowPopover] = useState( false);
+    const [ sortType, setSortType] = useState( '');
     const [ selectMenu, setSelectMenu] = useState( []);
     
-    const { ViewModeCheck} = props;
+    const { contextName, ViewModeCheck} = props;
 
-    useEffect(() => {
-        if( !CommonUtil.objectIsNull( sortMenuState.sortMenuInfo)) {
-            // setSelectSortField( sortMenuState.selectedValue.sortFiled);
-            // setSortMenuTitle( getSortMenuName(sortMenuState.selectedValue.sortMenu));
-            // setSortFileType ( sortMenuState.selectedValue.docType);
-        }
-    }, [ sortMenuState]);
+    // useEffect(() => {
+    //     if( !CommonUtil.objectIsNull( sortMenuState.sortMenuInfo)) {
+    //         // setSelectSortField( sortMenuState.selectedValue.sortFiled);
+    //         // setSortMenuTitle( getSortMenuName(sortMenuState.selectedValue.sortMenu));
+    //         // setSortFileType ( sortMenuState.selectedValue.docType);
+    //     }
+    // }, [ sortMenuState]);
 
     const onClickSortTItle = (popOverType: string) => {
         setSelectMenu( popOverType === 'F' ? docSortMenu : popOverType === 'S' ? sortMenuState.sortMenuInfo : moreMenus);
@@ -85,7 +85,7 @@ const SortPopOver = (props: any) => {
 
     const renderPopOverTitle = useCallback(() => {
         return (
-            <View style={{width:90, flexDirection:'row', justifyContent:'space-between', alignItems:'center', height:40}}>
+            <View style={{width: sortMenuState.contextName !== 'Home' ? 90 : 30, flexDirection:'row', justifyContent:'space-between', alignItems:'center', height:40}}>
                 { sortMenuState.contextName !== 'Home' &&
                     <>
                         <TouchableOpacity onPress={ () => onClickSortTItle('S')}>
@@ -93,12 +93,12 @@ const SortPopOver = (props: any) => {
                                 {/*  style={{ flexDirection: 'row'}
                                 <Text style={{ lineHeight: 22, paddingRight: 4}}>{ActionMenuName.get(CommonUtil.strIsNull(sortMenuState.selectedValue) ? '1' : sortMenuState.selectedValue.sortItem)}</Text>
                                 <SvgIcon name={ showPopover && sortType === 'S' ? "DocSortArrowBtn" : "DocSortArrowBtn"} width={20} height={20}/> */}
-                                <SvgIcon name = "sortMenu" width={20} height={20}/>
+                                <SvgIcon name = "sortMenu" width={17} height={17}/>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={ () => onClickSortTItle('F')}>
                             <View>
-                                <SvgIcon name = "AllDocTypeIcon" width={20} height={20}/>
+                                <SvgIcon name = "AllDocTypeIcon" width={17} height={17}/>
                                 {/* <Text style={{ lineHeight: 22, paddingRight: 4}}>{ActionMenuName.get(CommonUtil.strIsNull(sortMenuState.selectedValue) ? '' : sortMenuState.selectedValue.fileTypes)}</Text> */}
                             </View>
                         </TouchableOpacity>
@@ -107,7 +107,7 @@ const SortPopOver = (props: any) => {
                 
                 <TouchableOpacity onPress={ () => onClickSortTItle('') }>
                     <View>
-                        <SvgIcon name = "DocMoreBtn" width={20} height={20}/>
+                        <SvgIcon name = "DocMoreBtn" width={17} height={17}/>
                     </View>
                 </TouchableOpacity>
             </View>

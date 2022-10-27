@@ -40,7 +40,7 @@ const FullPath = ( props: pathInfo) => { //값을 받을 수도 있고 받지 �
 
     return (
         <View style={ fullPathStyleSheet.fullPathContaier}>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator = {true}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator = { false}>
                 <View style={ fullPathStyleSheet.startBlurEffect}/>
                     { targetFullPathState.fullPathUIDs.map(( fullPathUID : string, index : number) => {
                         return( <View key={ 'path'+ fullPathUID} style={ fullPathStyleSheet.fullPathContent}>

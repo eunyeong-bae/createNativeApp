@@ -11,7 +11,17 @@ const hiddenItemLists:any = {
     'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRemove},
 };
 
-const CommonFlatList = ( props: any) => {
+interface FlatListProps {
+    flatListRef: any,
+    reqListData: any,
+    listViewMode? : any,
+    navigation: any,
+    onEndReached: any,
+    fullpath? : any,
+    setFullpath? : any,
+}
+
+const CommonFlatList = ( props: FlatListProps) => {
     const { flatListRef, reqListData, listViewMode, navigation, onEndReached, fullpath, setFullpath} = props;
     const [ isClickToastMenu, setIsClickToastMenu] = useState({
         setFavorite: false,
@@ -64,7 +74,6 @@ const CommonFlatList = ( props: any) => {
                 <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnLeft]}
                     onPress={() => alert('left')}
-                    // onPress={() => closeRow(rowMap, data.item.key)}
                 >
                     <SvgIcon name="ActionCategoryOff" width={ 20} height={ 20} />
                 </TouchableOpacity>
@@ -72,7 +81,6 @@ const CommonFlatList = ( props: any) => {
                 <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnRight]}
                     onPress={() => alert('right')}
-                    // onPress={() => deleteRow(rowMap, data.item.key)}
                 >
                     <SvgIcon name="ActionReName" width={ 20} height={ 20} />
                 </TouchableOpacity>
@@ -145,7 +153,7 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
         width: 40,
-        backgroundColor:'yellow'
+        // backgroundColor:'yellow'
     },
     backRightBtnLeft: {
         left: 0

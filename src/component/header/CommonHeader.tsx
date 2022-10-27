@@ -1,10 +1,11 @@
 import { CommonContext } from '../../context/CommonContext';
 import React, { useContext } from 'react';
-import {TouchableOpacity, View, Text, Image, Dimensions} from 'react-native';
+import {TouchableOpacity, View, Text, Dimensions} from 'react-native';
 import SvgIcon from '../../component/svgIcon/SvgIcon';
 import CommonUtil from '../../utils/CommonUtil';
 import CommonFnUtil from '../../utils/CommonFnUtil';
 import SortMenu from '../../menu/SortMenu';
+import { AppScreens} from '../../navigation';
 
 interface CommonHeaderInfo {
     headerName: any, // 가운데 표시 될 이름
@@ -70,9 +71,17 @@ const CommonHeader = (props: CommonHeaderInfo) => {
 
         }
     };
+    
+    const logOut = async() =>{
+        console.log('loguot');
+        await CommonUtil._removeData( 'userToken');
+        await CommonUtil._removeData( 'baseData');
+
+        navigation.navigate( AppScreens.Login)
+    };
 
     return (
-        <View style={{width: '100%', height:40,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:10,paddingRight:10}}>
+        <View style={{width: '100%', height:50,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:10,paddingRight:10, borderRadius: 10}}>
             <View style={{width: (headerMenuInfo.rightDialogBtn && Dimensions.get('window').width - 200), flexDirection: 'row', justifyContent:'space-between', alignItems:'center',}}>
                 { !CommonUtil.objectIsNull( headerMenuInfo.leftBtn) && 
                     <View>
@@ -93,25 +102,36 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                 }
 
                 <View>
-                    { headerName === 'ONEFFICE' ? 
-                        <Image source={ require('../../assets/oneffice/images/oneffice-bi.png')} style={{ width:50, height:24}}/> 
-                        : 
-                        <View>
-                            <Text style={{ marginLeft: (headerMenuInfo.rightBtn && 7), textAlign:'center',fontSize:20,fontWeight:'600'}}>{ multiSelectedState ? headerMenuInfo.centerText.title : headerName}</Text>
-                            { multiSelectedState && 
-                                 <>
-                                    <TouchableOpacity>
-                                        <Text>{headerMenuInfo.centerText.selectAllBtn}</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity>
-                                        <Text>{headerMenuInfo.centerText.unselectAllBtn}</Text>
-                                    </TouchableOpacity>
-                                </>
-                            }
-                        </View>
-                    }
+                    <View>
+                        <Text style={{ marginLeft: (headerMenuInfo.rightBtn && 7), textAlign:'center',fontSize:20,fontWeight:'600'}}>{ multiSelectedState ? headerMenuInfo.centerText.title : headerName}</Text>
+                        { multiSelectedState && 
+                                <>
+                                <TouchableOpacity>
+                                    <Text>{headerMenuInfo.centerText.selectAllBtn}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <Text>{headerMenuInfo.centerText.unselectAllBtn}</Text>
+                                </TouchableOpacity>
+                            </>
+                        }
+                    </View>
                 </View>
             </View>
+
+            { headerName === 'ONEFFICE' && !CommonUtil.objectIsNull( headerMenuInfo) &&
+                <View style={{ flexDirection:'row'}}>
+                    <TouchableOpacity onPress={ logOut}>
+                        <View style={{ marginRight: 8}}>
+                            <SvgIcon name="NoProfile" width={28} height={28}/>
+                        </View>
+                    </TouchableOpacity>
+                    <View>
+                        <Text>{headerMenuInfo.empName}</Text>
+                        <Text>{headerMenuInfo.deptName}</Text>
+                    </View>
+                </View>
+            }
+
             {/* 오른쪽 메뉴 */}
             { !CommonUtil.objectIsNull( headerMenuInfo.rightDialogBtn) && 
                 <View>
@@ -139,7 +159,7 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                                     return (
                                         <TouchableOpacity key={btnInfo.iconName} onPress={ onClickRightBtn.bind( this, 'home')}>
                                             <View>
-                                                <SvgIcon name = { btnInfo.iconName} width={20} height={20}/>
+                                                <SvgIcon name = { btnInfo.iconName} width={17} height={17}/>
                                             </View>
                                         </TouchableOpacity>
                                     )

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from 'react';
-import { View, Dimensions, Text, FlatList} from 'react-native';
+import { View, Dimensions, Text, SafeAreaView, TextInput} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
 import { MyDocStyles} from './style/style';
@@ -20,7 +20,7 @@ const myDocMenuInfo : any = {
         //롱클릭 시, visibility : true 로 변경? 해준다는 가정하에 일단 작성
         leftBtn : [
             // {iconName :'HomeMenuBtn', visibility : true},
-            {iconName : 'UserInfoICon', visibility : true},
+            // {iconName : 'UserInfoICon', visibility : true},
             {iconName : 'CommonCloseBtn', visibility : false},
         ],
         rightBtn: [
@@ -115,56 +115,45 @@ const MyDoc = ( props : any) => {
     return useMemo(() => (
         <>
         {/* {console.log(alertDialogState)} */}
-        <View style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, backgroundColor:'#fff', paddingTop: 40}}>
-            <CommonHeader
-                    headerName = { '내 문서함'} 
-                    multiSelectedState = { null}
-                    setMultiSelected = { null}
-                    headerMenuInfo={ myDocMenuInfo.headerInfo}
-                    contextName={ CONTEXT_NAME}
-                    headerDataInfo={ null}
-                    navigation = { navigation}
-                    sortMenu = { myDocMenuInfo['sortMenu']}
-                    ViewModeCheck={ ViewModeCheck}
-            />
-
-            <CommonDocBoxList navigation={ navigation} />
-            
-            {
-                targetFullPathState.fullPathUIDs.length > 1 && 
-                <FullPath />
-            }
-            {/* <View style={{flexDirection:'row',justifyContent:'space-between',height:40,alignItems:'center',backgroundColor:'#eee',paddingLeft:10,paddingRight:10}}>
-                <SortMenu 
-                    contextName = { CONTEXT_NAME}
-                    selectedValue = { null}
-                    sortMenu = { myDocMenuInfo['sortMenu']}
+        <SafeAreaView style={{ backgroundColor: '#EFF3FB', height: Dimensions.get('window').height}}>
+            <View style={{marginLeft:10, padding:5, flex:1, justifyContent:'center', alignItems:'center', width: Dimensions.get('window').width - 20, height: '100%', backgroundColor:'#EFF3FB'}}>
+                <CommonHeader
+                        headerName = { '내 문서함'} 
+                        multiSelectedState = { null}
+                        setMultiSelected = { null}
+                        headerMenuInfo={ myDocMenuInfo.headerInfo}
+                        contextName={ CONTEXT_NAME}
+                        headerDataInfo={ null}
+                        navigation = { navigation}
+                        sortMenu = { myDocMenuInfo['sortMenu']}
+                        ViewModeCheck={ ViewModeCheck}
                 />
-                <View style={{flexDirection:'row'}}>
-                    <TouchableOpacity onPress={ViewModeCheck}>
-                        <SvgIcon name={ !listViewMode ? 'DocThumbViewBtn' : 'DocListViewBtn' } width={20} height={20}/>
-                    </TouchableOpacity>
-                </View>
-            </View> */}
-            
-            <View style={MyDocStyles.docListContainer}>
-                {
-                    reqListData.dataList.length > 0 ? 
-                    <CommonFlatList 
-                        flatListRef ={ flatListRef}
-                        reqListData ={ reqListData}
-                        listViewMode={ listViewMode}
-                        navigation={ navigation}
-                        onEndReached={ onEndReached}
-                    />
-                    : 
-                    <View>
-                        <Text>등록된 문서가 없습니다.</Text>
-                    </View>
+
+                <CommonDocBoxList navigation={ navigation} />
+
+                <TextInput style={{ height:40, borderWidth:1, borderColor:'#EFF3FB',padding:10, width:'100%', backgroundColor:'#fff', borderRadius:10, marginTop:5}} placeholder="Search" />
+                
+                { targetFullPathState.fullPathUIDs.length > 1 && 
+                    <FullPath />
                 }
+                
+                <View style={MyDocStyles.docListContainer}>
+                    {
+                        reqListData.dataList.length > 0 ? 
+                        <CommonFlatList 
+                            flatListRef ={ flatListRef}
+                            reqListData ={ reqListData}
+                            listViewMode={ listViewMode}
+                            navigation={ navigation}
+                            onEndReached={ onEndReached}
+                        />
+                        :
+                            <Text>등록된 문서가 없습니다.</Text>
+                        }
+                </View>
+                <FloatingMenu />
             </View>
-            <FloatingMenu />
-        </View>
+        </SafeAreaView>
     </>
     ), [ reqListData.dataList, listViewMode]);
 }
