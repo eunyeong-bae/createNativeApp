@@ -31,30 +31,38 @@ export const dialogStyles = StyleSheet.create({
         justifyContent:'space-around',
         paddingLeft:10,
         paddingRight:10,
-        // borderWidth: 1,
-        // borderColor: '#DCE7FB', //#E4ECF9
-        backgroundColor:'#EFF3FB'
+        marginTop: 5,
+        borderWidth: 1,
+        borderColor: '#DCE7FB', //#E4ECF9
+        backgroundColor:'#fff',
+        borderRadius: 10,
     },
     docBoxList: {
-        paddingTop: 14,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 10,
+        flexDirection:'row',
+        alignItems:'center',
+        padding:10,
+        // paddingTop: 14,
+        // paddingLeft: 10,
+        // paddingRight: 10,
+        // paddingBottom: 10,
         height: '100%',
+        // borderRadius:100,
         justifyContent:'center',
+        // borderWidth:1,
     },
     selectedTextStyle: {
-        color: '#000000'
+        color: '#0b68a1',
+        fontWeight: 'bold',
+        fontSize: 16
     },
     sharedTextStyle: {
-        // borderWidth:1, 
-        // borderColor:'red',
         fontSize: 14,
         padding:3,
         borderRadius: 10,
     },
     docBoxListText: {
-        fontSize: 15,
+        marginLeft:5,
+        fontSize: 14,
         fontWeight: '600',
         color: '#bbbbbb'
     },

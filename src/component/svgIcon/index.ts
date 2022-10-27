@@ -111,3 +111,22 @@ export {default as sortMenu} from '../../assets/oneffice/homeIcons/icon_filter.s
 export {default as R_menuSwitchOFF} from '../../assets/oneffice/homeIcons/switch_off.svg';
 export {default as R_menuSwitchON} from '../../assets/oneffice/homeIcons/switch_on.svg';
 export {default as R_menuNextPageBtn} from '../../assets/oneffice/homeIcons/icon_go.svg';
+
+//docboxlist icons
+export {default as OnefficeOn} from '../../assets/oneffice/homeIcons/icon_oneffice_sele.svg';
+export {default as OnefficeOff} from '../../assets/oneffice/homeIcons/icon_oneffice_none.svg';
+
+export {default as MyDocOn} from '../../assets/oneffice/homeIcons/icon_folder_sele.svg';
+export {default as MyDocOff} from '../../assets/oneffice/homeIcons/icon_folder_none.svg';
+
+export {default as SharedDocOn} from '../../assets/oneffice/homeIcons/icon_sharedocu_sele.svg';
+export {default as SharedDocOff} from '../../assets/oneffice/homeIcons/icon_sharedocu_none.svg';
+
+export {default as ImportantDocOn} from '../../assets/oneffice/homeIcons/icon_importantfile_sele.svg';
+export {default as ImportantDocOff} from '../../assets/oneffice/homeIcons/icon_importantfile_none.svg';
+
+export {default as SecurityDocOn} from '../../assets/oneffice/homeIcons/icon_securityfile_sele.svg';
+export {default as SecurityDocOff} from '../../assets/oneffice/homeIcons/icon_securityfile_none.svg';
+
+export {default as TrashDocOn} from '../../assets/oneffice/homeIcons/icon_delete_sele.svg';
+export {default as TrashDocOff} from '../../assets/oneffice/homeIcons/icon_delete_none.svg';

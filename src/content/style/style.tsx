@@ -6,13 +6,15 @@ const windowHeight = Dimensions.get('window').height;
 
 export const MyDocStyles = StyleSheet.create({
     docListContainer:{
-        width:windowWidth, 
-        height:windowHeight - 100,
-        // padding:5,
-        // marginHorizontal:5,
-        flex:1,
-        paddingHorizontal:10,
-        paddingTop: 5,
+        height: windowHeight - 241,
+        borderRadius:10,
+        borderWidth:1,
+        borderColor:'#DCE7FB',
+        backgroundColor:'#fff',
+        // width: '100%', 
+        // flex:1,
+        // paddingTop: 5,
+        marginTop:8
     },
     docContainer: {
         width: 160,
@@ -58,16 +60,18 @@ export const MyDocStyles = StyleSheet.create({
 
 export const MyDocListViewStyles = StyleSheet.create({
     docListContainer:{
-        width:windowWidth - 20,
+        width: '100%',
         height:60,
         padding:10,
         flexDirection:'row',
-        borderColor:'#dedede',
-        borderWidth:1,
-        // backgroundColor:'#ffffff',
+        // borderColor:'#DCE7FB',
+        // borderWidth:1,
+        backgroundColor:'#fff',
+        borderBottomWidth:1,
+        borderBottomColor:'#DCE7FB',
         borderRadius:10,
-        marginBottom:5,
-        marginTop:5,
+        // marginBottom:5,
+        // marginTop:5,
         justifyContent:'space-between',
         alignItems:'center',
         // shadowColor:'#727472',
