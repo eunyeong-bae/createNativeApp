@@ -14,6 +14,7 @@ import useDocList from '../hooks/useDocList';
 import FloatingMenu from '../menu/FloatingMenu';
 import CommonFlatList from '../component/CommonFlatList';
 import { CommonContext } from '../context/CommonContext';
+import CommonMovePath from '../component/CommonMovePath';
 
 const CONTEXT_NAME = 'moveDialog';
 const DOCUMENT_BOX_LIST = [ //MAP
@@ -34,7 +35,7 @@ const moveDialogHeaderInfo : any = {
 };
 
 export const MoveDialog = () => {
-    const { alertDialogState} = useContext( CommonContext);
+    const { alertDialogState, centerDialogState} = useContext( CommonContext);
     const [ isLoading, setLoading] = useState( false);
     const [ DocBoxListType, setDocBoxListType] = useState( '');
 
@@ -111,31 +112,34 @@ export const MoveDialog = () => {
                 setFullpath={ setFullpath}
                 sortMenu= { null}
             />
-            <View style={ dialogStyles.mainContainer}>
-                <View style={ dialogStyles.docBoxListContainer}>
-                    <>
-                        {
-                          !CommonUtil.objectIsNull( DOCUMENT_BOX_LIST) &&
-                            DOCUMENT_BOX_LIST.map( list => {
-                                return (
-                                    <TouchableOpacity key={ list.title} onPress={ onClickDocBox.bind( this, list.listType)}>
-                                        <View style={ dialogStyles.docBoxList}>
-                                            <Text style={ dialogStyles.docBoxListText}>{ list.title}</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                    </>
-                </View>
-                
-                {/* 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐 */}
-                <FullPath fullpath= { fullpath} setFullPath={ setFullpath}/>
-
-                {/* 문서 리스트 영역 */}
-                <View style={ dialogStyles.folderListContainer}>
+            <View style={ dialogStyles.docBoxListContainer}>
+                <>
                     {
-                        reqListData.dataList.length > 0 ?
+                        !CommonUtil.objectIsNull( DOCUMENT_BOX_LIST) &&
+                        DOCUMENT_BOX_LIST.map( list => {
+                            return (
+                                <TouchableOpacity key={ list.title} onPress={ onClickDocBox.bind( this, list.listType)}>
+                                    <View style={ dialogStyles.docBoxList}>
+                                        <Text style={ dialogStyles.docBoxListText}>{ list.title}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                </>
+            </View>
+            
+            {/* 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐 */}
+            {/* <FullPath fullpath= { fullpath} setFullPath={ setFullpath}/> */}
+
+            {/* 문서 리스트 영역 */}
+            <View style={ dialogStyles.folderListContainer}>
+                {
+                    reqListData.dataList.length > 0 ?
+                        <>
+                            { centerDialogState && fullpath.fullPathUIDs.length > 1 &&
+                                <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullPath} />
+                            }
                             <CommonFlatList
                                 flatListRef ={ flatListRef}
                                 reqListData ={ reqListData}
@@ -143,13 +147,14 @@ export const MoveDialog = () => {
                                 fullpath={ fullpath}
                                 setFullpath={ setFullpath}
                             />
-                        :
-                            <View>
-                                <Text>등록된 폴더가 없습니다.</Text>
-                            </View>
-                    }
-                </View>
+                        </>
+                    :
+                        <View>
+                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullPath} />
+                        </View>
+                }
             </View>
+
             <FloatingMenu fullpath={ fullpath}  />
         </View>
     ), [ reqListData.dataList]);

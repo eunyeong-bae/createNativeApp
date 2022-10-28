@@ -5,24 +5,23 @@ const height = Dimensions.get('window').height;
 
 export const dialogStyles = StyleSheet.create({
     container: {
-        width: width - 10,
+        width: width - 30,
         height: height - 240,
-        backgroundColor:'#fff',
+        backgroundColor:'#EFF3FB',
+        alignItems:'center',
+        borderWidth:1,
         // backgroundColor:'white',
     },
     header:{
         width:'100%',
         height:40,
     },
-    mainContainer: {
-        width:'100%',
-        height: height - 300,
-    },
     folderListContainer: {
-        width: '100%',
-        height: height - 410,
-        paddingLeft:4,
+        width: width - 50,
+        height: height - 400,
+        marginTop: 10,
         paddingTop: 10,
+        // borderWidth:1
     },
     docBoxListContainer: {
         width:'100%', 
