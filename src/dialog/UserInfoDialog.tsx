@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useLayoutEffect, useState} from 'react';
 import { View, Text, StyleSheet, Dimensions} from 'react-native';
 import CommonHeader from '../component/header/CommonHeader';
 import SvgIcon from '../component/svgIcon/SvgIcon';
@@ -33,15 +33,14 @@ export const UserInfoDialog = () => {
         deptName: '',
     }); 
 
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         (async() => {
             const userData : any = await AsyncStorage.getItem( 'baseData');
             setUserInfos({
                 empName: JSON.parse(userData).result.empName,
                 compName: JSON.parse(userData).result.compName,
                 deptName: JSON.parse(userData).result.deptName,
-            })
-            console.log( JSON.parse(userData));
+            });
         })();
        
     },[]);

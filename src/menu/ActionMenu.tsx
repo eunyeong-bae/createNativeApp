@@ -42,11 +42,6 @@ import Toast from 'react-native-toast-message';
         3.화살표 방향 값
    }
 */}
-
-const docTypes = ['allDocType','oneffice','oneffieSlide']
-const MyDocSortType = ['DocTitle','LastModifiedDate','LastViewedDate'];
-const ShareDocSortType = ['DocTitle','LastModifiedDate','Owner','SharedDate','LastViewedDate'];
-
 const myDocMenuInfo:any = {    
     'share':{name:'원커넥트',auth: 'Read',rightMenu: true,icon:'ActionShare',clickEvent: CommonFnUtil.onClickShare},
     'linkCopy':{name:'링크 복사',auth:'Read',rightMenu: false,icon:'ActionLinkCopy',clickEvent: CommonFnUtil.linkCopyEvent},

@@ -42,8 +42,8 @@ const FloatingMenu = ( props: FloatingMenuProps) => {
         <>
         {/* #9cd3e0 */}
             <View style={ styles.container}>
-                <ActionButton position={'absolute'} buttonColor= { isBtnClicked ? '#B5CAF0' : '#3498db'} zIndex={ 2} autoInactive={ true} onPress={() => ( setBtnClicked( !isBtnClicked))}>
-                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#3498db' title="CreateNewFolder" onPress={ onClickSubMenu.bind( this, 'folder')}>
+                <ActionButton buttonColor= { isBtnClicked ? '#B5CAF0' : '#3498db'} zIndex={ 2} autoInactive={ true} onPress={() => ( setBtnClicked( !isBtnClicked))}>
+                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#4295fd' title="CreateNewFolder" onPress={ onClickSubMenu.bind( this, 'folder')}>
                         <Icon name="folder-outline" style={ styles.actionButtonIcon} />
                     </ActionButton.Item>
                     <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#3498db' title="CreateNewDoc" onPress={ onClickSubMenu.bind( this, 'doc')}>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         bottom: 0,
-        right: 5,
+        right: 0,
         zIndex:3,
         // borderWidth:1
     },
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width, 
         height: Dimensions.get('window').height,
         position: 'absolute',
-        opacity: 0.2,
+        opacity: 0.6,
         zIndex: 1,
         backgroundColor: '#000'
     }

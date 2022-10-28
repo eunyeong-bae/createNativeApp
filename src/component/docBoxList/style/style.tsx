@@ -51,9 +51,10 @@ export const dialogStyles = StyleSheet.create({
         // borderWidth:1,
     },
     selectedTextStyle: {
-        color: '#0b68a1',
-        fontWeight: 'bold',
-        fontSize: 16
+        marginLeft:5,
+        color: '#262529',
+        fontWeight: '600',
+        fontSize: 14
     },
     sharedTextStyle: {
         fontSize: 14,
