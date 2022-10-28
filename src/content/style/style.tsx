@@ -4,14 +4,39 @@ import {StyleSheet,Dimensions} from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+//모든 문서함 스타일
 export const MyDocStyles = StyleSheet.create({
+    safeAreaStyle: {
+        height: Dimensions.get('window').height,
+        backgroundColor: '#EFF3FB', 
+    },
+    docMainContainer: {
+        width: Dimensions.get('window').width - 20,
+        height: '100%', 
+        flex:1, 
+        justifyContent:'center', 
+        alignItems:'center', 
+        padding:5, 
+        marginLeft:10, 
+        backgroundColor:'#EFF3FB'
+    },
+    textInputStyle:{
+        width:'100%', 
+        height:40, 
+        padding:10, 
+        marginTop:5,
+        borderWidth:1, 
+        borderColor:'#EFF3FB',
+        borderRadius:10, 
+        backgroundColor:'#fff', 
+    },
     docListContainer:{
         height: windowHeight - 241,
         borderRadius:10,
         borderWidth:1,
         borderColor:'#DCE7FB',
         backgroundColor:'#fff',
-        // width: '100%', 
+        width: '100%', 
         // flex:1,
         // paddingTop: 5,
         marginTop:8
@@ -58,6 +83,7 @@ export const MyDocStyles = StyleSheet.create({
     }
 });
 
+//commonMovePath.tsx & DefaultListItem.tsx
 export const MyDocListViewStyles = StyleSheet.create({
     docListContainer:{
         width: '100%',
@@ -86,7 +112,7 @@ export const MyDocListViewStyles = StyleSheet.create({
     docListStyle: { 
         width: windowWidth - 80, 
         flexDirection:'row', 
-        alignItems:'center'
+        alignItems:'center',
     },
     ThumImg: {
         width:25,

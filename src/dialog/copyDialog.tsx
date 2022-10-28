@@ -1,12 +1,13 @@
 import { CommonContext } from '../context/CommonContext';
 import React, { useEffect, useState, useCallback, useMemo, useRef, useContext } from 'react';
-import { View, Text, Dimensions, TextInput} from 'react-native';
+import { View, Dimensions, TextInput} from 'react-native';
 import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
 import useDocList from '../hooks/useDocList';
 import FullPath from '../fullPath/index';
 import CommonFlatList from '../component/CommonFlatList';
 import FloatingMenu from '../menu/FloatingMenu';
+import CommonMovePath from '../component/CommonMovePath';
 
 /**
  * 문서함 카테고리 
@@ -36,10 +37,10 @@ const copyDialogHeaderInfo : any = {
 
 export const CopyDialog = () => {
     const flatListRef = useRef<any>();
-    const { alertDialogState} = useContext( CommonContext);
+
+    const { alertDialogState, selectedTargetState, centerDialogState} = useContext( CommonContext);
     const [ isLoading, setLoading] = useState( false);
     const [ inputTxt, setInputTxt] = useState( null);
-    const { selectedTargetState} = useContext( CommonContext);
 
     const [ fullpath, setFullPath] = useState({
         //JSON 형식의 데이터
@@ -66,7 +67,7 @@ export const CopyDialog = () => {
     });
 
     useEffect(() => {
-        if( fullpath.fullPathUIDs.length > 0) {
+        if( fullpath && fullpath.fullPathUIDs.length > 0) {
             setDataList( {...reqListData, folderSeq: fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1], pageNum:1, dataList: []});
         }
     }, [ fullpath]);
@@ -128,6 +129,10 @@ export const CopyDialog = () => {
             <View style={ dialogStyles.folderListContainer}>
                 {
                     reqListData.dataList.length > 0 ?
+                    <>
+                        { centerDialogState && fullpath.fullPathUIDs.length > 1 &&
+                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullPath} />
+                        }
                         <CommonFlatList
                             flatListRef ={ flatListRef}
                             reqListData ={ reqListData}
@@ -135,9 +140,10 @@ export const CopyDialog = () => {
                             fullpath={ fullpath}
                             setFullpath={ setFullpath}
                         />
+                    </>
                     :
                         <View>
-                            <Text>등록된 폴더가 없습니다.</Text>
+                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullPath} />
                         </View>
                 }
             </View>

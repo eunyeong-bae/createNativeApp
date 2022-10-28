@@ -5,7 +5,6 @@ import SvgIcon from '../../component/svgIcon/SvgIcon';
 import CommonUtil from '../../utils/CommonUtil';
 import CommonFnUtil from '../../utils/CommonFnUtil';
 import SortMenu from '../../menu/SortMenu';
-import { AppScreens} from '../../navigation';
 
 interface CommonHeaderInfo {
     headerName: any, // 가운데 표시 될 이름
@@ -30,7 +29,6 @@ const CommonHeader = (props: CommonHeaderInfo) => {
     const { centerDialogState, setCenterDialog, actionMenuState, setIsActionMenu, selectedTargetState, setSelectedTarget} = useContext(CommonContext);
 
     const onClickLeftBtn = ( iconName: any) => { // 문서함 뒤로가기 or 팝업 닫기 버튼
-        // console.log( actionMenuState)
         if( iconName === 'UserInfoICon') {
             // navigation.openDrawer();
             setCenterDialog('UserInfoDialog', null);
@@ -40,7 +38,6 @@ const CommonHeader = (props: CommonHeaderInfo) => {
         }
     };
     
-    // console.log( centerDialogState.dialogName)
     const onClickRightBtn = ( location: any) => { // 아이콘 이벤트
         let resultData:any = null;
 
@@ -51,9 +48,8 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                     break; 
                 case 'CopyDialog':
                     resultData = CommonFnUtil.copyDocument( selectedTargetState.selectedTarget, props);
-                    break; 
-                // case 'PdfDialog':
-                //     break; 
+                    break;
+
                 default:
                     return;
             }
@@ -71,24 +67,10 @@ const CommonHeader = (props: CommonHeaderInfo) => {
 
         }
     };
-    
-    const logOut = async() =>{
-        console.log('loguot');
-        await CommonUtil._removeData( 'userToken');
-        await CommonUtil._removeData( 'baseData');
-
-        navigation.navigate( AppScreens.Login)
-    };
-    
-    const styles = StyleSheet.create({
-        container: {
-            width:Dimensions.get('window').width - 200
-        },
-    });
 
     return (
-        <View style={{width: '100%', height:50,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:10,paddingRight:10, borderRadius: 10}}>
-            <View style={[ headerMenuInfo.rightDialogBtn && styles.container,{ flexDirection: 'row', justifyContent:'space-between', alignItems:'center',}]}>
+        <View style={ CommonHeaderStyles.mainContainer}>
+            <View style={[ headerMenuInfo.rightDialogBtn && CommonHeaderStyles.rightBtnStyle, CommonHeaderStyles.MenuContainer]}>
                 { !CommonUtil.objectIsNull( headerMenuInfo.leftBtn) && 
                     <View>
                         { headerMenuInfo.leftBtn.map( ( btnInfo: any) => {
@@ -109,7 +91,7 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                 { !headerMenuInfo.rightDialogBtn && 
                     <View>
                         <View>
-                            <Text style={{ marginLeft: (headerMenuInfo.rightBtn && 7), textAlign:'center',fontSize:21,fontWeight:'bold', color:'#75b9f4'}}>{ multiSelectedState ? headerMenuInfo.centerText.title : headerName}</Text>
+                            <Text style={[ CommonHeaderStyles.headerTitle, {marginLeft: (headerMenuInfo.rightBtn && 7)}]}>{ multiSelectedState ? headerMenuInfo.centerText.title : headerName}</Text>
                             { multiSelectedState && 
                                     <>
                                     <TouchableOpacity>
@@ -152,8 +134,8 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                 </View>
             }
             { !CommonUtil.objectIsNull( headerMenuInfo.rightBtn) &&
-                <View style={{ flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-                    <View style={{width:50, flexDirection:'row', justifyContent:'space-between', marginRight: 15}}>
+                <View style={ CommonHeaderStyles.MenuContainer}>
+                    <View style={ CommonHeaderStyles.rightMenuContainer}>
                         {
                             headerMenuInfo.rightBtn.map( ( btnInfo: any) => {
                                 if( btnInfo.visibility){
@@ -182,6 +164,35 @@ const CommonHeader = (props: CommonHeaderInfo) => {
 
 export default CommonHeader;
 
-function asycn(arg0: { docData: any; }) {
-    throw new Error('Function not implemented.');
-}
+const CommonHeaderStyles = StyleSheet.create({
+    mainContainer: {
+        width: '100%', 
+        height:50,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        paddingLeft:10,
+        paddingRight:10, 
+        borderRadius: 10
+    },
+    MenuContainer: {
+        flexDirection: 'row', 
+        justifyContent:'space-between', 
+        alignItems:'center',
+    },
+    headerTitle: {
+        textAlign:'center',
+        fontSize:21,
+        fontWeight:'bold', 
+        color:'#75b9f4'
+    },
+    rightMenuContainer: {
+        width:50, 
+        flexDirection:'row', 
+        justifyContent:'space-between', 
+        marginRight: 15
+    },
+    rightBtnStyle: {
+        width:Dimensions.get('window').width - 200
+    },
+});

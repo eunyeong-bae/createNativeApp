@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
-import { View, Dimensions, Text, SafeAreaView} from 'react-native';
+import { View, Text, SafeAreaView} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
 import { MyDocStyles} from './style/style';
@@ -16,15 +16,12 @@ const trashDocMenuInfo : any = {
     'headerInfo' : {
         //롱클릭 시, visibility : true 로 변경? 해준다는 가정하에 일단 작성
         leftBtn : [
-            // {iconName :'HomeMenuBtn', visibility : true},
-            // {iconName : 'UserInfoICon', visibility : true},
             {iconName : 'CommonCloseBtn', visibility : false},
         ],
         rightBtn: [
             {iconName: 'CheckAllBtnOff', visibility: true},
             {iconName: 'CheckAllBtnOn', visibility: false},
             {iconName :'CommonSearchBtn', visibility : true},
-            // {iconName: 'DocMoreBtn', visibility: true}
         ],
         centerText: {
             title : ' 개 선택 | ',
@@ -102,8 +99,8 @@ const TrashDoc = ( props : any) => {
     return useMemo(() => (
         <>
         {/* {console.log(alertDialogState)} */}
-        <SafeAreaView style={{ backgroundColor: '#EFF3FB', height: Dimensions.get('window').height}}>
-            <View style={{marginLeft:10, padding:5, flex:1, justifyContent:'center', alignItems:'center', width: Dimensions.get('window').width - 20, height: '100%', backgroundColor:'#EFF3FB'}}>
+        <SafeAreaView style={ MyDocStyles.safeAreaStyle}>
+            <View style={ MyDocStyles.docMainContainer}>
                 <CommonHeader
                         headerName = { '휴지통'} 
                         multiSelectedState = { null}

@@ -1,14 +1,14 @@
-import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from 'react';
-import { View, Dimensions, Text, SafeAreaView, TextInput} from 'react-native';
+import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { View, Text, SafeAreaView, TextInput} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
 import { MyDocStyles} from './style/style';
 import CommonUtil from '../utils/CommonUtil';
 import { CommonContext } from '../context/CommonContext';
 import useDocList from '../hooks/useDocList';
-import FullPath from '../fullPath/index';
 import FloatingMenu from '../menu/FloatingMenu';
 import CommonFlatList from '../component/CommonFlatList';
+import CommonMovePath from '../component/CommonMovePath';
 
 const myDocMenuInfo : any = {    
     'sortMenu' : [
@@ -19,15 +19,12 @@ const myDocMenuInfo : any = {
     'headerInfo' : {
         //롱클릭 시, visibility : true 로 변경? 해준다는 가정하에 일단 작성
         leftBtn : [
-            // {iconName :'HomeMenuBtn', visibility : true},
-            // {iconName : 'UserInfoICon', visibility : true},
             {iconName : 'CommonCloseBtn', visibility : false},
         ],
         rightBtn: [
             {iconName: 'CheckAllBtnOff', visibility: true},
             {iconName: 'CheckAllBtnOn', visibility: false},
             {iconName :'CommonSearchBtn', visibility : true},
-            // {iconName: 'DocMoreBtn', visibility: true}
         ],
         centerText: {
             title : ' 개 선택 | ',
@@ -40,7 +37,7 @@ const myDocMenuInfo : any = {
 const CONTEXT_NAME = "MyDoc";
 
 const MyDoc = ( props : any) => {
-    const { sortMenuState, setSortMenu, targetFullPathState, setTargetFullPath, alertDialogState, setAlertDialog, centerDialogState} = useContext(CommonContext);
+    const { sortMenuState, setSortMenu, targetFullPathState, setTargetFullPath, alertDialogState, centerDialogState} = useContext(CommonContext);
     
     const { navigation} = props;
 
@@ -70,8 +67,6 @@ const MyDoc = ( props : any) => {
             setSortMenu( CONTEXT_NAME, { sortItem:'1', fileTypes:'', sortOrder:'d'}, myDocMenuInfo[ 'sortMenu'])
             setTargetFullPath( [''], ['내 문서함'], null)
         }
-        // setDataList(reqListData);
-        // setHeaderDataInfo();
     }, []);
 
     useEffect(() => { // unmount, context Api 초기화
@@ -115,8 +110,8 @@ const MyDoc = ( props : any) => {
     return useMemo(() => (
         <>
         {/* {console.log(alertDialogState)} */}
-        <SafeAreaView style={{ backgroundColor: '#EFF3FB', height: Dimensions.get('window').height}}>
-            <View style={{marginLeft:10, padding:5, flex:1, justifyContent:'center', alignItems:'center', width: Dimensions.get('window').width - 20, height: '100%', backgroundColor:'#EFF3FB'}}>
+        <SafeAreaView style={ MyDocStyles.safeAreaStyle}>
+            <View style={ MyDocStyles.docMainContainer}>
                 <CommonHeader
                         headerName = { '내 문서함'} 
                         multiSelectedState = { null}
@@ -131,22 +126,23 @@ const MyDoc = ( props : any) => {
 
                 <CommonDocBoxList navigation={ navigation} />
 
-                <TextInput style={{ height:40, borderWidth:1, borderColor:'#EFF3FB',padding:10, width:'100%', backgroundColor:'#fff', borderRadius:10, marginTop:5}} placeholder="Search" />
+                <TextInput style={ MyDocStyles.textInputStyle} placeholder="Search" />
                 
-                { targetFullPathState.fullPathUIDs.length > 1 && 
-                    <FullPath />
-                }
-                
-                <View style={MyDocStyles.docListContainer}>
+                <View style={ MyDocStyles.docListContainer}>
                     {
                         reqListData.dataList.length > 0 ? 
-                        <CommonFlatList 
-                            flatListRef ={ flatListRef}
-                            reqListData ={ reqListData}
-                            listViewMode={ listViewMode}
-                            navigation={ navigation}
-                            onEndReached={ onEndReached}
-                        />
+                        <>
+                            { centerDialogState && targetFullPathState.fullPathUIDs.length > 1 &&
+                                <CommonMovePath targetFullPathState={ targetFullPathState} setTargetFullPath={ setTargetFullPath} />
+                            }
+                            <CommonFlatList 
+                                flatListRef ={ flatListRef}
+                                reqListData ={ reqListData}
+                                listViewMode={ listViewMode}
+                                navigation={ navigation}
+                                onEndReached={ onEndReached}
+                            />
+                        </>
                         :
                             <Text>등록된 문서가 없습니다.</Text>
                         }

@@ -24,11 +24,11 @@ const toastConfig = {
     error: ( props : any) => (
         <ErrorToast
             {...props}
+            style={{ borderLeftColor: 'red' }}
+            contentContainerStyle={{ paddingHorizontal: 15 }}
             text1Style={{
-            fontSize: 17
-            }}
-            text2Style={{
-            fontSize: 15
+            fontSize: 15,
+            fontWeight: '400'
             }}
         />
     ),
