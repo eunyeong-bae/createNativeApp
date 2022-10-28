@@ -110,37 +110,36 @@ export const CopyDialog = () => {
                 setFullpath={ setFullpath}
                 sortMenu ={ null}
             />
-            <View style={ dialogStyles.mainContainer}>
-                <TextInput style={{  width: width - 40, height: 40, margin:10, padding:10, borderBottomWidth:1, }}
-                    onChangeText={ text => setInputTxt( text)}
-                    placeholder="제목을 입력하세요."
-                    value={ inputTxt}
-                    // onChangeText={ onChangeText}
-                    // placeholder={ selectedTargetState.selectedTarget.doc_name + "(복사본)"}
-                    // value={ !inputTxt ? selectedTargetState.selectedTarget.doc_name + "(복사본)" : inputTxt}
-                />
-                {/* 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐 */}
-                <View style={{ borderColor:'#eee', borderTopWidth:1}}>
-                    <FullPath fullpath= { fullpath} setFullPath={ setFullpath}/>
-                </View>
-
-                {/* 문서 리스트 영역 */}
-                <View style={ dialogStyles.folderListContainer}>
-                    {
-                        reqListData.dataList.length > 0 ?
-                            <CommonFlatList
-                                flatListRef ={ flatListRef}
-                                reqListData ={ reqListData}
-                                onEndReached={ onEndReached}
-                                fullpath={ fullpath}
-                                setFullpath={ setFullpath}
-                            />
-                        :
-                            <View>
-                                <Text>등록된 폴더가 없습니다.</Text>
-                            </View>
-                    }
-                </View>
+            <TextInput style={{  width: width - 50, height: 40, padding:10, borderWidth:1, borderColor:'#EFF3FB', borderRadius:10, backgroundColor:'#fff' }}
+                onChangeText={ text => setInputTxt( text)}
+                placeholder="제목을 입력하세요."
+                value={ inputTxt}
+                // onChangeText={ onChangeText}
+                // placeholder={ selectedTargetState.selectedTarget.doc_name + "(복사본)"}
+                // value={ !inputTxt ? selectedTargetState.selectedTarget.doc_name + "(복사본)" : inputTxt}
+            />
+            
+            {/* 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐 */}
+            {/* <View style={{ borderColor:'#eee', borderTopWidth:1}}>
+                <FullPath fullpath= { fullpath} setFullPath={ setFullpath}/>
+            </View> */}
+            
+            {/* 문서 리스트 영역 */}
+            <View style={ dialogStyles.folderListContainer}>
+                {
+                    reqListData.dataList.length > 0 ?
+                        <CommonFlatList
+                            flatListRef ={ flatListRef}
+                            reqListData ={ reqListData}
+                            onEndReached={ onEndReached}
+                            fullpath={ fullpath}
+                            setFullpath={ setFullpath}
+                        />
+                    :
+                        <View>
+                            <Text>등록된 폴더가 없습니다.</Text>
+                        </View>
+                }
             </View>
             <FloatingMenu fullpath={ fullpath} />
         </View>

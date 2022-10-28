@@ -1,6 +1,6 @@
 import { CommonContext } from '../../context/CommonContext';
 import React, { useContext } from 'react';
-import {TouchableOpacity, View, Text, Dimensions} from 'react-native';
+import {TouchableOpacity, View, Text, Dimensions, StyleSheet} from 'react-native';
 import SvgIcon from '../../component/svgIcon/SvgIcon';
 import CommonUtil from '../../utils/CommonUtil';
 import CommonFnUtil from '../../utils/CommonFnUtil';
@@ -79,14 +79,19 @@ const CommonHeader = (props: CommonHeaderInfo) => {
 
         navigation.navigate( AppScreens.Login)
     };
+    
+    const styles = StyleSheet.create({
+        container: {
+            width:Dimensions.get('window').width - 200
+        },
+    });
 
     return (
         <View style={{width: '100%', height:50,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:10,paddingRight:10, borderRadius: 10}}>
-            <View style={{width: (headerMenuInfo.rightDialogBtn && Dimensions.get('window').width - 200), flexDirection: 'row', justifyContent:'space-between', alignItems:'center',}}>
+            <View style={[ headerMenuInfo.rightDialogBtn && styles.container,{ flexDirection: 'row', justifyContent:'space-between', alignItems:'center',}]}>
                 { !CommonUtil.objectIsNull( headerMenuInfo.leftBtn) && 
                     <View>
-                        { 
-                            headerMenuInfo.leftBtn.map( ( btnInfo: any) => {
+                        { headerMenuInfo.leftBtn.map( ( btnInfo: any) => {
                                 if( btnInfo.visibility) {
                                     return (
                                         <TouchableOpacity key={btnInfo.iconName} onPress={ onClickLeftBtn.bind( this, btnInfo.iconName) }>
@@ -101,35 +106,31 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                     </View>
                 }
 
-                <View>
+                { !headerMenuInfo.rightDialogBtn && 
                     <View>
-                        <Text style={{ marginLeft: (headerMenuInfo.rightBtn && 7), textAlign:'center',fontSize:20,fontWeight:'600'}}>{ multiSelectedState ? headerMenuInfo.centerText.title : headerName}</Text>
-                        { multiSelectedState && 
-                                <>
-                                <TouchableOpacity>
-                                    <Text>{headerMenuInfo.centerText.selectAllBtn}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity>
-                                    <Text>{headerMenuInfo.centerText.unselectAllBtn}</Text>
-                                </TouchableOpacity>
-                            </>
-                        }
-                    </View>
-                </View>
+                        <View>
+                            <Text style={{ marginLeft: (headerMenuInfo.rightBtn && 7), textAlign:'center',fontSize:21,fontWeight:'bold', color:'#75b9f4'}}>{ multiSelectedState ? headerMenuInfo.centerText.title : headerName}</Text>
+                            { multiSelectedState && 
+                                    <>
+                                    <TouchableOpacity>
+                                        <Text>{headerMenuInfo.centerText.selectAllBtn}</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <Text>{headerMenuInfo.centerText.unselectAllBtn}</Text>
+                                    </TouchableOpacity>
+                                </>
+                            }
+                        </View>
+                    </View>   
+                }
             </View>
 
             { headerName === 'ONEFFICE' && !CommonUtil.objectIsNull( headerMenuInfo) &&
-                <View style={{ flexDirection:'row'}}>
-                    <TouchableOpacity onPress={ logOut}>
-                        <View style={{ marginRight: 8}}>
-                            <SvgIcon name="NoProfile" width={28} height={28}/>
-                        </View>
-                    </TouchableOpacity>
-                    <View>
-                        <Text>{headerMenuInfo.empName}</Text>
-                        <Text>{headerMenuInfo.deptName}</Text>
+                <TouchableOpacity onPress={ onClickLeftBtn.bind( this, 'UserInfoICon')}>
+                    <View style={{ marginRight: 8}}>
+                        <SvgIcon name="NoProfile" width={28} height={28}/>
                     </View>
-                </View>
+                </TouchableOpacity>
             }
 
             {/* 오른쪽 메뉴 */}
