@@ -9,7 +9,7 @@ export const dialogStyles = StyleSheet.create({
         height: height - 240,
         backgroundColor:'#EFF3FB',
         alignItems:'center',
-        borderWidth:1,
+        // borderWidth:1,
         // backgroundColor:'white',
     },
     header:{
@@ -19,18 +19,19 @@ export const dialogStyles = StyleSheet.create({
     folderListContainer: {
         width: width - 50,
         height: height - 400,
-        marginTop: 10,
+        // marginTop: 10,
         paddingTop: 10,
         // borderWidth:1
     },
     docBoxListContainer: {
-        width:'100%', 
+        width: width-50, 
         height:50, 
         flexDirection:'row', 
         justifyContent:'space-around',
-        // borderWidth: 1,
-        // borderColor: '#DCE7FB', //#E4ECF9
-        backgroundColor:'#EFF3FB'
+        borderWidth: 1,
+        borderColor: '#DCE7FB', //#E4ECF9
+        backgroundColor:'#fff',
+        borderRadius: 10
     },
     docBoxList: {
         paddingTop: 14,

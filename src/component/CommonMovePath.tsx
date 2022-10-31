@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity} from 'react-native';
 import { MyDocListViewStyles} from '../content/style/style';
 import SvgIcon from '../component/svgIcon/SvgIcon';
@@ -26,6 +26,7 @@ const CommonMovePath = ( props: MovePathProps) => {
 
         setTargetFullPath( tempTarget.fullPathUIDs, tempTarget.fullPathNames, []);
     };
+
 
     return (
         <TouchableOpacity onPress={ onClickFolderBack.bind( this, targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 2])}>

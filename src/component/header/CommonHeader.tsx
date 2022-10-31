@@ -10,7 +10,7 @@ interface CommonHeaderInfo {
     headerName: any, // 가운데 표시 될 이름
     multiSelectedState : any, // 다중선택
     setMultiSelected : any,
-    headerMenuInfo: any, // 아이콘 구성
+    headerMenuInfo?: any, // 아이콘 구성
     contextName : string, // 현재 접속한 문서함 => 추후 contextNamerhk headerName으로 이벤트 구분하기 위해
     headerDataInfo : any, // 헤더에서 데이터 전송 시 필요 데이터 저장( ex 공유 관련 쪽지 전송 시)
     navigation: any, //페이지 이동
@@ -70,7 +70,14 @@ const CommonHeader = (props: CommonHeaderInfo) => {
 
     return (
         <View style={ CommonHeaderStyles.mainContainer}>
-            <View style={[ headerMenuInfo.rightDialogBtn && CommonHeaderStyles.rightBtnStyle, CommonHeaderStyles.MenuContainer]}>
+            <View style={[ (headerMenuInfo && headerMenuInfo.rightDialogBtn) && CommonHeaderStyles.rightBtnStyle, CommonHeaderStyles.MenuContainer]}>
+                { (!CommonUtil.objectIsNull( headerMenuInfo) || !centerDialogState) &&
+                    <TouchableOpacity onPress={ onClickLeftBtn.bind( this, 'UserInfoICon')}>
+                        <View>
+                            <SvgIcon name="NoProfile" width={28} height={28}/>
+                        </View>
+                    </TouchableOpacity>
+                }
                 { !CommonUtil.objectIsNull( headerMenuInfo.leftBtn) && 
                     <View>
                         { headerMenuInfo.leftBtn.map( ( btnInfo: any) => {
@@ -88,7 +95,7 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                     </View>
                 }
 
-                { !headerMenuInfo.rightDialogBtn && 
+                { CommonUtil.objectIsNull( headerMenuInfo.rightDialogBtn) &&
                     <View>
                         <View>
                             <Text style={[ CommonHeaderStyles.headerTitle, {marginLeft: (headerMenuInfo.rightBtn && 7)}]}>{ multiSelectedState ? headerMenuInfo.centerText.title : headerName}</Text>
@@ -106,14 +113,6 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                     </View>   
                 }
             </View>
-
-            { headerName === 'ONEFFICE' && !CommonUtil.objectIsNull( headerMenuInfo) &&
-                <TouchableOpacity onPress={ onClickLeftBtn.bind( this, 'UserInfoICon')}>
-                    <View style={{ marginRight: 8}}>
-                        <SvgIcon name="NoProfile" width={28} height={28}/>
-                    </View>
-                </TouchableOpacity>
-            }
 
             {/* 오른쪽 메뉴 */}
             { !CommonUtil.objectIsNull( headerMenuInfo.rightDialogBtn) && 

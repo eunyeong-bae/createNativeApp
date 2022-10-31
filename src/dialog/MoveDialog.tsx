@@ -49,6 +49,7 @@ export const MoveDialog = () => {
     });   //이동 폴더 path 상태 관리
 
     const setFullpath = useCallback(( fullPathUIDs : any, fullPathNames : any, treeTypes : any) : void => {
+        console.log(fullPathUIDs)
         setFullPath({...fullpath, fullPathUIDs, fullPathNames, treeTypes});
     },[ fullpath, setFullPath]);
 
@@ -128,9 +129,6 @@ export const MoveDialog = () => {
                     }
                 </>
             </View>
-            
-            {/* 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐 */}
-            {/* <FullPath fullpath= { fullpath} setFullPath={ setFullpath}/> */}
 
             {/* 문서 리스트 영역 */}
             <View style={ dialogStyles.folderListContainer}>

@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useMemo, useRef, useContext } from 'react';
+import React, { useState, useLayoutEffect, useMemo, useRef, useContext, useEffect } from 'react';
 import { View, Text, SafeAreaView, TextInput} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
@@ -9,6 +9,26 @@ import FloatingMenu from '../menu/FloatingMenu';
 import CommonUtil from '../utils/CommonUtil';
 import { CommonContext } from '../context/CommonContext';
 import CommonMovePath from '../component/CommonMovePath';
+
+
+const HomeMenuInfo : any = {    
+    'headerInfo' : {
+        //롱클릭 시, visibility : true 로 변경? 해준다는 가정하에 일단 작성
+        leftBtn : [
+            {iconName : 'CommonCloseBtn', visibility : false},
+        ],
+        rightBtn: [
+            {iconName: 'CheckAllBtnOff', visibility: true},
+            {iconName: 'CheckAllBtnOn', visibility: false},
+            {iconName :'CommonSearchBtn', visibility : true},
+        ],
+        centerText: {
+            title : ' 개 선택 | ',
+            selectAllBtn : '전체 선택',
+            unselectAllBtn : '전체 해제',
+        }
+    }
+};
 
 const CONTEXT_NAME = "Home";
 
@@ -29,9 +49,9 @@ const Home = ( props : any) => {
         fileTypes: '',
         dataList: [],
         includeFolder: true,
-        includeDoc: true
+        includeDoc: true,
+        contextName: CONTEXT_NAME
     });
-    const {sortItem, sortOrder, fileTypes} = reqListData;
 
     //딱 한번 실행 됌 
     useLayoutEffect( () => {
@@ -39,6 +59,13 @@ const Home = ( props : any) => {
             setSortMenu( CONTEXT_NAME, null, null);
         }
     }, []);
+
+    useEffect(() => {
+        if(sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME) {
+            setDataList({ ...reqListData, pageNum: 1, dataList: []});
+            // flatListRef.current?.scrollToOffset({ animated: false, offset: 0 }); //스크롤 초기화
+        }
+    }, [ sortMenuState]);
 
     const onEndReached = async() => {
         if( isLoading) {
@@ -57,7 +84,7 @@ const Home = ( props : any) => {
                         headerName = { 'ONEFFICE'} 
                         multiSelectedState = { null}
                         setMultiSelected = { null}
-                        headerMenuInfo={ null}
+                        headerMenuInfo={ HomeMenuInfo.headerInfo}
                         contextName={ CONTEXT_NAME}
                         headerDataInfo={ null}
                         navigation = { navigation}
@@ -72,9 +99,9 @@ const Home = ( props : any) => {
                 <View style={{width:'100%', paddingTop:15, paddingLeft:8, flexDirection:'row', alignItems:'center' }}>
                     <Text style={{ fontWeight:'bold', fontSize: 15, paddingLeft:5, color:'#75b9f4' }}>최근 조회 문서</Text>
                 </View>
+
                 <View style={ MyDocStyles.docListContainer}>
-                    {
-                        reqListData.dataList.length > 0 ? 
+                    { reqListData.dataList.length > 0 ? 
                             <>
                                 { centerDialogState && targetFullPathState.fullPathUIDs.length > 1 &&
                                     <CommonMovePath targetFullPathState={ targetFullPathState} setTargetFullPath={ setTargetFullPath} />
