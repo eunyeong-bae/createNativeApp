@@ -43,13 +43,13 @@ const FloatingMenu = ( props: FloatingMenuProps) => {
         {/* #9cd3e0 */}
             <View style={ styles.container}>
                 <ActionButton buttonColor= { isBtnClicked ? '#B5CAF0' : '#3498db'} zIndex={ 2} autoInactive={ true} onPress={() => ( setBtnClicked( !isBtnClicked))}>
-                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#4295fd' title="CreateNewFolder" onPress={ onClickSubMenu.bind( this, 'folder')}>
+                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#4295fd' title="새폴더" onPress={ onClickSubMenu.bind( this, 'folder')}>
                         <Icon name="folder-outline" style={ styles.actionButtonIcon} />
                     </ActionButton.Item>
-                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#3498db' title="CreateNewDoc" onPress={ onClickSubMenu.bind( this, 'doc')}>
+                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#4295fd' title="새문서" onPress={ onClickSubMenu.bind( this, 'doc')}>
                         <Icon name="document-text-outline" style={ styles.actionButtonIcon} />
                     </ActionButton.Item>
-                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#3498db' title="DocumentForms" onPress={ onClickSubMenu.bind( this, 'forms')}>
+                    <ActionButton.Item textContainerStyle={ styles.textContainer} buttonColor='#4295fd' title="문서양식" onPress={ onClickSubMenu.bind( this, 'forms')}>
                         <Icon name="documents-outline" style={ styles.actionButtonIcon} />
                     </ActionButton.Item>
                 </ActionButton>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         // borderWidth:1,
         borderWidth: 1,
         borderColor: '#CFDFFB',// '#CFDFFB','#DCE7FB', #E4ECF9
-        width: 120,
+        width: 60,
         alignItems:'center'
     },
     actionButtonIcon: {
