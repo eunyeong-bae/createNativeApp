@@ -69,18 +69,17 @@ const MyDoc = ( props : any) => {
         }
     }, []);
 
-    useEffect(() => { // unmount, context Api 초기화
-        // if( CommonUtil.strIsNull( sortMenuState.contextName) || sortMenuState.contextName !== CONTEXT_NAME) {
-        //     setSortMenu( CONTEXT_NAME, { sortItem:'1', fileTypes:'', sortOrder:'d'}, myDocMenuInfo[ 'sortMenu']);
-        // }
-        if(sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME && sortMenuState.selectedValue != null && (sortItem !== sortMenuState.selectedValue.sortItem || fileTypes !== sortMenuState.selectedValue.fileTypes ||  sortOrder !== sortMenuState.selectedValue.sortOrder)) {
+    useEffect(() => {
+        if(sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME && 
+            sortMenuState.selectedValue != null && (sortItem !== sortMenuState.selectedValue.sortItem || fileTypes !== sortMenuState.selectedValue.fileTypes ||  sortOrder !== sortMenuState.selectedValue.sortOrder)) {
             setDataList({ ...reqListData, pageNum: 1, sortItem:sortMenuState.selectedValue.sortItem, fileTypes:sortMenuState.selectedValue.fileTypes, sortOrder: sortMenuState.selectedValue.sortOrder, dataList: []});
-            flatListRef.current.scrollToOffset({ animated: false, offset: 0 }); //스크롤 초기화
+            // flatListRef.current?.scrollToOffset({ animated: false, offset: 0 }); //스크롤 초기화
         }
     }, [ sortMenuState]);
 
     useEffect(() => {
-        if( sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME && reqListData.dataList && reqListData.dataList.length > 0 && targetFullPathState.fullPathUIDs.length > 0) {
+        // && reqListData.dataList && reqListData.dataList.length > 0
+        if( sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME && targetFullPathState.fullPathUIDs.length > 0) {
             //pageNum:1 은 어디선가 스크롤 값이 자동으로 바뀌면서 onEndReached() 함수가 실행되고 있어서 pageNum값이 늘어나서 생겨난 문제, 일시적으로 추가함
             setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
         }
@@ -129,10 +128,9 @@ const MyDoc = ( props : any) => {
                 <TextInput style={ MyDocStyles.textInputStyle} placeholder="Search" />
                 
                 <View style={ MyDocStyles.docListContainer}>
-                    {
-                        reqListData.dataList.length > 0 ? 
+                    { reqListData.dataList.length > 0 ? 
                         <>
-                            { centerDialogState && targetFullPathState.fullPathUIDs.length > 1 &&
+                            { targetFullPathState.fullPathUIDs.length > 1 &&
                                 <CommonMovePath targetFullPathState={ targetFullPathState} setTargetFullPath={ setTargetFullPath} />
                             }
                             <CommonFlatList 
@@ -144,14 +142,17 @@ const MyDoc = ( props : any) => {
                             />
                         </>
                         :
+                        <View>
+                            <CommonMovePath targetFullPathState={ targetFullPathState} setTargetFullPath={ setTargetFullPath} />
                             <Text>등록된 문서가 없습니다.</Text>
-                        }
+                        </View>
+                    }
                 </View>
                 <FloatingMenu />
             </View>
         </SafeAreaView>
     </>
-    ), [ reqListData.dataList, listViewMode]);
+    ), [ reqListData.dataList, listViewMode])
 }
 
 export default MyDoc;

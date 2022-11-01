@@ -9,7 +9,6 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {dialogStyles} from './style/style';
 import CommonUtil from '../utils/CommonUtil';
 import CommonHeader from '../component/header/CommonHeader';
-import FullPath from '../fullPath/index';
 import useDocList from '../hooks/useDocList';
 import FloatingMenu from '../menu/FloatingMenu';
 import CommonFlatList from '../component/CommonFlatList';
@@ -115,8 +114,7 @@ export const MoveDialog = () => {
             />
             <View style={ dialogStyles.docBoxListContainer}>
                 <>
-                    {
-                        !CommonUtil.objectIsNull( DOCUMENT_BOX_LIST) &&
+                    { !CommonUtil.objectIsNull( DOCUMENT_BOX_LIST) &&
                         DOCUMENT_BOX_LIST.map( list => {
                             return (
                                 <TouchableOpacity key={ list.title} onPress={ onClickDocBox.bind( this, list.listType)}>
@@ -132,10 +130,9 @@ export const MoveDialog = () => {
 
             {/* 문서 리스트 영역 */}
             <View style={ dialogStyles.folderListContainer}>
-                {
-                    reqListData.dataList.length > 0 ?
+                { reqListData.dataList.length > 0 ?
                         <>
-                            { centerDialogState && fullpath.fullPathUIDs.length > 1 &&
+                            { fullpath.fullPathUIDs.length > 1 &&
                                 <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullPath} />
                             }
                             <CommonFlatList
@@ -155,5 +152,5 @@ export const MoveDialog = () => {
 
             <FloatingMenu fullpath={ fullpath}  />
         </View>
-    ), [ reqListData.dataList]);
+    ), [ reqListData.dataList])
 }

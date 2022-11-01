@@ -31,5 +31,5 @@ export const ModalDialog = () => {
                 }
             </ModalContent>
         </Modal>
-    ), [ centerDialogState]);
+    ), [ centerDialogState])
 }
