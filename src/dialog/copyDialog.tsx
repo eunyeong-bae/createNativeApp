@@ -130,7 +130,7 @@ export const CopyDialog = () => {
                 {
                     reqListData.dataList.length > 0 ?
                     <>
-                        { centerDialogState && fullpath.fullPathUIDs.length > 1 &&
+                        { fullpath.fullPathUIDs.length > 1 &&
                             <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullPath} />
                         }
                         <CommonFlatList
@@ -149,5 +149,5 @@ export const CopyDialog = () => {
             </View>
             <FloatingMenu fullpath={ fullpath} />
         </View>
-    ), [ reqListData.dataList]);
+    ), [ reqListData.dataList])
 }

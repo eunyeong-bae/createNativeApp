@@ -34,7 +34,7 @@ const CONTEXT_NAME = "Home";
 
 const Home = ( props : any) => {    
     const { navigation} = props;
-    const { sortMenuState, setSortMenu, centerDialogState, targetFullPathState, setTargetFullPath} = useContext( CommonContext);
+    const { sortMenuState, setSortMenu, centerDialogState, targetFullPathState, setTargetFullPath, alertDialogState} = useContext( CommonContext);
 
     const flatListRef = useRef<any>();
     
@@ -66,6 +66,21 @@ const Home = ( props : any) => {
             // flatListRef.current?.scrollToOffset({ animated: false, offset: 0 }); //스크롤 초기화
         }
     }, [ sortMenuState]);
+
+    useEffect(() => {
+        //reqListData.dataList && reqListData.dataList.length > 0 &&
+        if( sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME &&  targetFullPathState.fullPathUIDs.length > 0) {
+            //pageNum:1 은 어디선가 스크롤 값이 자동으로 바뀌면서 onEndReached() 함수가 실행되고 있어서 pageNum값이 늘어나서 생겨난 문제, 일시적으로 추가함
+            setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+        }
+    }, [ targetFullPathState]);
+
+    useEffect(() => {
+        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
+        if( sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME) {
+            setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+        }
+    }, [ centerDialogState, alertDialogState]);
 
     const onEndReached = async() => {
         if( isLoading) {
@@ -103,7 +118,7 @@ const Home = ( props : any) => {
                 <View style={ MyDocStyles.docListContainer}>
                     { reqListData.dataList.length > 0 ? 
                             <>
-                                { centerDialogState && targetFullPathState.fullPathUIDs.length > 1 &&
+                                { targetFullPathState.fullPathUIDs.length > 1 &&
                                     <CommonMovePath targetFullPathState={ targetFullPathState} setTargetFullPath={ setTargetFullPath} />
                                 }
                                 <CommonFlatList 
@@ -115,14 +130,17 @@ const Home = ( props : any) => {
                                 />
                             </>
                         : 
+                        <View>
+                            <CommonMovePath targetFullPathState={ targetFullPathState} setTargetFullPath={ setTargetFullPath} />
                             <Text>등록된 문서가 없습니다.</Text>
+                        </View>
                     }
                 </View>
 
                 <FloatingMenu />
             </View>
         </SafeAreaView>
-    ), [ reqListData.dataList]);
+    ), [ reqListData.dataList])
 }
 
 export default Home;

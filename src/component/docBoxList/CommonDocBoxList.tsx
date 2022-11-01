@@ -30,7 +30,7 @@ const DOCUMENT_BOX_LIST = [ //MAP
 
 const CommonDocBoxList = ( props : any) => {
     const { navigation} = props;
-    const { sortMenuState, setSortMenu} = useContext( CommonContext);
+    const { sortMenuState, setSortMenu, setTargetFullPath} = useContext( CommonContext);
     const [ isActive, setIsActive] = useState({
         Home: false,
         MyDoc: false,
@@ -40,21 +40,14 @@ const CommonDocBoxList = ( props : any) => {
         TrashDoc: false,
     });
 
-    // useLayoutEffect(() => {
-    //     setIsActive({
-    //         ...isActive,
-    //         MyDoc: true
-    //     })
-    // }, []);
+    useLayoutEffect(() => {
+        setIsActive({
+            ...isActive,
+            MyDoc: true
+        })
+    }, []);
 
-    // useEffect(() => {
-    //     // 마지막에 셋 해준걸로 다시 화면 그리고싶은데 ㅠㅠ
-    // }, [ isActive]);
-
-    //app 점프만 해주니 까 리스트 불러오는 항목 필요없
     const onClickDocBox = ( name: string, navi: any) => {
-
-        setSortMenu( '',  { sortItem:'', fileTypes:'', sortOrder:''}, null);
 
         setIsActive({
             Home: name === 'Home' ,
@@ -65,6 +58,9 @@ const CommonDocBoxList = ( props : any) => {
             TrashDoc: name === 'TrashDoc',
         });
 
+        setSortMenu( name,  { sortItem:'', fileTypes:'', sortOrder:''}, null);
+        setTargetFullPath( [''], ['내 문서함'], null);
+
         navigation.navigate( navi);
     };
 
@@ -73,7 +69,7 @@ const CommonDocBoxList = ( props : any) => {
             {/* {console.log(isActive)} */}
             <View style={ dialogStyles.docBoxListContainer}>
                 <ScrollView horizontal={ true} showsHorizontalScrollIndicator={ false}>
-                { !CommonUtil.objectIsNull( DOCUMENT_BOX_LIST) &&
+                { !CommonUtil.objectIsNull( DOCUMENT_BOX_LIST) ?
                     DOCUMENT_BOX_LIST.map( list => {
                         // { console.log( list)}
                         return (
@@ -88,6 +84,8 @@ const CommonDocBoxList = ( props : any) => {
                             </TouchableOpacity>
                         )
                     })
+                    :
+                    null
                 }
                 </ScrollView>
             </View>

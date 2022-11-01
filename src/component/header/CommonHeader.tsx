@@ -71,7 +71,7 @@ const CommonHeader = (props: CommonHeaderInfo) => {
     return (
         <View style={ CommonHeaderStyles.mainContainer}>
             <View style={[ (headerMenuInfo && headerMenuInfo.rightDialogBtn) && CommonHeaderStyles.rightBtnStyle, CommonHeaderStyles.MenuContainer]}>
-                { (!CommonUtil.objectIsNull( headerMenuInfo) || !centerDialogState) &&
+                { (!CommonUtil.objectIsNull( headerMenuInfo) || !centerDialogState.dialogName) &&
                     <TouchableOpacity onPress={ onClickLeftBtn.bind( this, 'UserInfoICon')}>
                         <View>
                             <SvgIcon name="NoProfile" width={28} height={28}/>
@@ -158,7 +158,7 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                 </View>
             }
         </View>
-    );
+    )
 }
 
 export default CommonHeader;
