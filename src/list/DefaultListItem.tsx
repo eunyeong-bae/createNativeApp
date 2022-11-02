@@ -87,7 +87,6 @@ const DefaultListItem = ( props:any) => {
                            </View> 
                        </TouchableHighlight>
                    :
-                   <View></View>
                     <View></View>
                }
            </View>

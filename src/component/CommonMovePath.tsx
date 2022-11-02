@@ -1,12 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity} from 'react-native';
 import { MyDocListViewStyles} from '../content/style/style';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 
 interface MovePathProps {
     targetFullPathState? : any,
-    setTargetFullPath? : any
+    setTargetFullPath? : any,
 }
+
 const CommonMovePath = ( props: MovePathProps) => {
     const { targetFullPathState, setTargetFullPath} = props;
 

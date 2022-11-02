@@ -116,8 +116,7 @@ const TrashDoc = ( props : any) => {
                 <CommonDocBoxList navigation={ navigation} />
                 
                 <View style={ MyDocStyles.docListContainer}>
-                    {
-                        reqListData.dataList.length > 0 ? 
+                    { reqListData.dataList.length > 0 ? 
                         <CommonFlatList 
                             flatListRef ={ flatListRef}
                             reqListData ={ reqListData}
