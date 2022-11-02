@@ -133,7 +133,7 @@ export const MoveDialog = () => {
                 { reqListData.dataList.length > 0 ?
                         <>
                             { fullpath.fullPathUIDs.length > 1 &&
-                                <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullPath} />
+                                <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
                             }
                             <CommonFlatList
                                 flatListRef ={ flatListRef}
@@ -145,7 +145,7 @@ export const MoveDialog = () => {
                         </>
                     :
                         <View>
-                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullPath} />
+                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
                         </View>
                 }
             </View>

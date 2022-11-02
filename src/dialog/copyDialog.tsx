@@ -127,11 +127,10 @@ export const CopyDialog = () => {
             
             {/* 문서 리스트 영역 */}
             <View style={ dialogStyles.folderListContainer}>
-                {
-                    reqListData.dataList.length > 0 ?
+                { reqListData.dataList.length > 0 ?
                     <>
                         { fullpath.fullPathUIDs.length > 1 &&
-                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullPath} />
+                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
                         }
                         <CommonFlatList
                             flatListRef ={ flatListRef}
@@ -143,7 +142,7 @@ export const CopyDialog = () => {
                     </>
                     :
                         <View>
-                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullPath} />
+                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
                         </View>
                 }
             </View>
