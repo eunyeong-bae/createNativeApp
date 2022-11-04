@@ -51,7 +51,7 @@ const myDocMenuInfo:any = {
     'changeName':{name:'이름 변경', auth:'Read',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRename},
     'addOwnForm':{name:'나만의 양식 추가',auth: 'Read',rightMenu: false,icon:'ActionSetViewOnly',clickEvent: CommonFnUtil.onClickAddOwnForm},
     'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRemove},
-    'setFavorite':{name:'중요 표시', auth:'Read',rightMenu: false,icon: ['ActionCategoryOff', 'ActionCategoryOn'],clickEvent: CommonFnUtil.onClickSetFavCatergory},
+    'setFavorite':{name:'중요 표시', auth:'Read',rightMenu: false,icon: ['importantOff', 'importantOn'],clickEvent: CommonFnUtil.onClickSetFavCatergory},
     'relatedDoc':{name:'연관 문서',auth: 'Read',rightMenu: false,icon: 'ActionRelateDoc',clickEvent: CommonFnUtil.onClickRelatedDoc},
     'setViewOnly':{name:'읽기 전용 설정',auth:'Update',rightMenu: false,icon:['ActionSetViewOnly', 'ActionCategoryOn'],clickEvent: CommonFnUtil.onClickSetViewOnly},
     'setPassword':{name:'보안 설정', auth:'Read',rightMenu: true,icon:'ActionSetPW',clickEvent: CommonFnUtil.onClickSetPassword},

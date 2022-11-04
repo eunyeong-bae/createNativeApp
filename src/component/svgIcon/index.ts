@@ -58,8 +58,6 @@ export { default as ListCategoryIcon } from '../../assets/icons/listIcons/ic_cat
 
 export { default as ActionReqAuth } from '../../assets/icons/actionMenuIcons/ic_auth_none.svg';
 export { default as ActionCopy } from '../../assets/icons/actionMenuIcons/ic_chat_copy.svg';
-export { default as ActionCategoryOff } from '../../assets/icons/actionMenuIcons/ic_draw_bookmark_off.svg';
-export { default as ActionCategoryOn } from '../../assets/oneffice/homeIcons/icon_folder_bookmark.svg';
 export { default as ActionTrashBin } from '../../assets/icons/actionMenuIcons/ic_func_del_none.svg';
 export { default as ActionLinkCopy } from '../../assets/icons/actionMenuIcons/ic_func_link_none.svg';
 export { default as ActionMove } from '../../assets/icons/actionMenuIcons/ic_func_move_none.svg';
@@ -115,18 +113,22 @@ export {default as R_menuNextPageBtn} from '../../assets/oneffice/homeIcons/icon
 //docboxlist icons
 export {default as OnefficeOn} from '../../assets/oneffice/homeIcons/icon_oneffice_sele.svg';
 export {default as OnefficeOff} from '../../assets/oneffice/homeIcons/icon_oneffice_none.svg';
-
 export {default as MyDocOn} from '../../assets/oneffice/homeIcons/icon_folder_sele.svg';
 export {default as MyDocOff} from '../../assets/oneffice/homeIcons/icon_folder_none.svg';
-
 export {default as SharedDocOn} from '../../assets/oneffice/homeIcons/icon_sharedocu_sele.svg';
 export {default as SharedDocOff} from '../../assets/oneffice/homeIcons/icon_sharedocu_none.svg';
-
 export {default as ImportantDocOn} from '../../assets/oneffice/homeIcons/icon_importantfile_sele.svg';
 export {default as ImportantDocOff} from '../../assets/oneffice/homeIcons/icon_importantfile_none.svg';
-
 export {default as SecurityDocOn} from '../../assets/oneffice/homeIcons/icon_securityfile_sele.svg';
 export {default as SecurityDocOff} from '../../assets/oneffice/homeIcons/icon_securityfile_none.svg';
-
 export {default as TrashDocOn} from '../../assets/oneffice/homeIcons/icon_delete_sele.svg';
 export {default as TrashDocOff} from '../../assets/oneffice/homeIcons/icon_delete_none.svg';
+
+//Swipe icons
+export { default as CategoryOff } from '../../assets/oneffice/homeIcons/ic_important_off_m_disable.svg';
+export { default as CategoryOn } from '../../assets/oneffice/homeIcons/ic_important_on_m_normal.svg';
+export { default as importantOn} from '../../assets/oneffice/homeIcons/ic_favorite_m_on.svg';
+export { default as importantOff} from '../../assets/oneffice/homeIcons/ic_favorite_m_off.svg';
+export { default as arrowDown} from '../../assets/oneffice/homeIcons/ic_arrow_down.svg';
+export { default as arrowUp} from '../../assets/oneffice/homeIcons/ic_arrow_up.svg';
+export { default as folderPrev} from '../../assets/oneffice/homeIcons/ic_folder_prev_m.svg';
