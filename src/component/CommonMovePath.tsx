@@ -34,7 +34,7 @@ const CommonMovePath = ( props: MovePathProps) => {
             <View style={ MyDocListViewStyles.docListContainer}>
                     <View style={ MyDocListViewStyles.docListStyle}>
                         <View style ={ MyDocListViewStyles.ThumImg}>
-                            <SvgIcon name="DocListFolderIcon" width={22} height={22} />
+                            <SvgIcon name="folderPrev" width={22} height={22} />
                         </View>
                         <View style={ MyDocListViewStyles.docInfo}>
                             <Text style={ [ MyDocListViewStyles.title, { color: '#75b9f4', fontWeight:'bold', fontSize:15}]} numberOfLines={1}>상위 폴더로 이동</Text>
