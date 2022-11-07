@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Adapter from '../ecmadapter';
@@ -14,13 +14,14 @@ const Category : any = [
 
 const CommonCollapsible = () => {
   const [ isActiveCategory, setIsActiveCategory] = useState( false); //카테고리 타이틀 클릭 상태 값 체크
-  // const [ isCategoryLists, setIsCategoryLists] = useState([]);
+  const [ isCategoryLists, setIsCategoryLists] = useState([{
+    title: '카테고리',
+    data: [],
+  }]);
 
-  // useLayoutEffect(() => {
-  //   // const categoryLists = callCategoryList();
-  //   // setIsCategoryLists( );
-  //   // console.log( categoryLists)
-  // });
+  useLayoutEffect(() => {
+    callCategoryList();
+  });
 
   //카테고리 목록 조회
   const callCategoryList = async() => {
@@ -34,14 +35,44 @@ const CommonCollapsible = () => {
     };
 
     await Adapter.fetch.protocol(data).then((res) => {
-        if( res.list){
-          result = res.list;
+      if( res){
+          const resultData : any = res.treeNode;
+
+          let pushArr = function( item: any) {
+            result.push({
+              name:item.name,
+              uid:item.uid,
+              parentUID:item.parentUID,
+              bSelect:false,
+              bEditable:false
+            });
+          };
+
+          pushArr({
+            name: "전체",
+            uid: "RA_ROOT",
+            parentUID:""
+          });
+
+          resultData.forEach(function ( item: any, idx: any) {
+            pushArr(item);
+
+            if ((item.childCount && item.childCount > 0) || (item.children && item.children.length > 0)) {
+              item.children.forEach(function ( item2:any, idx2:any) {
+                pushArr(item2);
+              });
+            }
+          });
+
+          setIsCategoryLists([{
+            title: '카테고리',
+            data: result,
+          }]);
+
         }
     }).catch((error) => {
         console.error(error)
     })
-
-    result = ['전체','가','나','다'];
 
     return result;
   };
@@ -53,20 +84,20 @@ const CommonCollapsible = () => {
   const hiddenItemEvent = () => {
 
   }
-  const renderHeader = ( category: any) => {
-      return (
-        <View style={ collapsibleStyles.titleContainerStyle}>
-          <Text style={ collapsibleStyles.textStyle}>{ category.title}</Text>
-          <View>
-            <SvgIcon name={ isActiveCategory ? "arrowDown" : "arrowUp"} width={20} height={20} />
-          </View>
+  const renderHeader = useCallback(( category: any) => {
+    return (
+      <View style={ collapsibleStyles.titleContainerStyle}>
+        <Text style={ collapsibleStyles.textStyle}>{ category.title}</Text>
+        <View>
+          <SvgIcon name={ isActiveCategory ? "arrowDown" : "arrowUp"} width={20} height={20} />
         </View>
-      );
-    };
+      </View>
+    );
+  }, [ isActiveCategory]);
 
   const renderItem = ( data: any) => {
     return (
-      <TouchableOpacity key={ data.index}>
+      <TouchableOpacity>
         <View style={{ width:'70%', borderWidth:1, backgroundColor:'#fff', padding:10,}}>
           <Text style={{ fontSize:15, fontWeight:'600', color:'#262529'}}>{ data.item}</Text>
         </View>
@@ -74,7 +105,7 @@ const CommonCollapsible = () => {
     )
   };
 
-  const renderHiddenItem = ( data : any) => {
+  const renderHiddenItem = useCallback(( data : any) => {
     return (
       <TouchableOpacity
         style={[styles.backRightBtn]}
@@ -85,15 +116,18 @@ const CommonCollapsible = () => {
         </View>
       </TouchableOpacity>
     );
-  };
+  }, [ isActiveCategory]);
   
-  const renderContent = ( category: any) => {
+  const keyExtractor = useCallback((item : any, index : any) => item.uid + index, []);
+
+  const renderContent = useCallback(( category: any) => {
     return (
       isActiveCategory ?
         <View style={ collapsibleStyles.contentContainerStyle}>
           <SwipeListView 
             showsVerticalScrollIndicator={ false}
             data={ category.data}
+            keyExtractor={ keyExtractor}
             renderItem={ renderItem}
             renderHiddenItem={ renderHiddenItem}
             leftOpenValue={ 40}
@@ -102,7 +136,7 @@ const CommonCollapsible = () => {
       : 
         null
     );
-  };
+  }, [ isActiveCategory]);
 
   const updateSections = () => {
     setIsActiveCategory( !isActiveCategory);
@@ -113,7 +147,7 @@ const CommonCollapsible = () => {
     <View style={[ collapsibleStyles.mainContainerStyle , isActiveCategory ? collapsibleStyles.isActive : collapsibleStyles.isNotActive]}>
       <Accordion
           activeSections={[0]}
-          sections={ Category}
+          sections={ isCategoryLists}
           renderHeader={ renderHeader}
           renderContent={ renderContent}
           onChange={ updateSections}
