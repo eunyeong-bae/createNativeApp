@@ -61,7 +61,7 @@ const Home = ( props : any) => {
     }, []);
 
     useEffect(() => {
-        if(sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME) {
+        if( sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME) {
             setDataList({ ...reqListData, pageNum: 1, dataList: []});
             // flatListRef.current?.scrollToOffset({ animated: false, offset: 0 }); //스크롤 초기화
         }
