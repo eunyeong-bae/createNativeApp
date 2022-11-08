@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, SafeAreaView} from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Adapter from '../ecmadapter';
 import SvgIcon from '../component/svgIcon/SvgIcon';
@@ -81,9 +81,10 @@ const CommonCollapsible = () => {
     console.log( menuNM, data);
   };
 
-  const hiddenItemEvent = () => {
+  const hiddenItemEvent = ( item: any) => {
+    console.log(item);
+  };
 
-  }
   const renderHeader = useCallback(( category: any) => {
     return (
       <View style={ collapsibleStyles.titleContainerStyle}>
@@ -98,8 +99,8 @@ const CommonCollapsible = () => {
   const renderItem = ( data: any) => {
     return (
       <TouchableOpacity>
-        <View style={{ width:'70%', borderWidth:1, backgroundColor:'#fff', padding:10,}}>
-          <Text style={{ fontSize:15, fontWeight:'600', color:'#262529'}}>{ data.item}</Text>
+        <View style={{ width:'50%', borderWidth:1, backgroundColor:'#fff', padding:10,}}>
+          <Text style={{ fontSize:15, fontWeight:'600', color:'#262529'}}>{ data.item.name}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -109,7 +110,7 @@ const CommonCollapsible = () => {
     return (
       <TouchableOpacity
         style={[styles.backRightBtn]}
-        onPress={ hiddenItemEvent.bind(this, 'setCategory', data)}
+        onPress={ hiddenItemEvent.bind(this, 'setCategory', data.item)}
       >
         <View>
           <SvgIcon name="CategoryOn" width={ 20} height={ 20} />
@@ -144,7 +145,7 @@ const CommonCollapsible = () => {
   
 
   return (
-    <View style={[ collapsibleStyles.mainContainerStyle , isActiveCategory ? collapsibleStyles.isActive : collapsibleStyles.isNotActive]}>
+    <View style={ [collapsibleStyles.mainContainerStyle, isActiveCategory && collapsibleStyles.isActive]}>
       <Accordion
           activeSections={[0]}
           sections={ isCategoryLists}
@@ -160,11 +161,11 @@ export default CommonCollapsible;
 
 const collapsibleStyles = StyleSheet.create({
   isActive: {
-    height: 250,
+    height: 200,
   },
-  isNotActive: {
-    height:40,
-  },
+  // isNotActive: {
+  //   height:40,
+  // },
   mainContainerStyle:{
     width: '100%',
     height:40,
@@ -187,8 +188,8 @@ const collapsibleStyles = StyleSheet.create({
   },
   contentContainerStyle: { 
     width:'100%',
-    height: 190,
-    marginTop:10,
+    height: 150,
+    marginTop:5,
     padding:5,
     borderWidth:1,
     borderColor:'red'
