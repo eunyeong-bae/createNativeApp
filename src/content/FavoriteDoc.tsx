@@ -106,12 +106,14 @@ const FavoriteDoc = ( props : any) => {
             setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
         }
     }
+
+    const [ isActiveCategory, setIsActiveCategory] = useState( false); //카테고리 타이틀 클릭 상태 값 체크
     
     return useMemo(() => (
         <>
         {/* {console.log(alertDialogState)} */}
         <SafeAreaView style={ MyDocStyles.safeAreaStyle}>
-            <ScrollView>
+            {/* <ScrollView> */}
                 <View style={ MyDocStyles.docMainContainer}>
                     <CommonHeader
                             headerName = { '중요문서함'} 
@@ -127,9 +129,9 @@ const FavoriteDoc = ( props : any) => {
 
                     <CommonDocBoxList navigation={ navigation} />
 
-                    <CommonCollapsible />
+                    <CommonCollapsible isActiveCategory={ isActiveCategory} setIsActiveCategory={ setIsActiveCategory}/>
                     
-                    <View style={ MyDocStyles.docListContainer}>
+                    <View style={[ MyDocStyles.docListContainer, isActiveCategory && MyDocStyles.docListOpen]}>
                         { reqListData.dataList.length > 0 ? 
                             <>
                                 { targetFullPathState.fullPathUIDs.length > 1 &&
@@ -146,16 +148,16 @@ const FavoriteDoc = ( props : any) => {
                             :
                             <View>
                                 <CommonMovePath targetFullPathState={ targetFullPathState} setTargetFullPath={ setTargetFullPath} />
-                                <Text>등록된 문서가 없습니다.</Text>
+                                <Text style={{ padding:10}}>등록된 문서가 없습니다.</Text>
                             </View>
                         }
                     </View>
                     <FloatingMenu />
                 </View>
-            </ScrollView>
+            {/* </ScrollView> */}
         </SafeAreaView>
     </>
-    ), [ reqListData.dataList, listViewMode])
+    ), [ reqListData.dataList, listViewMode, isActiveCategory])
 }
 
 export default FavoriteDoc;
