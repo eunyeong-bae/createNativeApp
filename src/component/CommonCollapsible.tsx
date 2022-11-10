@@ -5,15 +5,13 @@ import Adapter from '../ecmadapter';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
-const Category : any = [
-    {
-        title: '카테고리',
-        data: ['전체','가','나','다'],
-    },
-];
+interface FavoriteDocProps {
+  isActiveCategory ?: any,
+  setIsActiveCategory ?: any
+}
 
-const CommonCollapsible = () => {
-  const [ isActiveCategory, setIsActiveCategory] = useState( false); //카테고리 타이틀 클릭 상태 값 체크
+const CommonCollapsible = ( props: FavoriteDocProps) => {
+  const { isActiveCategory, setIsActiveCategory} = props;
   const [ isCategoryLists, setIsCategoryLists] = useState([{
     title: '카테고리',
     data: [],
@@ -87,7 +85,7 @@ const CommonCollapsible = () => {
 
   const renderHeader = useCallback(( category: any) => {
     return (
-      <View style={ collapsibleStyles.titleContainerStyle}>
+      <View style={[ collapsibleStyles.titleContainerStyle, isActiveCategory && collapsibleStyles.titleOn ]}>
         <Text style={ collapsibleStyles.textStyle}>{ category.title}</Text>
         <View>
           <SvgIcon name={ isActiveCategory ? "arrowDown" : "arrowUp"} width={20} height={20} />
@@ -99,8 +97,8 @@ const CommonCollapsible = () => {
   const renderItem = ( data: any) => {
     return (
       <TouchableOpacity>
-        <View style={{ width:'50%', borderWidth:1, backgroundColor:'#fff', padding:10,}}>
-          <Text style={{ fontSize:15, fontWeight:'600', color:'#262529'}}>{ data.item.name}</Text>
+        <View style={{ width:'100%', marginBottom:5, borderWidth:1, borderColor:'#DCE7FB', backgroundColor:'#fff', padding:10}}>
+          <Text numberOfLines={ 1} style={{ fontSize:15, fontWeight:'600', color:'#4B7FA7', textAlign:'center'}}>{ data.item.name}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -180,19 +178,22 @@ const collapsibleStyles = StyleSheet.create({
     flexDirection:'row',
     justifyContent:'space-between',
     paddingLeft:10,
+    paddingBottom:5,
   },
+  titleOn: {
+    borderBottomWidth:1,
+    borderBottomColor:'#DCE7FB'
+  }, 
   textStyle: {
     fontSize: 14,
-    fontWeight:'600',
-    color: '#262529',
+    fontWeight:'700',
+    color: '#75b9f4',
   },
   contentContainerStyle: { 
     width:'100%',
     height: 150,
     marginTop:5,
-    padding:5,
-    borderWidth:1,
-    borderColor:'red'
+    padding:10,
   },
 });
 
