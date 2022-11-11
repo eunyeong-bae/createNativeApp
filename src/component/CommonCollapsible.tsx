@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, SafeAreaView} from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Adapter from '../ecmadapter';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { CommonContext } from '../context/CommonContext';
 
 interface FavoriteDocProps {
   isActiveCategory ?: any,
@@ -12,6 +13,8 @@ interface FavoriteDocProps {
 
 const CommonCollapsible = ( props: FavoriteDocProps) => {
   const { isActiveCategory, setIsActiveCategory} = props;
+  const { setAlertDialog} = useContext( CommonContext);
+
   const [ isCategoryLists, setIsCategoryLists] = useState([{
     title: '카테고리',
     data: [],
@@ -21,6 +24,9 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
     callCategoryList();
   });
 
+  useEffect(() => {
+
+  })
   //카테고리 목록 조회
   const callCategoryList = async() => {
     let result: any = [];
@@ -79,8 +85,8 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
     console.log( menuNM, data);
   };
 
-  const hiddenItemEvent = ( item: any) => {
-    console.log(item);
+  const hiddenItemEvent = ( menuName: any, item: any) => {
+    
   };
 
   const renderHeader = useCallback(( category: any) => {
@@ -108,14 +114,38 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
     return (
       <TouchableOpacity
         style={[styles.backRightBtn]}
-        onPress={ hiddenItemEvent.bind(this, 'setCategory', data.item)}
+        onPress={ hiddenItemEvent.bind(this, 'deleteCategory', data.item)}
       >
         <View>
-          <SvgIcon name="CategoryOn" width={ 20} height={ 20} />
+          <SvgIcon name="deleteBtn" width={ 20} height={ 20} />
         </View>
       </TouchableOpacity>
     );
   }, [ isActiveCategory]);
+
+  const openCategoryDialog = () => {
+    const alertName = 'inputAlert';
+    const alertItem = {
+      title: '카테고리 추가',
+      menuNM: 'addCategory',
+      isCategoryLists, 
+      setIsCategoryLists
+    }; 
+
+    setAlertDialog( alertName, alertItem);
+    // alert('clicked')
+  };
+
+  const renderListHeaderItem = () => {
+    return (
+      <TouchableOpacity style={{borderWidth:1}} onPress={ openCategoryDialog}>
+        <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'flex-end', paddingBottom:10, }}>
+          <Text style={{ marginRight:5, color:'#aaa'}}>카테고리 설정</Text>
+          <SvgIcon name="addBtn" width={ 15} height={ 15} />
+        </View>
+      </TouchableOpacity>
+    );
+  };
   
   const keyExtractor = useCallback((item : any, index : any) => item.uid + index, []);
 
@@ -127,9 +157,11 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
             showsVerticalScrollIndicator={ false}
             data={ category.data}
             keyExtractor={ keyExtractor}
+            ListHeaderComponent={ renderListHeaderItem}
             renderItem={ renderItem}
             renderHiddenItem={ renderHiddenItem}
-            leftOpenValue={ 40}
+            // leftOpenValue={ 40}
+            rightOpenValue= { -40}
           />
         </View>
       : 
@@ -161,9 +193,6 @@ const collapsibleStyles = StyleSheet.create({
   isActive: {
     height: 200,
   },
-  // isNotActive: {
-  //   height:40,
-  // },
   mainContainerStyle:{
     width: '100%',
     height:40,
@@ -179,6 +208,7 @@ const collapsibleStyles = StyleSheet.create({
     justifyContent:'space-between',
     paddingLeft:10,
     paddingBottom:5,
+    alignItems:'center'
   },
   titleOn: {
     borderBottomWidth:1,
@@ -200,8 +230,11 @@ const collapsibleStyles = StyleSheet.create({
 const styles = StyleSheet.create({
   backRightBtn: {
       position: 'absolute',
+      top:0,
+      bottom:0,
+      right:0,
       width: 40,
-      height: 40,
+      height: 37,
       justifyContent:'center',
       alignItems:'center',
   },
