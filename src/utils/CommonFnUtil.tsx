@@ -198,6 +198,43 @@ export default class CommonFnUtil{
         return createNewFolder;
     }
 
+    public static setFavorite = async() => {
+        let setFavoriteResult: any = [];
+        
+        return setFavoriteResult;
+    }
+
+    public static createCategory = async( categoryNM: any, categoryRootUid: any) => {
+        let result: any = [];
+        
+        const data: any = {
+            protocolId : 'P732',
+            data : { category_name:categoryNM, category_root_uid:categoryRootUid},
+        };
+
+        await Adapter.fetch.protocol(data).then((res) => {
+            if( res) {
+                result = res.result;
+
+                Toast.show({
+                    type: 'success',
+                    text1: '생성되었습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+            }
+        }).catch(( error) => {
+            Toast.show({
+                type:'error',
+                text1: '실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
+        });
+
+        return result;
+    }
+
     public static searchDataList = async( sendata : any) => {
         let searchDataList : any = [];                                          
 
@@ -539,11 +576,11 @@ export default class CommonFnUtil{
 
     public static onClickSetFavCatergory = async() => {
         // console.log(' onClickCategory');
-        return 'toast|setFavorite';
+        return 'setFavorite';
     }
     public static onClickSetViewOnly = async() => {
         // console.log(' onClickCategory');
-        return 'toast|setViewOnly';
+        return 'setViewOnly';
     }
     
     // public static onClickFolderInfoView = async( selectedTarget : any) => {

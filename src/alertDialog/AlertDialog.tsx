@@ -39,6 +39,9 @@ const AlertDialog = () => {
                     break;
                 case 'newDocument':
                     break;
+                case 'addCategory':
+                    resultData = CommonFnUtil.createCategory( inputVal, 'FA_ROOT');
+                    break;
             
             }
             setTimeout(() => {
@@ -46,12 +49,20 @@ const AlertDialog = () => {
                     if( alertDialogState.alertItem.menuNM === 'rename') {
                         selectedTargetState.selectedTarget.doc_name = inputVal;
                     }
-
-                    setAlertDialog( '', null);
+                }
+                else if( alertDialogState.alertItem.menuNM === 'addCategory') {
+                    const { isCategoryLists, setIsCategoryLists } = alertDialogState.alertItem;
+                    const pushArr = { name: resultData.name, uid: resultData.uid, parentUID: resultData.parentUID};
+                    setIsCategoryLists([
+                        ...isCategoryLists,
+                        pushArr
+                    ]);
                 }
                 else {
                     return;
                 }
+                setAlertDialog( '', null);
+                
             }, 500);
         }
 

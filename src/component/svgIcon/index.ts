@@ -125,10 +125,12 @@ export {default as TrashDocOn} from '../../assets/oneffice/homeIcons/icon_delete
 export {default as TrashDocOff} from '../../assets/oneffice/homeIcons/icon_delete_none.svg';
 
 //Swipe icons
-export { default as CategoryOff } from '../../assets/oneffice/homeIcons/ic_important_off_m_disable.svg';
-export { default as CategoryOn } from '../../assets/oneffice/homeIcons/ic_important_on_m_normal.svg';
+export { default as CategoryOff } from '../../assets/oneffice/homeIcons/ic_important_off.svg';
+export { default as CategoryOn } from '../../assets/oneffice/homeIcons/ic_important_on.svg';
 export { default as importantOn} from '../../assets/oneffice/homeIcons/ic_favorite_m_on.svg';
 export { default as importantOff} from '../../assets/oneffice/homeIcons/ic_favorite_m_off.svg';
 export { default as arrowDown} from '../../assets/oneffice/homeIcons/ic_arrow_down.svg';
 export { default as arrowUp} from '../../assets/oneffice/homeIcons/ic_arrow_up.svg';
 export { default as folderPrev} from '../../assets/oneffice/homeIcons/ic_folder_prev_m.svg';
+export { default as deleteBtn} from '../../assets/oneffice/homeIcons/ic_del_bl_m_none.svg';
+export { default as addBtn} from '../../assets/oneffice/homeIcons/ic_add.svg';
