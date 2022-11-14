@@ -198,10 +198,70 @@ export default class CommonFnUtil{
         return createNewFolder;
     }
 
-    public static setFavorite = async() => {
-        let setFavoriteResult: any = [];
+    public static setFavorite = async( isFolder: any, objFavoriteInfo: any) => {
+        let setFavoriteResult: boolean = false;
         
+        const data: any = {
+            protocolId : 'P630',
+            data : objFavoriteInfo,
+        };
+
+        await Adapter.fetch.protocol(data).then((res) => {
+            if( (res && res.uid && res.uid.length > 0) || (!res.uid && isFolder)) { 
+                // setFavoriteResult = res.uid;
+                setFavoriteResult = true;
+
+                Toast.show({
+                    type: 'success',
+                    text1: '중요문서로 설정되었습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+            }
+            else {
+                setFavoriteResult = false;
+            }
+        }).catch(( error) => {
+            Toast.show({
+                type:'error',
+                text1: '실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
+        });
+
         return setFavoriteResult;
+    }
+
+    public static setUnFavorite = async( setFavoriteSeq: any) => {
+        let setUnFavoriteResult: boolean = false;
+        
+        const data: any = {
+            protocolId : 'P631',
+            data : {"docUID":setFavoriteSeq},
+        };
+
+        await Adapter.fetch.protocol(data).then((res) => {
+            if( res && res.ret && res.ret.length > 0) {
+                setUnFavoriteResult = false;
+
+                Toast.show({
+                    type: 'success',
+                    text1: '중요문서 설정이 해제되었습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+            }
+        }).catch(( error) => {
+            Toast.show({
+                type:'error',
+                text1: '실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
+        });
+
+        return setUnFavoriteResult;
     }
 
     public static createCategory = async( categoryNM: any, categoryRootUid: any) => {

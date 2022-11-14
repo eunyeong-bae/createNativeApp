@@ -138,7 +138,7 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
 
   const renderListHeaderItem = () => {
     return (
-      <TouchableOpacity style={{borderWidth:1}} onPress={ openCategoryDialog}>
+      <TouchableOpacity onPress={ openCategoryDialog}>
         <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'flex-end', paddingBottom:10, }}>
           <Text style={{ marginRight:5, color:'#aaa'}}>카테고리 설정</Text>
           <SvgIcon name="addBtn" width={ 15} height={ 15} />

@@ -7,18 +7,20 @@ const windowHeight = Dimensions.get('window').height;
 //모든 문서함 스타일
 export const MyDocStyles = StyleSheet.create({
     safeAreaStyle: {
-        height: Dimensions.get('window').height,
-        backgroundColor: '#EFF3FB', 
+        width: windowWidth,
+        height: windowHeight,
+        backgroundColor: '#EFF3FB',
     },
     docMainContainer: {
-        width: Dimensions.get('window').width - 20,
-        height: '100%', 
+        width: windowWidth - 20,
+        height: windowHeight - 100, 
+        // borderWidth:1,
         flex:1, 
-        justifyContent:'center', 
-        alignItems:'center', 
+        // justifyContent:'center', 
+        // alignItems:'center', 
         padding:5, 
         marginLeft:10, 
-        backgroundColor:'#EFF3FB'
+        backgroundColor:'#EFF3FB',
     },
     textInputStyle:{
         width:'100%', 
@@ -31,15 +33,16 @@ export const MyDocStyles = StyleSheet.create({
         backgroundColor:'#fff', 
     },
     docListContainer:{
+        width: '100%', 
         height: windowHeight - 241,
-        borderRadius:10,
+        marginTop:8,
         borderWidth:1,
+        borderRadius:10,
         borderColor:'#DCE7FB',
         backgroundColor:'#fff',
-        width: '100%', 
-        // flex:1,
-        // paddingTop: 5,
-        marginTop:8
+    },
+    docListOpen: {
+        height: windowHeight - 410,
     },
     docContainer: {
         width: 160,
@@ -86,15 +89,16 @@ export const MyDocStyles = StyleSheet.create({
 //commonMovePath.tsx & DefaultListItem.tsx
 export const MyDocListViewStyles = StyleSheet.create({
     docListContainer:{
-        width: '100%',
+        width: windowWidth - 45,
         height:60,
         padding:10,
+        margin:5,
         flexDirection:'row',
         // borderColor:'#DCE7FB',
         // borderWidth:1,
         backgroundColor:'#fff',
-        borderBottomWidth:1,
-        borderBottomColor:'#DCE7FB',
+        borderWidth:1,
+        borderColor:'#DCE7FB',
         borderRadius:10,
         // marginBottom:5,
         // marginTop:5,

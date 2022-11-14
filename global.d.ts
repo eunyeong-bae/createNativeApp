@@ -61,6 +61,11 @@ type AlertDialogState = {
     alertItem : any
 }
 
+type SwipeFuncState = {
+    setFavorite : boolean,
+    setDelete : boolean,
+}
+
 type ActionMenuState = {
     isActionMenu : boolean,
     // setIsActionMenu : any,
@@ -98,6 +103,8 @@ type CommonContextType = {
     setRightDialog : any,
     alertDialogState : AlertDialogState,
     setAlertDialog : any,
+    swipeItemState : swipeItemState,
+    setSwipeItem : any,
     actionMenuState : ActionMenuState
     setIsActionMenu : any,
     reViewDocState : ReViewDocState,

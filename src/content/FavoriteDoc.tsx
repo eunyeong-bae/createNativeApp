@@ -38,7 +38,13 @@ const FavoriteDocMenuInfo : any = {
 const CONTEXT_NAME = "FavoriteDoc";
 
 const FavoriteDoc = ( props : any) => {
-    const { sortMenuState, setSortMenu, targetFullPathState, setTargetFullPath, alertDialogState, centerDialogState} = useContext(CommonContext);
+    const { sortMenuState, 
+            setSortMenu, 
+            targetFullPathState, 
+            setTargetFullPath, 
+            alertDialogState, 
+            centerDialogState,
+            swipeItemState} = useContext(CommonContext);
     
     const { navigation} = props;
 
@@ -62,6 +68,8 @@ const FavoriteDoc = ( props : any) => {
     });
     const { sortItem, sortOrder, fileTypes} = reqListData;
 
+    const [ isActiveCategory, setIsActiveCategory] = useState( false); //카테고리 타이틀 클릭 상태 값 체크
+
     //딱 한번 실행 됌 
     useLayoutEffect( () => {
         if( CommonUtil.strIsNull( sortMenuState.contextName) || sortMenuState.contextName !== CONTEXT_NAME) {
@@ -71,7 +79,7 @@ const FavoriteDoc = ( props : any) => {
     }, []);
 
     useEffect(() => {
-        if(sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME && 
+        if( sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME && 
             sortMenuState.selectedValue != null && (sortItem !== sortMenuState.selectedValue.sortItem || fileTypes !== sortMenuState.selectedValue.fileTypes ||  sortOrder !== sortMenuState.selectedValue.sortOrder)) {
             setDataList({ ...reqListData, pageNum: 1, sortItem:sortMenuState.selectedValue.sortItem, fileTypes:sortMenuState.selectedValue.fileTypes, sortOrder: sortMenuState.selectedValue.sortOrder, dataList: []});
             // flatListRef.current?.scrollToOffset({ animated: false, offset: 0 }); //스크롤 초기화
@@ -91,7 +99,7 @@ const FavoriteDoc = ( props : any) => {
         if( sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME) {
             setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
         }
-    }, [ centerDialogState, alertDialogState]);
+    }, [ centerDialogState, alertDialogState, swipeItemState]);
 
     const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
@@ -106,8 +114,6 @@ const FavoriteDoc = ( props : any) => {
             setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
         }
     }
-
-    const [ isActiveCategory, setIsActiveCategory] = useState( false); //카테고리 타이틀 클릭 상태 값 체크
     
     return useMemo(() => (
         <>
@@ -157,7 +163,7 @@ const FavoriteDoc = ( props : any) => {
             {/* </ScrollView> */}
         </SafeAreaView>
     </>
-    ), [ reqListData.dataList, listViewMode, isActiveCategory])
+    ), [ reqListData.dataList, listViewMode, isActiveCategory]);
 }
 
 export default FavoriteDoc;

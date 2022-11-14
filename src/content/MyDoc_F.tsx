@@ -37,7 +37,13 @@ const myDocMenuInfo : any = {
 const CONTEXT_NAME = "MyDoc";
 
 const MyDoc = ( props : any) => {
-    const { sortMenuState, setSortMenu, targetFullPathState, setTargetFullPath, alertDialogState, centerDialogState} = useContext(CommonContext);
+    const { sortMenuState, 
+            setSortMenu, 
+            targetFullPathState, 
+            setTargetFullPath, 
+            alertDialogState, 
+            centerDialogState,
+            swipeItemState} = useContext(CommonContext);
     
     const { navigation} = props;
 
@@ -89,8 +95,9 @@ const MyDoc = ( props : any) => {
         //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
         if( sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME) {
             setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+            // flatListRef.current.yScrollOffset = 0;
         }
-    }, [ centerDialogState, alertDialogState]);
+    }, [ centerDialogState, alertDialogState, swipeItemState]);
 
     const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
