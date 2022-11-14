@@ -6,6 +6,8 @@ import CommonFnUtil from '../utils/CommonFnUtil';
 import CommonUtil from '../utils/CommonUtil';
 import Toast from 'react-native-toast-message';
 
+const categoryUid = '136142218a7664Bc9a';
+
 const AlertDialog = () => {
     const { alertDialogState, setAlertDialog, selectedTargetState, targetFullPathState} = useContext( CommonContext);
     const [ inputVal, setInputVal] = useState( '');
@@ -40,7 +42,7 @@ const AlertDialog = () => {
                 case 'newDocument':
                     break;
                 case 'addCategory':
-                    resultData = CommonFnUtil.createCategory( inputVal, 'FA_ROOT');
+                    resultData = CommonFnUtil.createCategory( inputVal, categoryUid);
                     break;
             
             }
@@ -62,7 +64,7 @@ const AlertDialog = () => {
                     return;
                 }
                 setAlertDialog( '', null);
-                
+
             }, 500);
         }
 

@@ -1,32 +1,38 @@
-import React, { useState, useCallback} from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useCallback, useContext} from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import CardListItem from '../list/CardListItem';
 import DefaultListItem from '../list/DefaultListItem';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import CommonFnUtil from '../utils/CommonFnUtil';
+import { CommonContext } from '../context/CommonContext';
 
 const hiddenItemLists:any = {    
-    'setFavorite':{name:'중요 표시', auth:'Read',rightMenu: false,icon: ['ActionCategoryOff', 'ActionCategoryOn'],clickEvent: CommonFnUtil.onClickSetFavCatergory},
-    'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRemove},
+    'setFavorite':{name:'중요 표시', auth:'Read',rightMenu: false,icon: ['importantOff', 'importantOn'],clickEvent: CommonFnUtil.onClickSetFavCatergory},
+    'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickRemove},
 };
 
 interface FlatListProps {
-    flatListRef: any,
-    reqListData: any,
+    flatListRef? : any,
+    reqListData? : any,
     listViewMode? : any,
-    navigation: any,
-    onEndReached: any,
+    navigation? : any,
+    onEndReached? : any,
     fullpath? : any,
     setFullpath? : any,
 }
 
 const CommonFlatList = ( props: FlatListProps) => {
-    const { flatListRef, reqListData, listViewMode, navigation, onEndReached, fullpath, setFullpath} = props;
-    const [ isClickToastMenu, setIsClickToastMenu] = useState({
-        setFavorite: false,
-        setReadOnly: false
-    });
+    const { swipeItemState, setSwipeItem, selectedTargetState} = useContext( CommonContext);
+
+    const { flatListRef, 
+            reqListData, 
+            listViewMode, 
+            navigation, 
+            onEndReached, 
+            fullpath, 
+            setFullpath} = props;
+
     /**
      * flatlist 최적화하기 
      * 1. 인라인 화살표 함수 사용X
@@ -63,9 +69,50 @@ const CommonFlatList = ( props: FlatListProps) => {
                              // 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐
                              fullpath={ fullpath} 
                              setFullpath={ setFullpath}
-                            //  navigation= {}
             />
         )
+    };
+
+    const hiddenItemEvent = async ( menuNM : any, data: any) => {
+        console.log( data)
+        const returnVal = await hiddenItemLists[menuNM].clickEvent();
+        
+        const bFavorite = !data.item.important;
+
+        let resultData: any = null;
+
+        if( returnVal === 'setFavorite') {
+            const strDocSeq = data.item.doc_type === '0' && bFavorite ? "" : data.item.docUID;
+            const strFolderSeq = data.item.doc_type === '1' ? "" : data.item.docUID;
+            
+            const objFavoriteInfo = bFavorite ? 
+                {
+                    category_name: "",
+                    category_root_uid: "FA_ROOT",
+                    docUID: strDocSeq,
+                    folder_no: strFolderSeq,
+                    target_id: '136142218a7664Bc9a',
+                }
+            :
+                strFolderSeq ? strFolderSeq+"||FO" : strDocSeq+"||DO";
+
+            resultData = bFavorite ? CommonFnUtil.setFavorite( data.item.doc_type === '0', objFavoriteInfo) : CommonFnUtil.setUnFavorite( objFavoriteInfo);       
+    
+            setTimeout(() => {
+                setSwipeItem({
+                    ...swipeItemState,
+                    setFavorite: resultData,
+                })
+            }, (1000));
+        }
+        else {
+            // textMsg = !isClickToastMenu.setReadOnly ?  '읽기 전용로 설정되었습니다.' : '읽기 전용이 해제되었습니다.';
+            // setIsClickToastMenu({
+            //     ...isClickToastMenu,
+            //     setReadOnly: !isClickToastMenu.setReadOnly
+            // });
+        }
+    
     };
 
     const renderHiddenItem = ( data : any) => {
@@ -73,16 +120,16 @@ const CommonFlatList = ( props: FlatListProps) => {
             <View style={styles.rowBack}>
                 <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                    onPress={() => alert('left')}
+                    onPress={ hiddenItemEvent.bind(this, 'setFavorite', data)}
                 >
-                    <SvgIcon name="ActionCategoryOff" width={ 20} height={ 20} />
+                    <SvgIcon name={ data.item.important ? 'importantOn' : 'importantOff'} width={ 20} height={ 20}/>
                 </TouchableOpacity>
                 
                 <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnRight]}
-                    onPress={() => alert('right')}
+                    onPress={ hiddenItemEvent.bind(this, 'delete', data)}
                 >
-                    <SvgIcon name="ActionReName" width={ 20} height={ 20} />
+                    <SvgIcon name="deleteBtn" width={ 20} height={ 20} />
                 </TouchableOpacity>
 
             </View>
@@ -92,7 +139,8 @@ const CommonFlatList = ( props: FlatListProps) => {
     return (
         <>
             <SwipeListView 
-                useFlatList={ true}
+                ref={ flatListRef}
+                showsVerticalScrollIndicator={ false}
                 data={ reqListData.dataList}
                 renderItem={ fullpath ? dialogRenderListItem : renderListItem}
                 renderHiddenItem={ renderHiddenItem}
