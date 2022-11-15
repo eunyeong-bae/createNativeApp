@@ -568,6 +568,11 @@ export default class CommonFnUtil{
     //         return 'newWindow|ShareConfig';
     //     }
     // }
+
+    public static deleteSubMenuEvent = async( menuNm : any) => {
+        return `dialog|${ menuNm}`;
+
+    }
     
     public static linkCopyEvent = async() => {
         // console.log(' linkCopyEvent');
@@ -631,7 +636,19 @@ export default class CommonFnUtil{
 
     public static onClickRemove = async() => {
         // console.log(' onClickRemove');
-        return 'dialog|remove';
+        return 'nextActionMenu|removeSubMenu';
+    }
+    public static onClickDeleteInTrash = async() => {
+        // console.log(' onClickRemove');
+        return 'dialog|deleteInTrash';
+    }
+    public static onClickRestore = async() => {
+        // console.log(' onClickRemove');
+        return 'dialog|restore';
+    }
+    public static onClickDelete = async() => {
+        // console.log(' onClickRemove');
+        return 'delete';
     }
 
     public static onClickSetFavCatergory = async() => {

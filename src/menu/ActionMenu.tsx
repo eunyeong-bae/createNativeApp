@@ -50,8 +50,9 @@ const myDocMenuInfo:any = {
     'copy':{name:'사본 만들기',auth:'Update',rightMenu: false,icon:'ActionCopy',clickEvent: CommonFnUtil.onClickCopy},
     'changeName':{name:'이름 변경', auth:'Read',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRename},
     'addOwnForm':{name:'나만의 양식 추가',auth: 'Read',rightMenu: false,icon:'ActionSetViewOnly',clickEvent: CommonFnUtil.onClickAddOwnForm},
-    'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRemove},
-    'setFavorite':{name:'중요 표시', auth:'Read',rightMenu: false,icon: ['importantOff', 'importantOn'],clickEvent: CommonFnUtil.onClickSetFavCatergory},
+    'delete':{name:'삭제',auth:'Update',rightMenu: true,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickRemove},
+    'deleteInTrash':{name:'영구삭제',auth:'Update',rightMenu: false,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickDeleteInTrash},
+    'restore':{name:'복원',auth:'Update',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRestore},
     'relatedDoc':{name:'연관 문서',auth: 'Read',rightMenu: false,icon: 'ActionRelateDoc',clickEvent: CommonFnUtil.onClickRelatedDoc},
     'setViewOnly':{name:'읽기 전용 설정',auth:'Update',rightMenu: false,icon:['ActionSetViewOnly', 'ActionCategoryOn'],clickEvent: CommonFnUtil.onClickSetViewOnly},
     'setPassword':{name:'보안 설정', auth:'Read',rightMenu: true,icon:'ActionSetPW',clickEvent: CommonFnUtil.onClickSetPassword},
@@ -65,24 +66,27 @@ const myDocMenuInfo:any = {
 };
 
 const ActionMenu = () => {
-    const moreMenus = ['share','linkCopy','ONECHAMBER(PDF)','move','copy','changeName','addOwnForm','delete','setFavorite','relatedDoc','setViewOnly','setPassword','setTag','DocInfo','DocHistory'];
+    const moreMenus = ['share','linkCopy','ONECHAMBER(PDF)','move','copy','changeName','addOwnForm','delete','relatedDoc','setViewOnly','setPassword','setTag','DocInfo','DocHistory'];
     const shareSubMenu = ['openLink','groupNuserShare']; //'openLinkRead', 'openLinkUpdate',
+    const removeSubMenu = ['deleteInTrash','restore'];
 
-    const { selectedTargetState, setSelectedTarget, centerDialogState, setCenterDialog, actionMenuState, setIsActionMenu, alertDialogState, setAlertDialog} = useContext(CommonContext);
+    const { setCenterDialog, 
+            actionMenuState, 
+            setIsActionMenu, 
+            setAlertDialog,
+            sortMenuState } = useContext(CommonContext);
+
     // const [ clickMenu, setClickMenu] = useState([]);
-    const [ options, setOptions] = useState([]);
+    const [ options, setOptions] = useState( []);
     const [ menus, setMenus] = useState( []);
     const [ nextActionMenu, setNextActionMenu] = useState( ''); // 서브메뉴 체크용
-    const [ isClickToastMenu, setIsClickToastMenu] = useState({
-        setFavorite: false,
-        setReadOnly: false
-    });
+    const [ isSetReadOnly, setisSetReadOnly] = useState( false);
     const actionSheetRef = useRef( null);
 
     useEffect(() => {
         if( actionMenuState.isActionMenu){
             if( !CommonUtil.strIsNull(nextActionMenu)) {
-                setMenus( shareSubMenu);
+                setMenus( nextActionMenu === 'shareSubMenu' ? shareSubMenu : removeSubMenu);
             }else {
                 setMenus( moreMenus);
             }
@@ -102,15 +106,7 @@ const ActionMenu = () => {
     };
 
     const searchClickMenu = () => {
-
         setOptions( renderMoreMenu( menus.length === 0 ? moreMenus : menus)); //menus
-        // setClickMenu( moreMenus);
-        // if( nextActionMenu === 'shareSubMenu'){
-        //     setOptions( renderMoreMenu( shareSubMenu));
-        // }
-        // else{
-        //     setOptions( renderMoreMenu( moreMenus));
-        // }
     }
 
     // const renderMoreMenu = ( clickMenu:any) => {
@@ -176,28 +172,41 @@ const ActionMenu = () => {
         for( let i=0; i<menus.length; i++){
             for(let j=0; j<menus[i].length;j++){
                 menuContent.push(
-                    <TouchableOpacity key={ myDocMenuInfo[menus[i][j]].name} onPress={() => onClickActionMenuItemMore(menus[i][j])}>
-                        <View style={ moreMenuStyles.container}>
-                            <View style={ moreMenuStyles.menuIconContainer}>
-                                { !CommonUtil.strIsNull( myDocMenuInfo[menus[i][j]].icon) &&
-                                    <View style={ moreMenuStyles.menuItemContainer}>
-                                        { typeof myDocMenuInfo[menus[i][j]].icon === 'string' ?
-                                             <SvgIcon name={ myDocMenuInfo[menus[i][j]].icon} width={20} height={20}/>
-                                            : 
-                                             <>
-                                                { myDocMenuInfo[menus[i][j]].name === '중요 표시' ?
-                                                <SvgIcon name={ isClickToastMenu.setFavorite ? myDocMenuInfo[menus[i][j]].icon[1] : myDocMenuInfo[menus[i][j]].icon[0]} width={20} height={20}/>
-                                                :
-                                                <SvgIcon name={ isClickToastMenu.setReadOnly ? myDocMenuInfo[menus[i][j]].icon[1] : myDocMenuInfo[menus[i][j]].icon[0]} width={20} height={20}/>
-                                                }
-                                             </>
-                                        }
-                                        <Text style={{ fontSize: 11, paddingTop:5}}>{ myDocMenuInfo[menus[i][j]].name}</Text>
-                                    </View>
-                                }
+                    myDocMenuInfo[menus[i][j]].name !== '삭제' ? 
+                        <TouchableOpacity key={ myDocMenuInfo[menus[i][j]].name} onPress={() => onClickActionMenuItemMore(menus[i][j])}>
+                            <View style={ moreMenuStyles.container}>
+                                <View style={ moreMenuStyles.menuIconContainer}>
+                                    { !CommonUtil.strIsNull( myDocMenuInfo[menus[i][j]].icon) &&
+                                        <View style={ moreMenuStyles.menuItemContainer}>
+                                            { typeof myDocMenuInfo[menus[i][j]].icon === 'string' ?
+                                                <SvgIcon name={ myDocMenuInfo[menus[i][j]].icon} width={20} height={20}/>
+                                                : 
+                                                <>
+                                                    { myDocMenuInfo[menus[i][j]].name === '읽기 전용 설정' &&
+                                                        <SvgIcon name={ isSetReadOnly ? myDocMenuInfo[menus[i][j]].icon[1] : myDocMenuInfo[menus[i][j]].icon[0]} width={20} height={20}/>
+                                                    }
+                                                </>
+                                            }
+                                            <Text style={{ fontSize: 11, paddingTop:5}}>{ myDocMenuInfo[menus[i][j]].name}</Text>
+                                        </View>
+                                    }
+                                </View>
                             </View>
-                        </View>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    :
+                        sortMenuState.contextName === 'TrashDoc' &&
+                        <TouchableOpacity key={ myDocMenuInfo[menus[i][j]].name} onPress={() => onClickActionMenuItemMore(menus[i][j])}>
+                            <View style={ moreMenuStyles.container}>
+                                <View style={ moreMenuStyles.menuIconContainer}>
+                                    { !CommonUtil.strIsNull( myDocMenuInfo[menus[i][j]].icon) &&
+                                        <View style={ moreMenuStyles.menuItemContainer}>
+                                            <SvgIcon name={ myDocMenuInfo[menus[i][j]].icon} width={20} height={20}/>
+                                            <Text style={{ fontSize: 11, paddingTop:5}}>{ myDocMenuInfo[menus[i][j]].name}</Text>
+                                        </View>
+                                    }
+                                </View>
+                            </View>
+                        </TouchableOpacity>
                 )
             }
 
@@ -207,7 +216,7 @@ const ActionMenu = () => {
                         { menuContent}
                     </View>
                 );
-            menuContent = [];
+                menuContent = [];
 
             options.push( menuContainer);
         }
@@ -216,98 +225,158 @@ const ActionMenu = () => {
 
     const onClickActionMenuItemMore = async( menuName : string) => {
         const returnVal = await myDocMenuInfo[ menuName].clickEvent();
-        
-        let naviVal = returnVal.split('|');
-        if( naviVal[0] === 'newWindow'){
-            console.log( centerDialogState)
-            setCenterDialog( naviVal[1], null);
-            setOptions( []);
-            
-            hiddenActionMenu();
-        }
-        else if( naviVal[0] === 'nextActionMenu'){
-            // let clickMenu: any = [];
+        const naviVal = returnVal.split('|');
 
-            // if( naviVal[1] === 'shareSubMenu'){
-            //     clickMenu = shareSubMenu;
-            // }
-            
-            // setClickMenu( clickMenu);
-            // setOptions( renderMoreMenu( clickMenu));
-            setNextActionMenu( naviVal[1]);
-        }
-        else if( naviVal[0] === 'dialog'){
-            //inputAlert or alert
-            let alertName = '';
-            let alertItem = {};
+        switch( naviVal[0]) {
+            case 'newWindow':
+                setCenterDialog( naviVal[1], null);
+                setOptions( []);
+                
+                hiddenActionMenu();
+                break;
 
-            if( naviVal[1] === 'rename' || naviVal[1] === 'addOwnForm' || naviVal[1] === 'newFolder') {
-                alertName = 'inputAlert';
-                alertItem = {
-                    title: naviVal[1] === 'rename' ? '이름 변경' : naviVal[1] === 'addOwnForm' ? '나만의 양식 추가' : '새 폴더 추가',
-                    menuNM: naviVal[1]
-                };
-            }
-            else {
-                alertName = 'alert';
-                alertItem = {
-                    title : naviVal[1] === 'remove' ? '삭제' : '없음',
-                    description : 'blahblahblahblah'
+            case 'nextActionMenu':
+                setNextActionMenu( naviVal[1]);
+                break;
+
+            case 'dialog':
+                let alertName = '';
+                let alertItem = {};
+
+                if( naviVal[1] === 'rename' || naviVal[1] === 'addOwnForm' || naviVal[1] === 'newFolder') {
+                    alertName = 'inputAlert';
+                    alertItem = {
+                        title: naviVal[1] === 'rename' ? '이름 변경' : naviVal[1] === 'addOwnForm' ? '나만의 양식 추가' : '새 폴더 추가',
+                        menuNM: naviVal[1]
+                    };
                 }
-            }
-            
-            setOptions( []);
-            hiddenActionMenu();
+                else {
+                    alertName = 'alert';
+                    alertItem =  {
+                        alertType: 'Trash',
+                        menuNM : naviVal[1] === 'deleteInTrash' ? 'deleteInTrash' : 'restore',
+                        description : naviVal[1] === 'deleteInTrash' ? [ '영구삭제 시, 삭제된 파일은 복구할 수 없습니다.', '영구삭제하시겠습니까?'] : ['복원하시겠습니까?'],
+                    }; 
+                }
+                
+                setOptions( []);
+                hiddenActionMenu();
 
-            setTimeout(() => {
-                setAlertDialog( alertName, alertItem);
-            },500)
-            
-        }
-        else if( naviVal[0] === 'toast') {
-            
-            let textMsg = null;
+                setTimeout(() => {
+                    setAlertDialog( alertName, alertItem);
+                },500)
+                break;
 
-            if( naviVal[1] === 'setFavorite') {
-                console.log( isClickToastMenu.setFavorite);
-                textMsg = !isClickToastMenu.setFavorite ? '중요문서로 설정되었습니다.' : '중요문서 설정이 해제되었습니다.';
-                setIsClickToastMenu({
-                    ...isClickToastMenu,
-                    setFavorite: !isClickToastMenu.setFavorite
+            case 'toast':
+                let textMsg = null;
+
+                if( naviVal[1] === 'setViewOnly') {
+                    textMsg = !isSetReadOnly ?  '읽기 전용로 설정되었습니다.' : '읽기 전용이 해제되었습니다.';
+                    
+                    setisSetReadOnly( !isSetReadOnly);
+                }
+                Toast.show({
+                    type: 'success',
+                    text1: textMsg,
+                    visibilityTime: 3000,
+                    autoHide: true,
                 });
-            }
-            else if( naviVal[1] === 'setViewOnly') {
-                textMsg = !isClickToastMenu.setReadOnly ?  '읽기 전용로 설정되었습니다.' : '읽기 전용이 해제되었습니다.';
-                setIsClickToastMenu({
-                    ...isClickToastMenu,
-                    setReadOnly: !isClickToastMenu.setReadOnly
-                });
-            }
-            Toast.show({
-                type: 'success',
-                text1: textMsg,
-                visibilityTime: 3000,
-                autoHide: true,
-            });
+    
+                setOptions( []);
+                
+                hiddenActionMenu();
+                break;
 
-            setOptions( []);
-            
-            hiddenActionMenu();
+            default:
+                return;
         }
-        // const actionValue = await menuInfo[menuName].menuEvent( selectedTargetState.selectedTarget);
-
-        // if( !CommonUtil.objectIsNull( actionValue)){
-        //     onClickMenuAfter( actionValue);
-        // }
-        // else{
-        //     // 오류 처리.. 도 포함해야할 느낌...
-        //     console.log( 'onClickMenu Hide');
-        //     hiddenActionMenu();
-        //     // setIsActionMenu( false, selectedTargetState.selectedTarget, selectedTargetState.index);
-        // }
     }
 
-    // 공유 꺼짐 같은 오른쪽 메뉴
+    const onCloseEvent = (index : any) =>{
+        if(index == -1){
+            setOptions( []);
+            setNextActionMenu( '');
+
+            hiddenActionMenu();
+        }
+    }
+
+    return useMemo(() => (
+        <>
+            <ActionSheetCustom
+                ref={ actionSheetRef}
+                title={
+                    <View style={ actionMenuStyleSheet.actionMenuTitleContaier}>
+                        <View style={ actionMenuStyleSheet.actionMenuTitleIconContent}>
+                            <View style={ actionMenuStyleSheet.actionMenuTitleIcon}/>
+                        </View>
+                        <View style={ actionMenuStyleSheet.actionMenuTitleTextContent}>
+                            <Text style={ actionMenuStyleSheet.actionMenuTitleText}>더보기</Text>
+                        </View>
+                    </View>
+                }
+                options={ options}
+                onPress={ onCloseEvent }
+                styles={ styles}
+                cancelButtonIndex={-1}
+                theme={"ios"}
+            />
+        </>
+    ), [  options]);
+}
+
+const styles={
+    titleBox : {
+        opacity: 1,
+        backgroundColor: '#fff',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10
+    },
+    buttonBox : {
+        opacity: 1,
+        backgroundColor: '#fff'
+    },
+    cancelButtonBox : {
+        opacity: 0,
+        display: 'none'
+    }
+}
+
+export default ActionMenu;
+
+export const actionMenuStyleSheet = StyleSheet.create({
+
+    actionMenuTitleContaier : {
+        width: '100%',
+        flexDirection: 'column',
+    },
+    actionMenuTitleIconContent : {
+        height: 5,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    actionMenuTitleIcon : {
+        height: 5,
+        width: 30,
+        backgroundColor: '#d8d9dd',
+        borderRadius: 100
+    },
+    actionMenuTitleTextContent : {
+        height: 28,
+        marginTop: 10,
+        marginBottom: 10,
+        flexDirection: 'row',
+        justifyContent:'center',
+        alignItems: 'center',
+    },
+    actionMenuTitleText : {
+        fontSize: 19,
+        fontWeight: 'bold',
+        marginBottom: 2
+    },
+})
+
+// 공유 꺼짐 같은 오른쪽 메뉴
     // const rightItemRender = ( menuName : string) => {
     //     let content : any = null;
 
@@ -363,133 +432,3 @@ const ActionMenu = () => {
 
     //     return subOptions;
     // }
-
-    const onCloseEvent = (index : any) =>{
-        if(index == -1){
-            setIsActionMenu( false, null);
-        }
-    }
-
-    return useMemo(() => (
-        <>
-            <ActionSheetCustom
-                ref={ actionSheetRef}
-                title={
-                    <View style={ actionMenuStyleSheet.actionMenuTitleContaier}>
-                        <View style={ actionMenuStyleSheet.actionMenuTitleIconContent}>
-                            <View style={ actionMenuStyleSheet.actionMenuTitleIcon}/>
-                        </View>
-                        <View style={ actionMenuStyleSheet.actionMenuTitleTextContent}>
-                            <Text style={ actionMenuStyleSheet.actionMenuTitleText}>더보기</Text>
-                        </View>
-                    </View>
-                }
-                options={ options}
-                onPress={ onCloseEvent }
-                styles={ styles}
-                cancelButtonIndex={-1}
-                theme={"ios"}
-            />
-        </>
-    ), [  options]); //actionMenuState.isActionMenu, nextActionMenu,
-}
-
-const styles={
-    titleBox : {
-        opacity: 1,
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10
-    },
-    buttonBox : {
-        opacity: 1,
-        backgroundColor: '#fff'
-    },
-    cancelButtonBox : {
-        opacity: 0,
-        display: 'none'
-    }
-}
-
-export default ActionMenu;
-
-export const actionMenuStyleSheet = StyleSheet.create({
-    // actionMenuItem : {
-    //     width: '100%',
-    //     height: 62
-    // },
-    // actionMenuLineBox : {
-    //     height: 61,
-    //     marginLeft: 18,
-    //     flexDirection: 'row',
-    //     flexWrap: 'wrap'
-    // },
-    // actionMenuItemContent : {
-    //     flexDirection: 'row',
-    //     alignItems: 'center',
-    //     height: 61
-    // },
-    // actionMenuSubItem : {
-    //     flexDirection: 'row',
-    //     justifyContent: 'flex-end',
-    //     width: (Dimensions.get('window').width - 84) / 2
-    // },
-    actionMenuTitleContaier : {
-        width: '100%',
-        flexDirection: 'column',
-        // borderWidth:1,
-        // borderColor:'red'
-    },
-    actionMenuTitleIconContent : {
-        height: 5,
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
-    actionMenuTitleIcon : {
-        height: 5,
-        width: 30,
-        backgroundColor: '#d8d9dd',
-        borderRadius: 100
-    },
-    actionMenuTitleTextContent : {
-        height: 28,
-        marginTop: 10,
-        marginBottom: 10,
-        flexDirection: 'row',
-        justifyContent:'center',
-        alignItems: 'center',
-        // borderWidth:1,
-        // borderColor:'blue'
-    },
-    actionMenuTitleText : {
-        fontSize: 19,
-        fontWeight: 'bold',
-        marginBottom: 2
-    },
-    // actionMenuItemTitle : {
-    //     fontSize: 16,
-    //     marginLeft: 8,
-    //     width: (Dimensions.get('window').width - 84) / 2
-    // },
-    // actionMenuSubItemShareText : {
-    //     fontWeight: 'bold',
-    //     fontSize: 16
-    // },
-    // actionMenuShareCountContainer : {
-    //     flexDirection: 'row',
-    //     alignItems: 'center',
-    // },
-    // actionMenuShareCountContent : {
-    //     height: 16,
-    //     backgroundColor: '#3c77ea',
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     borderRadius: 8,
-    //     minWidth: 25,
-    //     marginRight: 8
-    // },
-    // actionMenuShareCountText : {
-    //     color: '#fff',
-    //     fontSize: 10
-    // }
-})
