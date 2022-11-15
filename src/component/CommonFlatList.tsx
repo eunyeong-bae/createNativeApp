@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useContext} from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import CardListItem from '../list/CardListItem';
 import DefaultListItem from '../list/DefaultListItem';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -9,7 +9,7 @@ import { CommonContext } from '../context/CommonContext';
 
 const hiddenItemLists:any = {    
     'setFavorite':{name:'중요 표시', auth:'Read',rightMenu: false,icon: ['importantOff', 'importantOn'],clickEvent: CommonFnUtil.onClickSetFavCatergory},
-    'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickRemove},
+    'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickDelete},
 };
 
 interface FlatListProps {
@@ -23,7 +23,10 @@ interface FlatListProps {
 }
 
 const CommonFlatList = ( props: FlatListProps) => {
-    const { swipeItemState, setSwipeItem, selectedTargetState} = useContext( CommonContext);
+    const { swipeItemState, 
+            setSwipeItem,
+            sortMenuState,
+            setAlertDialog } = useContext( CommonContext);
 
     const { flatListRef, 
             reqListData, 
@@ -106,11 +109,16 @@ const CommonFlatList = ( props: FlatListProps) => {
             }, (1000));
         }
         else {
-            // textMsg = !isClickToastMenu.setReadOnly ?  '읽기 전용로 설정되었습니다.' : '읽기 전용이 해제되었습니다.';
-            // setIsClickToastMenu({
-            //     ...isClickToastMenu,
-            //     setReadOnly: !isClickToastMenu.setReadOnly
-            // });
+            const alertName = 'alert';
+            const alertItem =  {
+                alertType: 'Trash',
+                menuNM : 'deleteFile',
+                description : [ '삭제하시겠습니까?', 
+                                '폴더 삭제 시, ONECHAMBER 파일을 포함한 내부 문서가 모두 삭제됩니다.', 
+                                '기능 설정 문서란 공유, 보안, 읽기 전용, 중요 설정된 문서를 의미합니다.'],
+            }; 
+            
+            setAlertDialog( alertName, alertItem);
         }
     
     };
@@ -138,54 +146,57 @@ const CommonFlatList = ( props: FlatListProps) => {
 
     return (
         <>
-            <SwipeListView 
-                ref={ flatListRef}
-                showsVerticalScrollIndicator={ false}
-                data={ reqListData.dataList}
-                renderItem={ fullpath ? dialogRenderListItem : renderListItem}
-                renderHiddenItem={ renderHiddenItem}
-                leftOpenValue={ 40}
-                rightOpenValue={ -40}
-                keyExtractor={ keyExtractor}
-                onEndReached={ onEndReached}
-                onEndReachedThreshold={ 0.9}
-                initialNumToRender = { 10}
-                maxToRenderPerBatch ={ 10}
-                windowSize= { 21}
-                removeClippedSubviews = { true}
-            />
-            {/* <FlatList 
-                ref={ flatListRef}
-                data={ reqListData.dataList}
-                renderItem={ fullpath ? dialogRenderListItem : renderListItem}
-                keyExtractor={ keyExtractor}
-                onEndReached={ onEndReached}
-                onEndReachedThreshold={ 0.9}
-                initialNumToRender = { 10}
-                maxToRenderPerBatch ={ 10}
-                windowSize= { 21}
-                removeClippedSubviews = { true}
-                // ListFooterComponent={} rn 에서 제공하는 로딩 컴포넌트
-            /> */}
+        { sortMenuState.contextName !== 'TrashDoc' ?
+                <SwipeListView 
+                    ref={ flatListRef}
+                    showsVerticalScrollIndicator={ false}
+                    data={ reqListData.dataList}
+                    renderItem={ fullpath ? dialogRenderListItem : renderListItem}
+                    renderHiddenItem={ renderHiddenItem}
+                    leftOpenValue={ 40}
+                    rightOpenValue={ -40}
+                    keyExtractor={ keyExtractor}
+                    onEndReached={ onEndReached}
+                    onEndReachedThreshold={ 0.9}
+                    initialNumToRender = { 10}
+                    maxToRenderPerBatch ={ 10}
+                    windowSize= { 21}
+                    removeClippedSubviews = { true}
+                />
+            :
+                <FlatList 
+                    ref={ flatListRef}
+                    data={ reqListData.dataList}
+                    renderItem={ renderListItem}
+                    keyExtractor={ keyExtractor}
+                    onEndReached={ onEndReached}
+                    onEndReachedThreshold={ 0.9}
+                    initialNumToRender = { 10}
+                    maxToRenderPerBatch ={ 10}
+                    windowSize= { 21}
+                    removeClippedSubviews = { true}
+                    // ListFooterComponent={} rn 에서 제공하는 로딩 컴포넌트
+                />
+        }
         </>
     )
 };
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
         flex: 1,
+        backgroundColor: 'white',
     },
     backTextWhite: {
         color: '#FFF',
     },
     rowFront: {
-        alignItems: 'center',
-        backgroundColor: '#CCC',
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
-        justifyContent: 'center',
         height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: 'black',
+        backgroundColor: '#CCC',
     },
     rowBack: {
         flex: 1,
@@ -195,13 +206,12 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
     },
     backRightBtn: {
+        width: 40,
+        top: 0,
+        bottom: 0,
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        top: 0,
-        bottom: 0,
-        width: 40,
-        // backgroundColor:'yellow'
     },
     backRightBtnLeft: {
         left: 0

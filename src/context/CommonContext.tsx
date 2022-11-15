@@ -64,7 +64,7 @@ const CommonContext = createContext<CommonContextType>({
     setAlertDialog : ( alertName : string, alertItem : any) : void => {},
     setSwipeItem : ( setFavorite: boolean, setDelete: boolean ) : void => {},
     // setIsActionMenu : ( isActionMenu : boolean, setIsActionMenu : any, contextName : '', navigation : any) : void => {},
-    setIsActionMenu : (navigation:any ) : void => {},
+    setIsActionMenu : ( isActionMenu: boolean, navigation:any ) : void => {},
     setReViewDoc : ( isVisible : boolean, onClickFileView : any, onClickClose : any, onClickChangeTarget : any, setIsActionMenu : any) : void => {},
     setSortMenu : ( contextName : string, selectedValue : any, sortMenuInfo : any) : void => {},
 });

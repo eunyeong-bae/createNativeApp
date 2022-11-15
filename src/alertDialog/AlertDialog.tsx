@@ -1,6 +1,6 @@
 import { CommonContext } from '../context/CommonContext';
 import React, { useContext, useState } from 'react';
-import { View , StyleSheet} from 'react-native';
+import { View , Text, StyleSheet} from 'react-native';
 import Dialog from 'react-native-dialog';
 import CommonFnUtil from '../utils/CommonFnUtil';
 import CommonUtil from '../utils/CommonUtil';
@@ -9,7 +9,12 @@ import Toast from 'react-native-toast-message';
 const categoryUid = '136142218a7664Bc9a';
 
 const AlertDialog = () => {
-    const { alertDialogState, setAlertDialog, selectedTargetState, targetFullPathState} = useContext( CommonContext);
+    const { alertDialogState, 
+            setAlertDialog, 
+            selectedTargetState, 
+            targetFullPathState,
+            sortMenuState} = useContext( CommonContext);
+            
     const [ inputVal, setInputVal] = useState( '');
 
     const onClickCancel = () => {
@@ -71,13 +76,17 @@ const AlertDialog = () => {
         setInputVal( '');
     };
 
+    const onClickDeleteConfirm = () => {
+
+    };
+
     return (
-        <>
-            { alertDialogState && alertDialogState.alertName !== '' &&
+        <View>
+            { alertDialogState && alertDialogState.alertName !== '' && alertDialogState.alertItem.alertType !== 'Trash' &&
                 <Dialog.Container contentStyle={ style.container} visible={true}>
                     <Dialog.Title>{ alertDialogState.alertItem ? alertDialogState.alertItem.title : '테스트'}</Dialog.Title>
                     {
-                        alertDialogState.alertName === 'alert' &&
+                        alertDialogState.alertName === 'alert' && 
                         <Dialog.Description>{ alertDialogState.alertItem ? alertDialogState.alertItem.description : '테스트 진행 중임'}</Dialog.Description>
                     }
 
@@ -85,12 +94,54 @@ const AlertDialog = () => {
                         alertDialogState.alertName === 'inputAlert' &&
                         <Dialog.Input wrapperStyle={ style.InputStyle} placeholder="입력해주세요." onChangeText={ ( text: any) => ( setInputVal( text))}/>
                     }
-
                     <Dialog.Button label="취소" onPress={ onClickCancel}/>
                     <Dialog.Button label="확인" onPress={ onClickConfirm}/>
                 </Dialog.Container>
             }
-        </>
+
+            {/* 삭제 관련 alert dialog 분기 (삭제/영구삭제/복원/휴지통 비우기) */}
+            { alertDialogState && alertDialogState.alertName === 'alert' && alertDialogState.alertItem.alertType === 'Trash' &&
+                <Dialog.Container contentStyle={ style.container} visible={true}>
+                    <Dialog.Title>알림</Dialog.Title>
+
+                    { alertDialogState.alertItem.menuNM === 'deleteFile' ?
+                        <View style={ style.deleteContainer}>
+                            <Dialog.Description style={{ padding:5, fontSize:14, marginBottom:5}}>{ alertDialogState.alertItem.description[0]}</Dialog.Description>
+                            <View style={ style.deleteContent}>
+                                <View style={ style.deleteContentRow}>
+                                    <Text>문서</Text>
+                                    <Text>0 건</Text> 
+                                    {/* 1. 건수 체크하는 함수 생성 / 2.map 함수로 생성 / 3. 1번에서 받은 resData로 건수 뿌려주기 */}
+                                </View>
+                                <View style={ style.deleteContentRow}>
+                                    <Text>기능 설정 문서</Text>
+                                    <Text>0 건</Text>
+                                </View>
+                                <View style={ style.deleteContentRow}>
+                                    <Text>폴더</Text>
+                                    <Text>0 건</Text>
+                                </View>
+                            </View>
+                            <Dialog.Description style={[ style.deleteDescription, { color:'red'}]}>{ alertDialogState.alertItem.description[1]}</Dialog.Description>
+                            <Dialog.Description style={ style.deleteDescription}>{ alertDialogState.alertItem.description[2]}</Dialog.Description>
+                        </View>
+                        :
+                        <View style={[ alertDialogState.alertItem.menuNM !== 'restore' && { marginBottom:10} ,{ height:50}]}>
+                            { alertDialogState.alertItem.description.map(( Item:any, index: number) => {
+                                    return(
+                                        <Dialog.Description style={( alertDialogState.alertItem.menuNM === 'empty' && index === 1) && { color:'red'}}>{ Item}</Dialog.Description>
+                                    )
+                                })
+                            }
+                        </View>
+                    }
+                    <Dialog.Button label="취소" onPress={ onClickCancel}/>
+                    <Dialog.Button label="확인" onPress={ onClickDeleteConfirm}/>
+
+                </Dialog.Container>
+            }
+        
+        </View>
     )
 };
 
@@ -99,6 +150,31 @@ const style = StyleSheet.create({
         backgroundColor:'#fff',
         alignItems:'center',
         justifyContent:'center'
+    },
+    deleteContainer: {
+        height:280, 
+        padding:20, 
+        borderTopWidth:1,
+    },
+    deleteContent: {
+        width:200, 
+        height: 100, 
+        padding:20, 
+        marginTop:0, 
+        marginBottom:0, 
+        marginLeft:'auto', 
+        marginRight:'auto', 
+        borderWidth:1
+    },
+    deleteContentRow: {
+        flexDirection:'row', 
+        justifyContent:'space-between', 
+        marginBottom:5
+    },
+    deleteDescription: {
+        padding:10, 
+        marginTop:5, 
+        fontSize:12
     },
     InputStyle: {
         width: 200,
