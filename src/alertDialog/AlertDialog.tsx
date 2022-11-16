@@ -12,8 +12,7 @@ const AlertDialog = () => {
     const { alertDialogState, 
             setAlertDialog, 
             selectedTargetState, 
-            targetFullPathState,
-            sortMenuState} = useContext( CommonContext);
+            targetFullPathState} = useContext( CommonContext);
             
     const [ inputVal, setInputVal] = useState( '');
 
@@ -76,8 +75,29 @@ const AlertDialog = () => {
         setInputVal( '');
     };
 
-    const onClickDeleteConfirm = () => {
+    const onClickDeleteConfirm = ( menuNM: any) => {
+        //여러개 선택한 케이스도 나중에 구현 필요 ( 다중선택)
+        const docType = selectedTargetState.selectedTarget.doc_type === '0'; // 0: true folder, 1: false doc
+        const docUID = !docType ? selectedTargetState.selectedTarget.docUID : '';
+        const folderUID = docType ? selectedTargetState.selectedTarget.docUID : '';
 
+        let resData: any = '';
+
+        switch( menuNM) { 
+            case 'deleteInTrash':
+                resData = CommonFnUtil.deleteTrashDocument( docUID, folderUID);
+                break;
+            case 'empty':
+                resData = CommonFnUtil.emptyTrash();
+                break;
+            case 'restore':
+                resData = CommonFnUtil.recoverTrashDocument( docUID, folderUID);
+                break;
+        }
+
+        setTimeout(() => {
+            setAlertDialog( '', null);
+        }, (1000));
     };
 
     return (
@@ -129,14 +149,14 @@ const AlertDialog = () => {
                         <View style={[ alertDialogState.alertItem.menuNM !== 'restore' && { marginBottom:10} ,{ height:50}]}>
                             { alertDialogState.alertItem.description.map(( Item:any, index: number) => {
                                     return(
-                                        <Dialog.Description style={( alertDialogState.alertItem.menuNM === 'empty' && index === 1) && { color:'red'}}>{ Item}</Dialog.Description>
+                                        <Dialog.Description key={ Item+index} style={( alertDialogState.alertItem.menuNM === 'empty' && index === 1) && { color:'red'}}>{ Item}</Dialog.Description>
                                     )
                                 })
                             }
                         </View>
                     }
                     <Dialog.Button label="취소" onPress={ onClickCancel}/>
-                    <Dialog.Button label="확인" onPress={ onClickDeleteConfirm}/>
+                    <Dialog.Button label="확인" onPress={ onClickDeleteConfirm.bind( this, alertDialogState.alertItem.menuNM)}/>
 
                 </Dialog.Container>
             }

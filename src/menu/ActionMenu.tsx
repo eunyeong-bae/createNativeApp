@@ -260,6 +260,8 @@ const ActionMenu = () => {
                 }
                 
                 setOptions( []);
+                setNextActionMenu( '');
+                
                 hiddenActionMenu();
 
                 setTimeout(() => {

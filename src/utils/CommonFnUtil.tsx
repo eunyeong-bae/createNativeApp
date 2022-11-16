@@ -295,6 +295,99 @@ export default class CommonFnUtil{
         return result;
     }
 
+    public static deleteTrashDocument = async( docUID: any, folderUID: any) => {
+        let result: any = false;
+
+        const data : any = {
+            protocolId : 'P533',
+            data : {"docUID":docUID,"folder_no":folderUID},
+        }
+
+        await Adapter.fetch.protocol(data).then((res) => {
+            if( res) {
+                result = res.result;
+
+                Toast.show({
+                    type: 'success',
+                    text1: '영구삭제되었습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+            }
+        }).catch(( error) => {
+            Toast.show({
+                type:'error',
+                text1: '삭제에 실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
+        });
+
+        return result;
+    }
+
+    public static recoverTrashDocument = async( docUID: any, folderUID: any) => {
+        let result: any = false;
+
+        const data : any = {
+            protocolId : 'P551',
+            data : { "docUID":docUID, "folder_no":folderUID, "target_id":""},
+        };
+
+        await Adapter.fetch.protocol(data).then((res) => {
+            if( res) {
+                result = res.result;
+
+                Toast.show({
+                    type: 'success',
+                    text1: '복원되었습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+            }
+        }).catch(( error) => {
+            Toast.show({
+                type:'error',
+                text1: '복구에 실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
+        });
+        
+        return result;
+    }
+
+    public static emptyTrash = async() => {
+        let result: any = false;
+
+        const data : any = {
+            protocolId : 'P534',
+            data : {},
+        };
+
+        await Adapter.fetch.protocol(data).then((res) => {
+            if( res) {
+                result = res.result;
+
+                Toast.show({
+                    type: 'success',
+                    text1: '휴지통을 비웠습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+            }
+        }).catch(( error) => {
+            Toast.show({
+                type:'error',
+                text1: '휴지통 비우기에 실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
+        });
+        
+        return result;
+    }
+
     public static searchDataList = async( sendata : any) => {
         let searchDataList : any = [];                                          
 
