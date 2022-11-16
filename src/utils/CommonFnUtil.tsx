@@ -295,6 +295,32 @@ export default class CommonFnUtil{
         return result;
     }
 
+    public static deleteFile = async( data: any ) => {
+        let result: any = false;
+
+        await Adapter.fetch.protocol(data).then((res) => {
+            if( res) {
+                result = true;
+
+                Toast.show({
+                    type: 'success',
+                    text1: '삭제되었습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+            }
+        }).catch(( error) => {
+            Toast.show({
+                type:'error',
+                text1: '식제를 실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
+        });
+
+        return result;
+    }
+
     public static deleteTrashDocument = async( docUID: any, folderUID: any) => {
         let result: any = false;
 

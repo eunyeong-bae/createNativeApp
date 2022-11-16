@@ -114,8 +114,9 @@ const CommonFlatList = ( props: FlatListProps) => {
                 alertType: 'Trash',
                 menuNM : 'deleteFile',
                 description : [ '삭제하시겠습니까?', 
-                                '폴더 삭제 시, ONECHAMBER 파일을 포함한 내부 문서가 모두 삭제됩니다.', 
-                                '기능 설정 문서란 공유, 보안, 읽기 전용, 중요 설정된 문서를 의미합니다.'],
+                                '※ 폴더 삭제 시, ONECHAMBER 파일을 포함한 내부 문서가 모두 삭제됩니다.', 
+                                '※ 기능 설정 문서란 공유, 보안, 읽기 전용, 중요 설정된 문서를 의미합니다.'],
+                data: data.item,
             }; 
             
             setAlertDialog( alertName, alertItem);
