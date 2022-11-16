@@ -9,6 +9,8 @@ import Toast from 'react-native-toast-message';
 const categoryUid = '136142218a7664Bc9a';
 
 const AlertDialog = () => {
+    // let result : any = [];
+
     const { alertDialogState, 
             setAlertDialog, 
             selectedTargetState, 
@@ -77,13 +79,33 @@ const AlertDialog = () => {
 
     const onClickDeleteConfirm = ( menuNM: any) => {
         //여러개 선택한 케이스도 나중에 구현 필요 ( 다중선택)
-        const docType = selectedTargetState.selectedTarget.doc_type === '0'; // 0: true folder, 1: false doc
-        const docUID = !docType ? selectedTargetState.selectedTarget.docUID : '';
-        const folderUID = docType ? selectedTargetState.selectedTarget.docUID : '';
+        let docType : boolean = false;
+        let docUID : any = '';
+        let folderUID : any = '';
 
+        if( menuNM === 'deleteFile') {
+            docType = alertDialogState && alertDialogState.alertItem.data.doc_type === '0'; // 0: true folder, 1: false doc
+            docUID = !docType ? alertDialogState && alertDialogState.alertItem.data.docUID : '';
+            folderUID = docType ? alertDialogState && alertDialogState.alertItem.data.docUID : '';
+        } else {
+            docType = selectedTargetState && selectedTargetState.selectedTarget.doc_type === '0'; // 0: true folder, 1: false doc
+            docUID = !docType ? selectedTargetState.selectedTarget.docUID : '';
+            folderUID = docType ? selectedTargetState.selectedTarget.docUID : '';
+        }
+
+
+        let data: any = {};
         let resData: any = '';
 
         switch( menuNM) { 
+            case 'deleteFile':
+                data = {
+                    protocolId : docType ? 'P532' : 'P531',
+                    data : docType ? {"folder_no":folderUID} : {"docUID":docUID},
+                };
+                
+                resData = CommonFnUtil.deleteFile( data);
+                break;
             case 'deleteInTrash':
                 resData = CommonFnUtil.deleteTrashDocument( docUID, folderUID);
                 break;
@@ -96,8 +118,43 @@ const AlertDialog = () => {
         }
 
         setTimeout(() => {
-            setAlertDialog( '', null);
+            if( resData) { 
+                setAlertDialog( '', null);
+            }
         }, (1000));
+    };
+
+    // const deleteContentRows = ['문서','기능 설정 문서','폴더'];
+    // const deleteContentRows = new Map()
+    //     .set('docCnt', '문서')
+    //     .set('funcCnt', '기능 설정 문서')
+    //     .set('folderCnt', '폴더')
+
+    // const getContentTypeCtn = () => {
+    //     let responseData: any = {};
+    //     let docCnt = 0;
+    //     let funcCnt = 0;
+    //     let folderCnt = 0;
+
+    //     const currentTarget = alertDialogState.alertItem.data;
+
+    //     if( currentTarget && ( currentTarget.important || currentTarget.security_key || currentTarget.share_type !== 0)) {
+    //         funcCnt++;
+    //     }
+    //     else {
+    //         currentTarget.doc_type === '0' ? docCnt++ : folderCnt++ ;
+    //     }
+
+    //     responseData = [{"문서":docCnt}, 
+    //                     {"기능 설정 문서":funcCnt}, 
+    //                     {"폴더":folderCnt}
+    //                 ];
+        
+    //     result = responseData;
+    // };
+
+    const deleteContentRowCtn = () => {
+
     };
 
     return (
@@ -128,10 +185,10 @@ const AlertDialog = () => {
                         <View style={ style.deleteContainer}>
                             <Dialog.Description style={{ padding:5, fontSize:14, marginBottom:5}}>{ alertDialogState.alertItem.description[0]}</Dialog.Description>
                             <View style={ style.deleteContent}>
+                                {/* 1. 건수 체크하는 함수 생성 / 2.map 함수로 생성 / 3. 1번에서 받은 resData로 건수 뿌려주기 */}
                                 <View style={ style.deleteContentRow}>
                                     <Text>문서</Text>
                                     <Text>0 건</Text> 
-                                    {/* 1. 건수 체크하는 함수 생성 / 2.map 함수로 생성 / 3. 1번에서 받은 resData로 건수 뿌려주기 */}
                                 </View>
                                 <View style={ style.deleteContentRow}>
                                     <Text>기능 설정 문서</Text>
@@ -141,6 +198,16 @@ const AlertDialog = () => {
                                     <Text>폴더</Text>
                                     <Text>0 건</Text>
                                 </View>
+                                {/* <>
+                                { !CommonUtil.objectIsNull( selectedTargetState.selectedTarget) && getContentTypeCtn()}
+                                { deleteContentRows.map(( Item: any, index: number) => {
+                                        <View style={ style.deleteContentRow}>
+                                            <Text>{ Item}</Text>
+                                            <Text>{ result[index][Item]}</Text> 
+                                        </View>
+                                    })
+                                }
+                                </> */}
                             </View>
                             <Dialog.Description style={[ style.deleteDescription, { color:'red'}]}>{ alertDialogState.alertItem.description[1]}</Dialog.Description>
                             <Dialog.Description style={ style.deleteDescription}>{ alertDialogState.alertItem.description[2]}</Dialog.Description>
@@ -172,9 +239,10 @@ const style = StyleSheet.create({
         justifyContent:'center'
     },
     deleteContainer: {
-        height:280, 
-        padding:20, 
-        borderTopWidth:1,
+        height: 260, 
+        padding: 20, 
+        borderTopWidth: 1,
+        borderTopColor: '#dedede'
     },
     deleteContent: {
         width:200, 
@@ -184,17 +252,19 @@ const style = StyleSheet.create({
         marginBottom:0, 
         marginLeft:'auto', 
         marginRight:'auto', 
-        borderWidth:1
+        borderWidth:1,
+        borderColor:'#dedde3',
     },
     deleteContentRow: {
         flexDirection:'row', 
         justifyContent:'space-between', 
-        marginBottom:5
+        marginBottom:5,
     },
     deleteDescription: {
-        padding:10, 
-        marginTop:5, 
-        fontSize:12
+        padding: 5, 
+        fontSize: 12,
+        borderWidth: 1,
+        borderColor:'#f2f2f7'
     },
     InputStyle: {
         width: 200,
