@@ -27,7 +27,6 @@ const moreMenus: any = [
     {name:'리스트 보기', iconName:'DocListViewBtn', value:'listView', visibility: false},
     {name:'전체삭제', value:'trash', visibility: false},
     {name:'이동', value:'move', visibility: false},
-    {name:'복원', value:'restore', visibility: false },
 ]
 
 const SortPopOver = (props: any) => {

@@ -7,7 +7,10 @@ import { CommonContext } from '../context/CommonContext';
 import Toast from 'react-native-toast-message';
 
 const DefaultListItem = ( props:any) => {
-    const { sortMenuState, setIsActionMenu, setSelectedTarget, selectedTargetState} = useContext(CommonContext);
+    const { sortMenuState, 
+            setIsActionMenu, 
+            setSelectedTarget, 
+            selectedTargetState} = useContext(CommonContext);
     const { targetFullPathState, setTargetFullPath} = !props.fullpath ? useContext(CommonContext) : {targetFullPathState : props.fullpath, setTargetFullPath : props.setFullpath} ;
 
     const onClickActionMenu = () => {
@@ -65,10 +68,24 @@ const DefaultListItem = ( props:any) => {
                        </View>
                        <View style={ MyDocListViewStyles.docInfo}>
                            <Text style={ MyDocListViewStyles.title} numberOfLines={1}>{ props.data.doc_name}</Text>
-                           { sortMenuState && sortMenuState.contextName !== 'TrashDoc' 
-                               ? <Text style={ MyDocListViewStyles.text}>{ props.data.mod_name} {'|'} { props.data.mod_date}</Text>
-                               : <Text style={ MyDocListViewStyles.text}>{ props.data.creatorName} {'|'} { props.data.delete_date}</Text>
-                           }
+                           <View style={{ flexDirection:'row', marginTop:3}}>
+                               <View style={{ flexDirection:'row', alignItems:'center',}}>
+                                    { props.data.share_type === 1 ? 
+                                        <SvgIcon name = "docShareSend" width={13} height={13} style={{ marginRight:2}}/> 
+                                    : 
+                                    props.data.share_type === 2 ? 
+                                        <SvgIcon name = "docShareReceive" width={13} height={13}/>
+                                    :  props.data.share_type === 3 && <SvgIcon name = "docShare" width={13} height={13}/>
+                                    }
+                                    { props.data.flagOpenLink && <SvgIcon name = "docOpenLink" width={13} height={13} /> }
+                                    { props.data.important && <SvgIcon name = "docFavorite" width={13} height={13} /> }
+                                    { props.data.security_key && <SvgIcon name = "docSecurity" width={13} height={13} /> }
+                               </View>
+                                { sortMenuState && sortMenuState.contextName !== 'TrashDoc' 
+                                    ? <Text style={ MyDocListViewStyles.text}> { props.data.mod_name} {'|'} { props.data.mod_date}</Text>
+                                    : <Text style={ MyDocListViewStyles.text}> { props.data.creatorName} {'|'} { props.data.delete_date}</Text>
+                                }
+                           </View>
                            {/* { sortMenuState && sortMenuState.contextName !== 'TrashDoc' 
                                ? <Text style={ MyDocListViewStyles.text}>{ props.data.mod_name} {'|'} { props.data.mod_date.split(' ')[0]}</Text>
                                : <Text style={ MyDocListViewStyles.text}>{ actionMenuState.isActionMenu ? props.data.mod_name: props.data.creatorName} {'|'} 

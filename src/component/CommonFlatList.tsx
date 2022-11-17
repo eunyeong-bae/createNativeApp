@@ -131,14 +131,14 @@ const CommonFlatList = ( props: FlatListProps) => {
                     style={[styles.backRightBtn, styles.backRightBtnLeft]}
                     onPress={ hiddenItemEvent.bind(this, 'setFavorite', data)}
                 >
-                    <SvgIcon name={ data.item.important ? 'importantOn' : 'importantOff'} width={ 20} height={ 20}/>
+                    <SvgIcon name={ data.item.important ? 'importantOn' : 'importantOff'} width={ 22} height={ 22}/>
                 </TouchableOpacity>
                 
                 <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnRight]}
                     onPress={ hiddenItemEvent.bind(this, 'delete', data)}
                 >
-                    <SvgIcon name="deleteBtn" width={ 20} height={ 20} />
+                    <SvgIcon name="deleteBtn" width={ 25} height={ 25} />
                 </TouchableOpacity>
 
             </View>
@@ -204,20 +204,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingLeft: 15,
     },
     backRightBtn: {
-        width: 40,
-        top: 0,
-        bottom: 0,
-        position: 'absolute',
+        width: 35,
+        height: 35,
+        // borderWidth:1,
+        // borderRadius: 50,
+        // borderColor:'#DCE7FB',
         alignItems: 'center',
         justifyContent: 'center',
     },
     backRightBtnLeft: {
+        marginLeft:5,
         left: 0
     },
     backRightBtnRight: {
+        marginRight:8,
         right: 0
     },
 });

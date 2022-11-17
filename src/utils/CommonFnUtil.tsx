@@ -414,6 +414,37 @@ export default class CommonFnUtil{
         return result;
     }
 
+    public static setReadOnly = async( docUID: any, isReadOnly: any) => {
+        let result: any = false;
+
+        const data: any = {
+            protocolId : 'P620',
+            data: {"docUID": docUID, "readonly": isReadOnly},
+        };
+
+        await Adapter.fetch.protocol(data).then((res) => {
+            if( res) {
+                result = true;
+
+                Toast.show({
+                    type: 'success',
+                    text1: isReadOnly ? '읽기 전용로 설정되었습니다.' : '읽기 전용이 해제되었습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+            }
+        }).catch((error) => {
+            Toast.show({
+                type:'error',
+                text1: '실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
+        })
+
+        return result;
+    }
+
     public static searchDataList = async( sendata : any) => {
         let searchDataList : any = [];                                          
 
@@ -732,7 +763,7 @@ export default class CommonFnUtil{
 
     public static onClickDetailDocInfo = async() => {
         // console.log(' onClickDocInfoView');
-        return 'nextActionMenu|detailDocInfoSubMenu';
+        return 'dialog|docInfo';
     }
     public static onClickShare = () => {
         // console.log(' onClickCategory');
@@ -776,7 +807,7 @@ export default class CommonFnUtil{
     }
     public static onClickSetViewOnly = async() => {
         // console.log(' onClickCategory');
-        return 'setViewOnly';
+        return 'toast|setViewOnly';
     }
     
     // public static onClickFolderInfoView = async( selectedTarget : any) => {

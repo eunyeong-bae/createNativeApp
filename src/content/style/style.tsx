@@ -126,10 +126,11 @@ export const MyDocListViewStyles = StyleSheet.create({
         marginLeft: 10,
     },
     title: {
+        width:250,
         fontWeight:'bold',
     },
     text: {
         color:'#666666',
-        marginTop:5,
+        marginTop:2,
     }
 })

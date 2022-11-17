@@ -49,16 +49,15 @@ const myDocMenuInfo:any = {
     'move':{name:'이동',auth: 'Read',rightMenu: false,icon:'ActionMove',clickEvent: CommonFnUtil.onClickMoveOpen},
     'copy':{name:'사본 만들기',auth:'Update',rightMenu: false,icon:'ActionCopy',clickEvent: CommonFnUtil.onClickCopy},
     'changeName':{name:'이름 변경', auth:'Read',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRename},
-    'addOwnForm':{name:'나만의 양식 추가',auth: 'Read',rightMenu: false,icon:'ActionSetViewOnly',clickEvent: CommonFnUtil.onClickAddOwnForm},
+    'addOwnForm':{name:'나만의 양식 추가',auth: 'Read',rightMenu: false,icon:'ActionSetViewOnlyOFF',clickEvent: CommonFnUtil.onClickAddOwnForm},
     'delete':{name:'삭제',auth:'Update',rightMenu: true,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickRemove},
     'deleteInTrash':{name:'영구삭제',auth:'Update',rightMenu: false,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickDeleteInTrash},
     'restore':{name:'복원',auth:'Update',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRestore},
     'relatedDoc':{name:'연관 문서',auth: 'Read',rightMenu: false,icon: 'ActionRelateDoc',clickEvent: CommonFnUtil.onClickRelatedDoc},
-    'setViewOnly':{name:'읽기 전용 설정',auth:'Update',rightMenu: false,icon:['ActionSetViewOnly', 'ActionCategoryOn'],clickEvent: CommonFnUtil.onClickSetViewOnly},
+    'setViewOnly':{name:'읽기 전용 설정',auth:'Update',rightMenu: false,icon:['ActionSetViewOnlyOFF', 'ActionSetViewOnlyON'],clickEvent: CommonFnUtil.onClickSetViewOnly},
     'setPassword':{name:'보안 설정', auth:'Read',rightMenu: true,icon:'ActionSetPW',clickEvent: CommonFnUtil.onClickSetPassword},
-    'setTag':{name:'태그 설정', auth:'Read',rightMenu: false,icon:'ActionSetViewOnly',clickEvent: CommonFnUtil.onClickSetTag},
+    'setTag':{name:'태그 설정', auth:'Read',rightMenu: false,icon:'docTag',clickEvent: CommonFnUtil.onClickSetTag},
     'DocInfo':{name:'문서 정보', auth:'Read',rightMenu: false,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDetailDocInfo},
-    'DocHistory':{name:'문서 이력', auth:'Read',rightMenu: false,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDetailDocInfo},
     'openLink' : { name: '오픈링크', icon: 'OpenLink', rightItem : true, menuEvent: CommonFnUtil.onClickOnOffLink},
     'openLinkRead' : { name: '읽기', icon: '', value: 'R', rightItem : false, menuEvent: CommonFnUtil.onChangeOpenAuth},
     'openLinkUpdate' : { name: '수정', icon: '', value: 'U', rightItem : false, menuEvent: CommonFnUtil.onChangeOpenAuth},
@@ -66,7 +65,7 @@ const myDocMenuInfo:any = {
 };
 
 const ActionMenu = () => {
-    const moreMenus = ['share','linkCopy','ONECHAMBER(PDF)','move','copy','changeName','addOwnForm','delete','relatedDoc','setViewOnly','setPassword','setTag','DocInfo','DocHistory'];
+    const moreMenus = ['share','linkCopy','ONECHAMBER(PDF)','move','copy','changeName','addOwnForm','delete','relatedDoc','setViewOnly','setPassword','setTag','DocInfo',];
     const shareSubMenu = ['openLink','groupNuserShare']; //'openLinkRead', 'openLinkUpdate',
     const removeSubMenu = ['deleteInTrash','restore'];
 
@@ -74,13 +73,14 @@ const ActionMenu = () => {
             actionMenuState, 
             setIsActionMenu, 
             setAlertDialog,
-            sortMenuState } = useContext(CommonContext);
+            sortMenuState,
+            selectedTargetState } = useContext(CommonContext);
 
     // const [ clickMenu, setClickMenu] = useState([]);
     const [ options, setOptions] = useState( []);
     const [ menus, setMenus] = useState( []);
     const [ nextActionMenu, setNextActionMenu] = useState( ''); // 서브메뉴 체크용
-    const [ isSetReadOnly, setisSetReadOnly] = useState( false);
+    const [ isSetReadOnly, setIsSetReadOnly] = useState( false);
     const actionSheetRef = useRef( null);
 
     useEffect(() => {
@@ -250,6 +250,9 @@ const ActionMenu = () => {
                         menuNM: naviVal[1]
                     };
                 }
+                else if( naviVal[1] === 'docInfo') {
+                    setCenterDialog('DocInfoDialog',null);
+                }
                 else {
                     alertName = 'alert';
                     alertItem =  {
@@ -270,23 +273,20 @@ const ActionMenu = () => {
                 break;
 
             case 'toast':
-                let textMsg = null;
+                const docUID = selectedTargetState.selectedTarget.docUID;
+                const isReadOnly = !selectedTargetState.selectedTarget.readonly ? 1 : 0;
 
-                if( naviVal[1] === 'setViewOnly') {
-                    textMsg = !isSetReadOnly ?  '읽기 전용로 설정되었습니다.' : '읽기 전용이 해제되었습니다.';
+                const setReadOnly = CommonFnUtil.setReadOnly( docUID, isReadOnly);
                     
-                    setisSetReadOnly( !isSetReadOnly);
-                }
-                Toast.show({
-                    type: 'success',
-                    text1: textMsg,
-                    visibilityTime: 3000,
-                    autoHide: true,
-                });
-    
                 setOptions( []);
-                
                 hiddenActionMenu();
+
+                setTimeout(() => {
+                    if( setReadOnly) {
+                        setIsSetReadOnly( !isSetReadOnly);
+                    }
+                }, 1000);
+
                 break;
 
             default:
