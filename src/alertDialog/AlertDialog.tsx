@@ -1,6 +1,6 @@
 import { CommonContext } from '../context/CommonContext';
 import React, { useContext, useState } from 'react';
-import { View , Text, StyleSheet} from 'react-native';
+import { View , Text, StyleSheet, Dimensions} from 'react-native';
 import Dialog from 'react-native-dialog';
 import CommonFnUtil from '../utils/CommonFnUtil';
 import CommonUtil from '../utils/CommonUtil';
@@ -178,7 +178,7 @@ const AlertDialog = () => {
 
             {/* 삭제 관련 alert dialog 분기 (삭제/영구삭제/복원/휴지통 비우기) */}
             { alertDialogState && alertDialogState.alertName === 'alert' && alertDialogState.alertItem.alertType === 'Trash' &&
-                <Dialog.Container contentStyle={ style.container} visible={true}>
+                <Dialog.Container contentStyle={ style.container} footerStyle={{ backgroundColor:'#e5edf7'}} visible={true}>
                     <Dialog.Title>알림</Dialog.Title>
 
                     { alertDialogState.alertItem.menuNM === 'deleteFile' ?
@@ -236,7 +236,7 @@ const style = StyleSheet.create({
     container: {
         backgroundColor:'#fff',
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
     },
     deleteContainer: {
         height: 260, 

@@ -104,11 +104,14 @@ export {default as inputCloseBtn} from '../../assets/oneffice/homeIcons/btn_canc
 
 //actionsheetmenu & popovermenu icons
 export {default as ActionSetPW} from '../../assets/oneffice/homeIcons/btn_security_none.svg';
-export {default as ActionSetViewOnly} from '../../assets/oneffice/homeIcons/icon_read.svg';
+export {default as ActionSetViewOnlyOFF} from '../../assets/oneffice/homeIcons/ic_sheet_read.svg';
+export { default as ActionSetViewOnlyON} from '../../assets/oneffice/homeIcons/ic_lst_read_none.svg';
 export {default as sortMenu} from '../../assets/oneffice/homeIcons/icon_filter.svg';
 export {default as R_menuSwitchOFF} from '../../assets/oneffice/homeIcons/switch_off.svg';
 export {default as R_menuSwitchON} from '../../assets/oneffice/homeIcons/switch_on.svg';
 export {default as R_menuNextPageBtn} from '../../assets/oneffice/homeIcons/icon_go.svg';
+export {default as docHistory} from '../../assets/oneffice/homeIcons/ic_history_docu.svg';
+export {default as docTag} from '../../assets/oneffice/homeIcons/ic_history_tag.svg';
 
 //docboxlist icons
 export {default as OnefficeOn} from '../../assets/oneffice/homeIcons/icon_oneffice_sele.svg';
@@ -134,3 +137,11 @@ export { default as arrowUp} from '../../assets/oneffice/homeIcons/ic_arrow_up.s
 export { default as folderPrev} from '../../assets/oneffice/homeIcons/ic_folder_prev_m.svg';
 export { default as deleteBtn} from '../../assets/oneffice/homeIcons/ic_del_bl_m_none.svg';
 export { default as addBtn} from '../../assets/oneffice/homeIcons/ic_add.svg';
+
+//docInfo icons
+export { default as docShareSend} from '../../assets/oneffice/homeIcons/ic_doc_share_send.svg';
+export { default as docShareReceive} from '../../assets/oneffice/homeIcons/ic_doc_share_receive.svg';
+export { default as docShare} from '../../assets/oneffice/homeIcons/ic_doc_share.svg';
+export { default as docOpenLink} from '../../assets/oneffice/homeIcons/ic_doc_openlink.svg';
+export { default as docFavorite} from '../../assets/oneffice/homeIcons/ic_card_bookmark_on.svg';
+export { default as docSecurity} from '../../assets/oneffice/homeIcons/ic_doc_security.svg';

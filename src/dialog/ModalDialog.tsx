@@ -5,6 +5,7 @@ import { Modal, ModalContent } from 'react-native-modals';
 import { CopyDialog} from '../dialog/copyDialog';
 import { MoveDialog} from '../dialog/MoveDialog';
 import { UserInfoDialog } from '../dialog/UserInfoDialog';
+import { DocInfoDialog} from '../dialog/DocInfoDialog';
 import CommonUtil from '../utils/CommonUtil'
 
 export const ModalDialog = () => {
@@ -28,6 +29,9 @@ export const ModalDialog = () => {
                 }
                 { centerDialogState.dialogName === AppScreens.UserInfoDialog &&
                     <UserInfoDialog />
+                }
+                { centerDialogState.dialogName === AppScreens.DocInfoDialog &&
+                    <DocInfoDialog />
                 }
             </ModalContent>
         </Modal>
