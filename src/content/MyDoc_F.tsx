@@ -67,6 +67,15 @@ const MyDoc = ( props : any) => {
     });
     const { sortItem, sortOrder, fileTypes} = reqListData;
 
+    const [ isActive, setIsActive] = useState({
+        'Home': false,
+        'MyDoc': true,
+        'ShareDoc': false,
+        'FavoriteDoc': false,
+        'SecurtyDoc': false,
+        'TrashDoc': false,
+    });
+
     //딱 한번 실행 됌 
     useLayoutEffect( () => {
         if( CommonUtil.strIsNull( sortMenuState.contextName) || sortMenuState.contextName !== CONTEXT_NAME) {
@@ -93,11 +102,30 @@ const MyDoc = ( props : any) => {
 
     useEffect(() => {
         //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
-        if( sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME) {
+        if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && 
+            targetFullPathState.fullPathUIDs[0] === '' && centerDialogState.dialogName === '' ) {
             setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
             // flatListRef.current.yScrollOffset = 0;
         }
-    }, [ centerDialogState, alertDialogState, swipeItemState]);
+    }, [ centerDialogState]);
+
+    useEffect(() => {
+        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
+        if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && 
+            alertDialogState.alertName === '' ) 
+        {
+            setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+            // flatListRef.current.yScrollOffset = 0;
+        }
+    }, [ alertDialogState]);
+
+    useEffect(() => {
+        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
+        if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME) {
+            setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+            // flatListRef.current.yScrollOffset = 0;
+        }
+    }, [ swipeItemState]);
 
     const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
@@ -130,7 +158,7 @@ const MyDoc = ( props : any) => {
                         ViewModeCheck={ ViewModeCheck}
                 />
 
-                <CommonDocBoxList navigation={ navigation} />
+                <CommonDocBoxList isActive={ isActive} setIsActive={ setIsActive} navigation={ navigation} />
 
                 <TextInput style={ MyDocStyles.textInputStyle} placeholder="Search" />
                 

@@ -58,6 +58,15 @@ const TrashDoc = ( props : any) => {
     });
     const { sortItem, sortOrder, fileTypes} = reqListData;
 
+    const [ isActive, setIsActive] = useState({
+        'Home': false,
+        'MyDoc': false,
+        'ShareDoc': false,
+        'FavoriteDoc': false,
+        'SecurtyDoc': false,
+        'TrashDoc': true,
+    });
+
     //딱 한번 실행 됌 
     useLayoutEffect( () => {
         if( CommonUtil.strIsNull( sortMenuState.contextName) || sortMenuState.contextName !== CONTEXT_NAME) {
@@ -77,10 +86,10 @@ const TrashDoc = ( props : any) => {
 
     useEffect(() => {
         //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
-        if( sortMenuState.contextName && sortMenuState.contextName == CONTEXT_NAME){
+        if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && alertDialogState.alertName === '' ){
             setDataList( {...reqListData, folderSeq: '', pageNum:1, dataList: []});
         }
-    }, [ alertDialogState]);
+    }, [ alertDialogState.alertName]);
 
     const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
@@ -92,7 +101,7 @@ const TrashDoc = ( props : any) => {
         }
         else {
             setLoading(true);
-            setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
+            // setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
         }
     }
     
@@ -113,7 +122,7 @@ const TrashDoc = ( props : any) => {
                         ViewModeCheck={ ViewModeCheck}
                 />
 
-                <CommonDocBoxList navigation={ navigation} />
+                <CommonDocBoxList isActive={isActive} setIsActive={setIsActive} navigation={ navigation} />
                 
                 <View style={ MyDocStyles.docListContainer}>
                     { reqListData.dataList.length > 0 ? 

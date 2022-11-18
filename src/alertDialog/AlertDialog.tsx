@@ -1,12 +1,45 @@
 import { CommonContext } from '../context/CommonContext';
-import React, { useContext, useState } from 'react';
-import { View , Text, StyleSheet, Dimensions} from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View , Text, StyleSheet} from 'react-native';
 import Dialog from 'react-native-dialog';
 import CommonFnUtil from '../utils/CommonFnUtil';
 import CommonUtil from '../utils/CommonUtil';
 import Toast from 'react-native-toast-message';
 
 const categoryUid = '136142218a7664Bc9a';
+
+// const useCount = ( currentTarget: any) => {
+//     const [ result, setResult] = useState( []);
+
+//     useEffect(() => {
+//         if( currentTarget){
+//             getContentTypeCtn();
+//         }
+//     },[]);
+
+//     const getContentTypeCtn = () => {
+//         let responseData: any = null;
+//         let docCnt = 0;
+//         let funcCnt = 0;
+//         let folderCnt = 0;
+
+//         if( currentTarget && ( currentTarget.important || currentTarget.security_key || currentTarget.share_type !== 0)) {
+//             funcCnt++;
+//         }
+//         else {
+//             currentTarget.doc_type === '0' ? docCnt++ : folderCnt++ ;
+//         }
+
+//         responseData = [{name: "문서", cnt:docCnt}, 
+//                         {name: "기능 설정 문서", cnt: funcCnt}, 
+//                         {name: "폴더", cnt: folderCnt}
+//                     ];
+        
+//         setResult(responseData);
+//     };
+
+//     return result;
+// }
 
 const AlertDialog = () => {
     // let result : any = [];
@@ -17,6 +50,7 @@ const AlertDialog = () => {
             targetFullPathState} = useContext( CommonContext);
             
     const [ inputVal, setInputVal] = useState( '');
+    // const result = useCount( alertDialogState.alertItem?.data);
 
     const onClickCancel = () => {
         // if( CommonUtil.strIsNull( alertDialogState.alertName)){
@@ -93,7 +127,6 @@ const AlertDialog = () => {
             folderUID = docType ? selectedTargetState.selectedTarget.docUID : '';
         }
 
-
         let data: any = {};
         let resData: any = '';
 
@@ -124,39 +157,6 @@ const AlertDialog = () => {
         }, (1000));
     };
 
-    // const deleteContentRows = ['문서','기능 설정 문서','폴더'];
-    // const deleteContentRows = new Map()
-    //     .set('docCnt', '문서')
-    //     .set('funcCnt', '기능 설정 문서')
-    //     .set('folderCnt', '폴더')
-
-    // const getContentTypeCtn = () => {
-    //     let responseData: any = {};
-    //     let docCnt = 0;
-    //     let funcCnt = 0;
-    //     let folderCnt = 0;
-
-    //     const currentTarget = alertDialogState.alertItem.data;
-
-    //     if( currentTarget && ( currentTarget.important || currentTarget.security_key || currentTarget.share_type !== 0)) {
-    //         funcCnt++;
-    //     }
-    //     else {
-    //         currentTarget.doc_type === '0' ? docCnt++ : folderCnt++ ;
-    //     }
-
-    //     responseData = [{"문서":docCnt}, 
-    //                     {"기능 설정 문서":funcCnt}, 
-    //                     {"폴더":folderCnt}
-    //                 ];
-        
-    //     result = responseData;
-    // };
-
-    const deleteContentRowCtn = () => {
-
-    };
-
     return (
         <View>
             { alertDialogState && alertDialogState.alertName !== '' && alertDialogState.alertItem.alertType !== 'Trash' &&
@@ -185,29 +185,17 @@ const AlertDialog = () => {
                         <View style={ style.deleteContainer}>
                             <Dialog.Description style={{ padding:5, fontSize:14, marginBottom:5}}>{ alertDialogState.alertItem.description[0]}</Dialog.Description>
                             <View style={ style.deleteContent}>
-                                {/* 1. 건수 체크하는 함수 생성 / 2.map 함수로 생성 / 3. 1번에서 받은 resData로 건수 뿌려주기 */}
-                                <View style={ style.deleteContentRow}>
-                                    <Text>문서</Text>
-                                    <Text>0 건</Text> 
-                                </View>
-                                <View style={ style.deleteContentRow}>
-                                    <Text>기능 설정 문서</Text>
-                                    <Text>0 건</Text>
-                                </View>
-                                <View style={ style.deleteContentRow}>
-                                    <Text>폴더</Text>
-                                    <Text>0 건</Text>
-                                </View>
-                                {/* <>
-                                { !CommonUtil.objectIsNull( selectedTargetState.selectedTarget) && getContentTypeCtn()}
-                                { deleteContentRows.map(( Item: any, index: number) => {
-                                        <View style={ style.deleteContentRow}>
-                                            <Text>{ Item}</Text>
-                                            <Text>{ result[index][Item]}</Text> 
-                                        </View>
-                                    })
-                                }
-                                </> */}
+                                <>
+                                    { alertDialogState.alertItem.data.map(( Item: any) => {
+                                            return (
+                                                <View style={ style.deleteContentRow} key={ Item.name}>
+                                                    <Text>{ Item.name}</Text>
+                                                    <Text>{ Item.cnt}</Text> 
+                                                </View>
+                                            )
+                                        })
+                                    }
+                                </>
                             </View>
                             <Dialog.Description style={[ style.deleteDescription, { color:'red'}]}>{ alertDialogState.alertItem.description[1]}</Dialog.Description>
                             <Dialog.Description style={ style.deleteDescription}>{ alertDialogState.alertItem.description[2]}</Dialog.Description>
@@ -222,6 +210,7 @@ const AlertDialog = () => {
                             }
                         </View>
                     }
+
                     <Dialog.Button label="취소" onPress={ onClickCancel}/>
                     <Dialog.Button label="확인" onPress={ onClickDeleteConfirm.bind( this, alertDialogState.alertItem.menuNM)}/>
 
