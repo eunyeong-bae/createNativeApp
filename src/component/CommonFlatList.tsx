@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext} from 'react';
+import React, { useState, useEffect, useCallback, useContext} from 'react';
 import { View, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import CardListItem from '../list/CardListItem';
 import DefaultListItem from '../list/DefaultListItem';
@@ -7,10 +7,6 @@ import SvgIcon from '../component/svgIcon/SvgIcon';
 import CommonFnUtil from '../utils/CommonFnUtil';
 import { CommonContext } from '../context/CommonContext';
 
-const hiddenItemLists:any = {    
-    'setFavorite':{name:'중요 표시', auth:'Read',rightMenu: false,icon: ['importantOff', 'importantOn'],clickEvent: CommonFnUtil.onClickSetFavCatergory},
-    'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickDelete},
-};
 
 interface FlatListProps {
     flatListRef? : any,
@@ -21,6 +17,11 @@ interface FlatListProps {
     fullpath? : any,
     setFullpath? : any,
 }
+
+const hiddenItemLists:any = {    
+    'setFavorite':{name:'중요 표시', auth:'Read',rightMenu: false,icon: ['importantOff', 'importantOn'],clickEvent: CommonFnUtil.onClickSetFavCatergory},
+    'delete':{name:'삭제',auth:'Update',rightMenu: false,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickDelete},
+};
 
 const CommonFlatList = ( props: FlatListProps) => {
     const { swipeItemState, 
@@ -76,6 +77,30 @@ const CommonFlatList = ( props: FlatListProps) => {
         )
     };
 
+    const getContentTypeCtn = ( currentTarget: any) => {
+        let responseData: any = null;
+        let docCnt = 0;
+        let funcCnt = 0;
+        let folderCnt = 0;
+
+        if( currentTarget.doc_type === '0') {
+            folderCnt++
+        }
+        else if( currentTarget && ( currentTarget.important || currentTarget.security_key || currentTarget.share_type !== 0)) {
+            funcCnt++;
+        }
+        else {
+            docCnt++ ;
+        }
+
+        responseData = [{ name: "문서", cnt: docCnt}, 
+                        { name: "기능 설정 문서", cnt: funcCnt}, 
+                        { name: "폴더", cnt: folderCnt}
+                    ];
+
+        return responseData;
+    };
+
     const hiddenItemEvent = async ( menuNM : any, data: any) => {
         console.log( data)
         const returnVal = await hiddenItemLists[menuNM].clickEvent();
@@ -116,7 +141,7 @@ const CommonFlatList = ( props: FlatListProps) => {
                 description : [ '삭제하시겠습니까?', 
                                 '※ 폴더 삭제 시, ONECHAMBER 파일을 포함한 내부 문서가 모두 삭제됩니다.', 
                                 '※ 기능 설정 문서란 공유, 보안, 읽기 전용, 중요 설정된 문서를 의미합니다.'],
-                data: data.item,
+                data: getContentTypeCtn( data.item),
             }; 
             
             setAlertDialog( alertName, alertItem);
@@ -208,9 +233,6 @@ const styles = StyleSheet.create({
     backRightBtn: {
         width: 35,
         height: 35,
-        // borderWidth:1,
-        // borderRadius: 50,
-        // borderColor:'#DCE7FB',
         alignItems: 'center',
         justifyContent: 'center',
     },

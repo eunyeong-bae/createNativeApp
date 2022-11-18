@@ -24,9 +24,22 @@ interface CommonHeaderInfo {
 //     .set('MoveDialog', CommonFnUtil.moveDocumentFolder)
 //     .set('CopyDialog', CommonFnUtil.copyDocument)
 
-const CommonHeader = (props: CommonHeaderInfo) => {
-    const { headerName, multiSelectedState, setMultiSelected, headerMenuInfo, contextName, headerDataInfo, sortMenu, ViewModeCheck, navigation, fullpath, setFullpath} = props;
-    const { centerDialogState, setCenterDialog, actionMenuState, setIsActionMenu, selectedTargetState, setSelectedTarget} = useContext(CommonContext);
+const CommonHeader = ( props: CommonHeaderInfo) => {
+    const { headerName, 
+            multiSelectedState, 
+            headerMenuInfo, 
+            contextName, 
+            sortMenu, 
+            ViewModeCheck, 
+            setMultiSelected, 
+            headerDataInfo, 
+            navigation, 
+            fullpath, 
+            setFullpath} = props;
+
+    const { centerDialogState, 
+            setCenterDialog, 
+            selectedTargetState} = useContext(CommonContext);
 
     const onClickLeftBtn = ( iconName: any) => { // 문서함 뒤로가기 or 팝업 닫기 버튼
         if( iconName === 'UserInfoICon') {
@@ -59,7 +72,7 @@ const CommonHeader = (props: CommonHeaderInfo) => {
                     console.log( resultData);
     
                     setFullpath({ fullPathUIDs : [ ''], fullPathNames : [ '내 문서함'], treeTypes : []});
-                    setCenterDialog('', null);
+                    setCenterDialog( '', null);
                 }
             }, 300);
 
