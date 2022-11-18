@@ -4,10 +4,8 @@ import {View,Text, StyleSheet, TouchableOpacity} from 'react-native';
 import CommonFnUtil from '../utils/CommonFnUtil';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import CommonUtil from '../utils/CommonUtil';
-import {sortMenuStyles, moreMenuStyles} from '../menu/style/style';
+import { moreMenuStyles} from '../menu/style/style';
 import { CommonContext } from '../context/CommonContext';
-import Toast from 'react-native-toast-message';
-
 {/*
    1.어떤 문서함인지
    2.정렬버튼 on/off(하단 메뉴가 나오고 안나오고 상태) 
@@ -44,20 +42,21 @@ import Toast from 'react-native-toast-message';
 */}
 const myDocMenuInfo:any = {    
     'share':{name:'원커넥트',auth: 'Read',rightMenu: true,icon:'ActionShare',clickEvent: CommonFnUtil.onClickShare},
-    'linkCopy':{name:'링크 복사',auth:'Read',rightMenu: false,icon:'ActionLinkCopy',clickEvent: CommonFnUtil.linkCopyEvent},
+    'linkCopy':{name:'링크복사',auth:'Read',rightMenu: false,icon:'ActionLinkCopy',clickEvent: CommonFnUtil.linkCopyEvent},
     'ONECHAMBER(PDF)':{name:'PDF', auth:'Read',rightMenu: false,icon:'ActionOneSave',clickEvent: CommonFnUtil.onClickOneChamberSave},
     'move':{name:'이동',auth: 'Read',rightMenu: false,icon:'ActionMove',clickEvent: CommonFnUtil.onClickMoveOpen},
     'copy':{name:'사본 만들기',auth:'Update',rightMenu: false,icon:'ActionCopy',clickEvent: CommonFnUtil.onClickCopy},
     'changeName':{name:'이름 변경', auth:'Read',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRename},
     'addOwnForm':{name:'나만의 양식 추가',auth: 'Read',rightMenu: false,icon:'ActionSetViewOnlyOFF',clickEvent: CommonFnUtil.onClickAddOwnForm},
-    'delete':{name:'삭제',auth:'Update',rightMenu: true,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickRemove},
     'deleteInTrash':{name:'영구삭제',auth:'Update',rightMenu: false,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickDeleteInTrash},
     'restore':{name:'복원',auth:'Update',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRestore},
-    'relatedDoc':{name:'연관 문서',auth: 'Read',rightMenu: false,icon: 'ActionRelateDoc',clickEvent: CommonFnUtil.onClickRelatedDoc},
+    'relatedDoc':{name:'연관문서',auth: 'Read',rightMenu: false,icon: 'ActionRelateDoc',clickEvent: CommonFnUtil.onClickRelatedDoc},
     'setViewOnly':{name:'읽기 전용 설정',auth:'Update',rightMenu: false,icon:['ActionSetViewOnlyOFF', 'ActionSetViewOnlyON'],clickEvent: CommonFnUtil.onClickSetViewOnly},
-    'setPassword':{name:'보안 설정', auth:'Read',rightMenu: true,icon:'ActionSetPW',clickEvent: CommonFnUtil.onClickSetPassword},
-    'setTag':{name:'태그 설정', auth:'Read',rightMenu: false,icon:'docTag',clickEvent: CommonFnUtil.onClickSetTag},
-    'DocInfo':{name:'문서 정보', auth:'Read',rightMenu: false,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDetailDocInfo},
+    'setPassword':{name:'보안설정', auth:'Read',rightMenu: true,icon:'ActionSetPW',clickEvent: CommonFnUtil.onClickSetPassword},
+    'setTag':{name:'태그설정', auth:'Read',rightMenu: false,icon:'docTag',clickEvent: CommonFnUtil.onClickSetTag},
+    'docDetailInfo':{name:'문서상세정보', auth:'Read',rightMenu: true,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDetailDocInfo},
+    'docInfo':{name:'문서정보', auth:'Read',rightMenu: false,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDocInfo},
+    'docHistory':{name:'문서이력', auth:'Read',rightMenu: false,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDocHistory},
     'openLink' : { name: '오픈링크', icon: 'OpenLink', rightItem : true, menuEvent: CommonFnUtil.onClickOnOffLink},
     'openLinkRead' : { name: '읽기', icon: '', value: 'R', rightItem : false, menuEvent: CommonFnUtil.onChangeOpenAuth},
     'openLinkUpdate' : { name: '수정', icon: '', value: 'U', rightItem : false, menuEvent: CommonFnUtil.onChangeOpenAuth},
@@ -65,8 +64,12 @@ const myDocMenuInfo:any = {
 };
 
 const ActionMenu = () => {
-    const moreMenus = ['share','linkCopy','ONECHAMBER(PDF)','move','copy','changeName','addOwnForm','delete','relatedDoc','setViewOnly','setPassword','setTag','DocInfo',];
+    const moreMenus = ['share','linkCopy','ONECHAMBER(PDF)','move',
+                        'copy','changeName','addOwnForm','relatedDoc',
+                        'setViewOnly','setPassword','setTag','docDetailInfo',];
+
     const shareSubMenu = ['openLink','groupNuserShare']; //'openLinkRead', 'openLinkUpdate',
+    const detailDocInfo = ['docInfo','docHistory']; //'openLinkRead', 'openLinkUpdate',
     const removeSubMenu = ['deleteInTrash','restore'];
 
     const { setCenterDialog, 
@@ -80,15 +83,15 @@ const ActionMenu = () => {
     const [ options, setOptions] = useState( []);
     const [ menus, setMenus] = useState( []);
     const [ nextActionMenu, setNextActionMenu] = useState( ''); // 서브메뉴 체크용
-    const [ isSetReadOnly, setIsSetReadOnly] = useState( false);
+
     const actionSheetRef = useRef( null);
 
     useEffect(() => {
         if( actionMenuState.isActionMenu){
             if( !CommonUtil.strIsNull(nextActionMenu)) {
-                setMenus( nextActionMenu === 'shareSubMenu' ? shareSubMenu : removeSubMenu);
+                setMenus( nextActionMenu === 'shareSubMenu' ? shareSubMenu : detailDocInfo );
             }else {
-                setMenus( moreMenus);
+                setMenus( sortMenuState.contextName === 'TrashDoc' ? removeSubMenu : moreMenus);
             }
 
             actionSheetRef.current.show(); //액션 메뉴 열어주려면 있어야함
@@ -106,7 +109,7 @@ const ActionMenu = () => {
     };
 
     const searchClickMenu = () => {
-        setOptions( renderMoreMenu( menus.length === 0 ? moreMenus : menus)); //menus
+        setOptions( renderMoreMenu( menus.length === 0 ? moreMenus : menus));
     }
 
     // const renderMoreMenu = ( clickMenu:any) => {
@@ -172,41 +175,22 @@ const ActionMenu = () => {
         for( let i=0; i<menus.length; i++){
             for(let j=0; j<menus[i].length;j++){
                 menuContent.push(
-                    myDocMenuInfo[menus[i][j]].name !== '삭제' ? 
-                        <TouchableOpacity key={ myDocMenuInfo[menus[i][j]].name} onPress={() => onClickActionMenuItemMore(menus[i][j])}>
-                            <View style={ moreMenuStyles.container}>
-                                <View style={ moreMenuStyles.menuIconContainer}>
-                                    { !CommonUtil.strIsNull( myDocMenuInfo[menus[i][j]].icon) &&
-                                        <View style={ moreMenuStyles.menuItemContainer}>
-                                            { typeof myDocMenuInfo[menus[i][j]].icon === 'string' ?
-                                                <SvgIcon name={ myDocMenuInfo[menus[i][j]].icon} width={20} height={20}/>
-                                                : 
-                                                <>
-                                                    { myDocMenuInfo[menus[i][j]].name === '읽기 전용 설정' &&
-                                                        <SvgIcon name={ isSetReadOnly ? myDocMenuInfo[menus[i][j]].icon[1] : myDocMenuInfo[menus[i][j]].icon[0]} width={20} height={20}/>
-                                                    }
-                                                </>
-                                            }
-                                            <Text style={{ fontSize: 11, paddingTop:5}}>{ myDocMenuInfo[menus[i][j]].name}</Text>
-                                        </View>
-                                    }
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    :
-                        sortMenuState.contextName === 'TrashDoc' &&
-                        <TouchableOpacity key={ myDocMenuInfo[menus[i][j]].name} onPress={() => onClickActionMenuItemMore(menus[i][j])}>
-                            <View style={ moreMenuStyles.container}>
-                                <View style={ moreMenuStyles.menuIconContainer}>
-                                    { !CommonUtil.strIsNull( myDocMenuInfo[menus[i][j]].icon) &&
-                                        <View style={ moreMenuStyles.menuItemContainer}>
+                    <TouchableOpacity key={ myDocMenuInfo[menus[i][j]].name} onPress={() => onClickActionMenuItemMore(menus[i][j])}>
+                        <View style={ moreMenuStyles.container}>
+                            <View style={ moreMenuStyles.menuIconContainer}>
+                                { !CommonUtil.strIsNull( myDocMenuInfo[menus[i][j]].icon) &&
+                                    <View style={ moreMenuStyles.menuItemContainer}>
+                                        { myDocMenuInfo[menus[i][j]].name === '읽기 전용 설정' ?
+                                            <SvgIcon name={ selectedTargetState.selectedTarget?.readonly ? myDocMenuInfo[menus[i][j]].icon[1] : myDocMenuInfo[menus[i][j]].icon[0]} width={20} height={20}/>
+                                            :
                                             <SvgIcon name={ myDocMenuInfo[menus[i][j]].icon} width={20} height={20}/>
-                                            <Text style={{ fontSize: 11, paddingTop:5}}>{ myDocMenuInfo[menus[i][j]].name}</Text>
-                                        </View>
-                                    }
-                                </View>
+                                        }
+                                        <Text style={{ fontSize: 11, paddingTop:5}}>{ myDocMenuInfo[menus[i][j]].name}</Text>
+                                    </View>
+                                }
                             </View>
-                        </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
                 )
             }
 
@@ -239,7 +223,7 @@ const ActionMenu = () => {
                 setNextActionMenu( naviVal[1]);
                 break;
 
-            case 'dialog':
+            case 'alert':
                 let alertName = '';
                 let alertItem = {};
 
@@ -249,9 +233,6 @@ const ActionMenu = () => {
                         title: naviVal[1] === 'rename' ? '이름 변경' : naviVal[1] === 'addOwnForm' ? '나만의 양식 추가' : '새 폴더 추가',
                         menuNM: naviVal[1]
                     };
-                }
-                else if( naviVal[1] === 'docInfo') {
-                    setCenterDialog('DocInfoDialog',null);
                 }
                 else {
                     alertName = 'alert';
@@ -263,7 +244,6 @@ const ActionMenu = () => {
                 }
                 
                 setOptions( []);
-                setNextActionMenu( '');
                 
                 hiddenActionMenu();
 
@@ -272,20 +252,23 @@ const ActionMenu = () => {
                 },500)
                 break;
 
+            case "dialog":
+                setCenterDialog( naviVal[1] === 'docInfo' ? 'DocInfoDialog': 'DocHistory',null);
+    
+                setOptions( []);
+                setNextActionMenu( '');
+                
+                hiddenActionMenu();
+                break;
+
             case 'toast':
                 const docUID = selectedTargetState.selectedTarget.docUID;
                 const isReadOnly = !selectedTargetState.selectedTarget.readonly ? 1 : 0;
 
-                const setReadOnly = CommonFnUtil.setReadOnly( docUID, isReadOnly);
+                CommonFnUtil.setReadOnly( docUID, isReadOnly);
                     
                 setOptions( []);
                 hiddenActionMenu();
-
-                setTimeout(() => {
-                    if( setReadOnly) {
-                        setIsSetReadOnly( !isSetReadOnly);
-                    }
-                }, 1000);
 
                 break;
 
@@ -324,7 +307,7 @@ const ActionMenu = () => {
                 theme={"ios"}
             />
         </>
-    ), [  options]);
+    ), [ options]);
 }
 
 const styles={

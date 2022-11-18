@@ -15,7 +15,7 @@ const DefaultListItem = ( props:any) => {
 
     const onClickActionMenu = () => {
         setIsActionMenu( true, props.navigation);
-        setSelectedTarget(props.data, props.index);
+        setSelectedTarget( props.data, props.index);
     };
 
     const onClickFolder= ( data: any) => {
@@ -98,7 +98,7 @@ const DefaultListItem = ( props:any) => {
                </TouchableOpacity>
                
                { !props.fullpath ?
-                       <TouchableHighlight onPress={onClickActionMenu}>
+                       <TouchableHighlight onPress={ onClickActionMenu}>
                            <View>
                                <SvgIcon name="DocMoreBtn" width={22} height={22}/>
                            </View> 
