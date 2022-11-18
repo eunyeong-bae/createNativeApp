@@ -6,6 +6,7 @@ import { CopyDialog} from '../dialog/copyDialog';
 import { MoveDialog} from '../dialog/MoveDialog';
 import { UserInfoDialog } from '../dialog/UserInfoDialog';
 import { DocInfoDialog} from '../dialog/DocInfoDialog';
+import { DocHistory} from '../dialog/DocHistory';
 import CommonUtil from '../utils/CommonUtil'
 
 export const ModalDialog = () => {
@@ -31,6 +32,9 @@ export const ModalDialog = () => {
                     <UserInfoDialog />
                 }
                 { centerDialogState.dialogName === AppScreens.DocInfoDialog &&
+                    <DocInfoDialog />
+                }
+                { centerDialogState.dialogName === AppScreens.DocHistory &&
                     <DocInfoDialog />
                 }
             </ModalContent>

@@ -415,8 +415,6 @@ export default class CommonFnUtil{
     }
 
     public static setReadOnly = async( docUID: any, isReadOnly: any) => {
-        let result: any = false;
-
         const data: any = {
             protocolId : 'P620',
             data: {"docUID": docUID, "readonly": isReadOnly},
@@ -424,8 +422,6 @@ export default class CommonFnUtil{
 
         await Adapter.fetch.protocol(data).then((res) => {
             if( res) {
-                result = true;
-
                 Toast.show({
                     type: 'success',
                     text1: isReadOnly ? '읽기 전용로 설정되었습니다.' : '읽기 전용이 해제되었습니다.',
@@ -442,7 +438,7 @@ export default class CommonFnUtil{
             });
         })
 
-        return result;
+        return;
     }
 
     public static searchDataList = async( sendata : any) => {
@@ -720,7 +716,7 @@ export default class CommonFnUtil{
     // }
 
     public static deleteSubMenuEvent = async( menuNm : any) => {
-        return `dialog|${ menuNm}`;
+        return `alert|${ menuNm}`;
 
     }
     
@@ -763,8 +759,17 @@ export default class CommonFnUtil{
 
     public static onClickDetailDocInfo = async() => {
         // console.log(' onClickDocInfoView');
+        return 'nextActionMenu|detailDocInfo';
+    }
+    public static onClickDocInfo = async() => {
+        // console.log(' onClickDocInfoView');
         return 'dialog|docInfo';
     }
+    public static onClickDocHistory = async() => {
+        // console.log(' onClickDocInfoView');
+        return 'dialog|docHistory';
+    }
+
     public static onClickShare = () => {
         // console.log(' onClickCategory');
         return 'nextActionMenu|shareSubMenu';
@@ -772,29 +777,25 @@ export default class CommonFnUtil{
 
     public static onClickAddOwnForm= async() => {
         // console.log(' onClickCategory');
-        return 'dialog|addOwnForm';
+        return 'alert|addOwnForm';
     }
     
     public static onClickRename = async() => {
         // console.log(' onClickRename');
-        return 'dialog|rename';
+        return 'alert|rename';
     }
 
     public static onClickNewFolder = async() => {
-        return 'dialog|newFolder';
+        return 'alert|newFolder';
     }
 
-    public static onClickRemove = async() => {
-        // console.log(' onClickRemove');
-        return 'nextActionMenu|removeSubMenu';
-    }
     public static onClickDeleteInTrash = async() => {
         // console.log(' onClickRemove');
-        return 'dialog|deleteInTrash';
+        return 'alert|deleteInTrash';
     }
     public static onClickRestore = async() => {
         // console.log(' onClickRemove');
-        return 'dialog|restore';
+        return 'alert|restore';
     }
     public static onClickDelete = async() => {
         // console.log(' onClickRemove');
