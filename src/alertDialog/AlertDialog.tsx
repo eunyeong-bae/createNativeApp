@@ -8,49 +8,13 @@ import Toast from 'react-native-toast-message';
 
 const categoryUid = '136142218a7664Bc9a';
 
-// const useCount = ( currentTarget: any) => {
-//     const [ result, setResult] = useState( []);
-
-//     useEffect(() => {
-//         if( currentTarget){
-//             getContentTypeCtn();
-//         }
-//     },[]);
-
-//     const getContentTypeCtn = () => {
-//         let responseData: any = null;
-//         let docCnt = 0;
-//         let funcCnt = 0;
-//         let folderCnt = 0;
-
-//         if( currentTarget && ( currentTarget.important || currentTarget.security_key || currentTarget.share_type !== 0)) {
-//             funcCnt++;
-//         }
-//         else {
-//             currentTarget.doc_type === '0' ? docCnt++ : folderCnt++ ;
-//         }
-
-//         responseData = [{name: "문서", cnt:docCnt}, 
-//                         {name: "기능 설정 문서", cnt: funcCnt}, 
-//                         {name: "폴더", cnt: folderCnt}
-//                     ];
-        
-//         setResult(responseData);
-//     };
-
-//     return result;
-// }
-
 const AlertDialog = () => {
-    // let result : any = [];
-
     const { alertDialogState, 
             setAlertDialog, 
             selectedTargetState, 
             targetFullPathState} = useContext( CommonContext);
             
     const [ inputVal, setInputVal] = useState( '');
-    // const result = useCount( alertDialogState.alertItem?.data);
 
     const onClickCancel = () => {
         // if( CommonUtil.strIsNull( alertDialogState.alertName)){
