@@ -51,7 +51,7 @@ const myDocMenuInfo:any = {
     'deleteInTrash':{name:'영구삭제',auth:'Update',rightMenu: false, folderMenu: false, icon:'deleteBtn',clickEvent: CommonFnUtil.onClickDeleteInTrash},
     'restore':{name:'복원',auth:'Update',rightMenu: false, folderMenu: false, icon:'ActionReName',clickEvent: CommonFnUtil.onClickRestore},
     'relatedDoc':{name:'연관문서',auth: 'Read',rightMenu: false, folderMenu: false, icon: 'ActionRelateDoc',clickEvent: CommonFnUtil.onClickRelatedDoc},
-    'setViewOnly':{name:'읽기 전용 설정',auth:'Update',rightMenu: false, folderMenu: false, icon:['ActionSetViewOnlyON', 'ActionSetViewOnlyOFF'],clickEvent: CommonFnUtil.onClickSetViewOnly},
+    'setViewOnly':{name:['읽기 전용 ON','읽기 전용 OFF'],auth:'Update',rightMenu: false, folderMenu: false, icon:['ActionSetViewOnlyON', 'ActionSetViewOnlyOFF'],clickEvent: CommonFnUtil.onClickSetViewOnly},
     'setPassword':{name:'보안설정', auth:'Read',rightMenu: true, folderMenu: false, icon:'ActionSetPW',clickEvent: CommonFnUtil.onClickSetPassword},
     'setTag':{name:'태그설정', auth:'Read',rightMenu: false, folderMenu: false, icon:'docTag',clickEvent: CommonFnUtil.onClickSetTag},
     'docDetailInfo':{name:'문서상세정보', auth:'Read',rightMenu: true, folderMenu: false, icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDetailDocInfo},
@@ -71,6 +71,8 @@ const ActionMenu = () => {
     const shareSubMenu = ['openLink','groupNuserShare']; //'openLinkRead', 'openLinkUpdate',
     const detailDocInfo = ['docInfo','docHistory']; //'openLinkRead', 'openLinkUpdate',
     const removeSubMenu = ['deleteInTrash','restore'];
+
+    let folderMoreMenus: any = [];
 
     const { setCenterDialog, 
             actionMenuState, 
@@ -111,20 +113,19 @@ const ActionMenu = () => {
     };
 
     const searchClickMenu = () => {
-        const folderMenus: any = [];
-        const folderMoreMenus: any = myDocMenuInfo.forEach(( menu:any) => {
-            // if( menu.folderMenu){
-            //     folderMenus.push( menu.)
-            // }
-            console.log( menu)
-        });
 
-        setOptions( 
-            renderMoreMenu( menus.length === 0 
-                            ? selectedTargetState.selectedTarget?.doc_type === "0" ? folderMoreMenus : moreMenus 
-                            : menus
-            )
-        );
+        if( sortMenuState.contextName !== 'TrashDoc'){
+            moreMenus.map(( menu:any) => {
+                if( myDocMenuInfo[menu]['folderMenu']) {
+                    folderMoreMenus.push( menu);
+                }
+            });
+        }
+
+        setOptions( renderMoreMenu( sortMenuState.contextName !== 'TrashDoc' && selectedTargetState.selectedTarget?.doc_type === '0' 
+                                    ? folderMoreMenus 
+                                    : ( menus.length === 0 ? moreMenus : menus)
+        ));
     }
 
     // const renderMoreMenu = ( clickMenu:any) => {
@@ -196,12 +197,17 @@ const ActionMenu = () => {
                             <View style={ moreMenuStyles.menuIconContainer}>
                                 { !CommonUtil.strIsNull( myDocMenuInfo[menus[i][j]].icon) &&
                                     <View style={ moreMenuStyles.menuItemContainer}>
-                                        { myDocMenuInfo[menus[i][j]].name === '읽기 전용 설정' ?
-                                            <SvgIcon name={ selectedTargetState.selectedTarget?.readonly ? myDocMenuInfo[menus[i][j]].icon[0] : myDocMenuInfo[menus[i][j]].icon[1]} width={20} height={20}/>
+                                        { menus[i][j] === 'setViewOnly' ?
+                                            <>
+                                                <SvgIcon name={ selectedTargetState.selectedTarget?.readonly ? myDocMenuInfo[menus[i][j]].icon[0] : myDocMenuInfo[menus[i][j]].icon[1]} width={20} height={20}/>
+                                                <Text style={{ fontSize: 11, paddingTop:5}}>{ selectedTargetState.selectedTarget?.readonly ? myDocMenuInfo[menus[i][j]].name[0] : myDocMenuInfo[menus[i][j]].name[1]}</Text>
+                                            </>
                                             :
-                                            <SvgIcon name={ myDocMenuInfo[menus[i][j]].icon} width={20} height={20}/>
+                                            <>
+                                                <SvgIcon name={ myDocMenuInfo[menus[i][j]].icon} width={20} height={20}/>
+                                                <Text style={{ fontSize: 11, paddingTop:5}}>{ myDocMenuInfo[menus[i][j]].name}</Text>
+                                            </>
                                         }
-                                        <Text style={{ fontSize: 11, paddingTop:5}}>{ myDocMenuInfo[menus[i][j]].name}</Text>
                                     </View>
                                 }
                             </View>
