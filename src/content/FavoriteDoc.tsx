@@ -51,7 +51,7 @@ const FavoriteDoc = ( props : any) => {
     const flatListRef = useRef<any>();
 
     const [ listViewMode, setListViewMode] = useState(false);
-    
+
     const [ isLoading, setLoading] = useState( false); //문서 리스트 추가 호출 시 사용
     const { reqListData, setDataList} = useDocList({
         folderSeq: '',
@@ -68,7 +68,7 @@ const FavoriteDoc = ( props : any) => {
     });
     const { sortItem, sortOrder, fileTypes} = reqListData;
 
-    const [ isActiveCategory, setIsActiveCategory] = useState( false); //카테고리 타이틀 클릭 상태 값 체크
+    const [ isActiveAccordion, setIsActiveAccordion] = useState( false); //카테고리 타이틀 클릭 상태 값 체크
 
     const [ isActive, setIsActive] = useState({
         'Home': false,
@@ -85,6 +85,7 @@ const FavoriteDoc = ( props : any) => {
             setSortMenu( CONTEXT_NAME, { sortItem:'1', fileTypes:'', sortOrder:'d'}, FavoriteDocMenuInfo[ 'sortMenu'])
             setTargetFullPath( [''], ['중요문서함'], null)
         }
+
     }, []);
 
     useEffect(() => {
@@ -132,7 +133,7 @@ const FavoriteDoc = ( props : any) => {
             setLoading(true);
             // setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
         }
-    }
+    };
     
     return useMemo(() => (
         <>
@@ -154,9 +155,9 @@ const FavoriteDoc = ( props : any) => {
 
                     <CommonDocBoxList isActive={isActive} setIsActive={setIsActive} navigation={ navigation} />
 
-                    <CommonCollapsible isActiveCategory={ isActiveCategory} setIsActiveCategory={ setIsActiveCategory}/>
+                    <CommonCollapsible isActiveStateNM = {'FavoriteDoc'} isActiveAccordion={ isActiveAccordion} setIsActiveAccordion={ setIsActiveAccordion}/>
                     
-                    <View style={[ MyDocStyles.docListContainer, isActiveCategory && MyDocStyles.docListOpen]}>
+                    <View style={[ MyDocStyles.docListContainer, isActiveAccordion && MyDocStyles.docListOpen]}>
                         { reqListData.dataList.length > 0 ? 
                             <>
                                 { targetFullPathState.fullPathUIDs.length > 1 &&
@@ -182,7 +183,7 @@ const FavoriteDoc = ( props : any) => {
             {/* </ScrollView> */}
         </SafeAreaView>
     </>
-    ), [ reqListData.dataList, listViewMode, isActiveCategory]);
+    ), [ reqListData.dataList, listViewMode, isActiveAccordion]);
 }
 
 export default FavoriteDoc;

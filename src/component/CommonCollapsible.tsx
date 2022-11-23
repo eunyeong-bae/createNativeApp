@@ -1,85 +1,54 @@
-import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, SafeAreaView} from 'react-native';
+import React, { useCallback, useContext, useLayoutEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
-import Adapter from '../ecmadapter';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { CommonContext } from '../context/CommonContext';
+import CommonFnUtil from '../utils/CommonFnUtil';
 
-interface FavoriteDocProps {
-  isActiveCategory ?: any,
-  setIsActiveCategory ?: any
+interface CollapsibleProps {
+  isActiveStateNM ?: any,
+  isActiveAccordion ?: any,
+  setIsActiveAccordion ?: any,
 }
 
-const CommonCollapsible = ( props: FavoriteDocProps) => {
-  const { isActiveCategory, setIsActiveCategory} = props;
-  const { setAlertDialog} = useContext( CommonContext);
+const CommonCollapsible = ( props: CollapsibleProps) => {
+  const { isActiveStateNM, isActiveAccordion, setIsActiveAccordion} = props;
+  const { setAlertDialog, selectedTargetState} = useContext( CommonContext);
 
   const [ isCategoryLists, setIsCategoryLists] = useState([{
     title: '카테고리',
     data: [],
   }]);
 
+  const [ isDocHistory, setIsDocHistory] = useState([{
+    title: '문서이력',
+    data: [],
+  }]);
+
   useLayoutEffect(() => {
-    callCategoryList();
-  });
-
-  useEffect(() => {
-
-  })
-  //카테고리 목록 조회
-  const callCategoryList = async() => {
     let result: any = [];
-    const protocolId = 'P628';
-    const dataInfo = { includeParentNode: true, uid: ""};
 
-    const data: any = {
-        protocolId: protocolId,
-        data: dataInfo
-    };
-
-    await Adapter.fetch.protocol(data).then((res) => {
-      if( res){
-          const resultData : any = res.treeNode;
-
-          let pushArr = function( item: any) {
-            result.push({
-              name:item.name,
-              uid:item.uid,
-              parentUID:item.parentUID,
-              bSelect:false,
-              bEditable:false
-            });
-          };
-
-          pushArr({
-            name: "전체",
-            uid: "RA_ROOT",
-            parentUID:""
-          });
-
-          resultData.forEach(function ( item: any, idx: any) {
-            pushArr(item);
-
-            if ((item.childCount && item.childCount > 0) || (item.children && item.children.length > 0)) {
-              item.children.forEach(function ( item2:any, idx2:any) {
-                pushArr(item2);
-              });
-            }
-          });
-
-          setIsCategoryLists([{
-            title: '카테고리',
-            data: result,
-          }]);
-
-        }
-    }).catch((error) => {
-        console.error(error)
-    })
-
-    return result;
-  };
+    if( isActiveStateNM === 'FavoriteDoc') { 
+      result = CommonFnUtil.callCategoryList();
+    } else {
+      result = CommonFnUtil.getDocHistory( selectedTargetState.selectedTarget.docUID);
+    }
+    
+    setTimeout(() => {
+      if( isActiveStateNM === 'FavoriteDoc') { 
+        setIsCategoryLists([{
+          title: '카테고리',
+          data: result,
+        }]);
+      } else {
+        setIsDocHistory([{
+          title: '문서이력',
+          data: result,
+        }]);
+      }
+    }, 1000);
+  });
 
   const onClickCategory = ( menuNM: any, data: any) => {
     console.log( menuNM, data);
@@ -91,14 +60,14 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
 
   const renderHeader = useCallback(( category: any) => {
     return (
-      <View style={[ collapsibleStyles.titleContainerStyle, isActiveCategory && collapsibleStyles.titleOn ]}>
+      <View style={[ collapsibleStyles.titleContainerStyle, isActiveAccordion && collapsibleStyles.titleOn ]}>
         <Text style={ collapsibleStyles.textStyle}>{ category.title}</Text>
         <View>
-          <SvgIcon name={ isActiveCategory ? "arrowDown" : "arrowUp"} width={20} height={20} />
+          <SvgIcon name={ isActiveAccordion ? "arrowDown" : "arrowUp"} width={20} height={20} />
         </View>
       </View>
     );
-  }, [ isActiveCategory]);
+  }, [ isActiveAccordion]);
 
   const renderItem = ( data: any) => {
     return (
@@ -121,7 +90,7 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
         </View>
       </TouchableOpacity>
     );
-  }, [ isActiveCategory]);
+  }, [ isActiveAccordion]);
 
   const openCategoryDialog = () => {
     const alertName = 'inputAlert';
@@ -149,13 +118,13 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
   
   const keyExtractor = useCallback((item : any, index : any) => item.uid + index, []);
 
-  const renderContent = useCallback(( category: any) => {
+  const renderContent = useCallback(( currentData: any) => {
     return (
-      isActiveCategory ?
+      isActiveAccordion ?
         <View style={ collapsibleStyles.contentContainerStyle}>
           <SwipeListView 
             showsVerticalScrollIndicator={ false}
-            data={ category.data}
+            data={ currentData.data}
             keyExtractor={ keyExtractor}
             ListHeaderComponent={ renderListHeaderItem}
             renderItem={ renderItem}
@@ -167,18 +136,18 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
       : 
         null
     );
-  }, [ isActiveCategory]);
+  }, [ isActiveAccordion]);
 
   const updateSections = () => {
-    setIsActiveCategory( !isActiveCategory);
+    setIsActiveAccordion( !isActiveAccordion);
   };
   
 
   return (
-    <View style={ [collapsibleStyles.mainContainerStyle, isActiveCategory && collapsibleStyles.isActive]}>
+    <View style={ [collapsibleStyles.mainContainerStyle, isActiveAccordion && collapsibleStyles.isActive]}>
       <Accordion
           activeSections={[0]}
-          sections={ isCategoryLists}
+          sections={ isActiveStateNM === 'FavoriteDoc' ? isCategoryLists : isDocHistory }
           renderHeader={ renderHeader}
           renderContent={ renderContent}
           onChange={ updateSections}

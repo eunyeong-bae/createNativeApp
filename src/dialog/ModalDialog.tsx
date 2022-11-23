@@ -35,7 +35,7 @@ export const ModalDialog = () => {
                     <DocInfoDialog />
                 }
                 { centerDialogState.dialogName === AppScreens.DocHistory &&
-                    <DocInfoDialog />
+                    <DocHistory />
                 }
             </ModalContent>
         </Modal>

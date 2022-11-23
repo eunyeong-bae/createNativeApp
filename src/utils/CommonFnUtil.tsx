@@ -464,6 +464,76 @@ export default class CommonFnUtil{
         return searchDataList;
     }
 
+    public static getDocHistory = async( docUID: any) => {
+        let result: any = [];
+
+        const data: any = {
+            protocolId : 'P538',
+            data : {
+                docUID: docUID,
+                targetObjectType:'DO',
+                termValue :'Y',					
+            }
+        };
+
+        await Adapter.fetch.protocol( data).then((res) =>{
+            if( res) {
+
+            }
+        }).catch((error) => {
+            console.log( error);
+        })
+        return result;
+    }
+
+    //카테고리 목록 조회
+  public static callCategoryList = async() => {
+    let result: any = [];
+
+    const data: any = {
+        protocolId: 'P628',
+        data: { includeParentNode: true, uid: ""}
+    };
+
+    await Adapter.fetch.protocol(data).then((res) => {
+      if( res){
+          const resultData : any = res.treeNode;
+
+          let pushArr = function( item: any) {
+            result.push({
+              name:item.name,
+              uid:item.uid,
+              parentUID:item.parentUID,
+              bSelect:false,
+              bEditable:false
+            });
+          };
+
+          pushArr({
+            name: "전체",
+            uid: "RA_ROOT",
+            parentUID:""
+          });
+
+          resultData.forEach(function ( item: any, idx: any) {
+            pushArr(item);
+
+            if ((item.childCount && item.childCount > 0) || (item.children && item.children.length > 0)) {
+              item.children.forEach(function ( item2:any, idx2:any) {
+                pushArr(item2);
+              });
+            }
+          });
+
+          return result;
+        }
+    }).catch((error) => {
+        console.error(error)
+    })
+
+    return result;
+  };
+
     public static getFolderTreeNode = async( data : any) => {
         let treeNode : any = [];
         let errMsg = '';
