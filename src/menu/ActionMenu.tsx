@@ -41,26 +41,26 @@ import { CommonContext } from '../context/CommonContext';
    }
 */}
 const myDocMenuInfo:any = {    
-    'share':{name:'원커넥트',auth: 'Read',rightMenu: true,icon:'ActionShare',clickEvent: CommonFnUtil.onClickShare},
-    'linkCopy':{name:'링크복사',auth:'Read',rightMenu: false,icon:'ActionLinkCopy',clickEvent: CommonFnUtil.linkCopyEvent},
-    'ONECHAMBER(PDF)':{name:'PDF', auth:'Read',rightMenu: false,icon:'ActionOneSave',clickEvent: CommonFnUtil.onClickOneChamberSave},
-    'move':{name:'이동',auth: 'Read',rightMenu: false,icon:'ActionMove',clickEvent: CommonFnUtil.onClickMoveOpen},
-    'copy':{name:'사본 만들기',auth:'Update',rightMenu: false,icon:'ActionCopy',clickEvent: CommonFnUtil.onClickCopy},
-    'changeName':{name:'이름 변경', auth:'Read',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRename},
-    'addOwnForm':{name:'나만의 양식 추가',auth: 'Read',rightMenu: false,icon:'ActionSetViewOnlyOFF',clickEvent: CommonFnUtil.onClickAddOwnForm},
-    'deleteInTrash':{name:'영구삭제',auth:'Update',rightMenu: false,icon:'deleteBtn',clickEvent: CommonFnUtil.onClickDeleteInTrash},
-    'restore':{name:'복원',auth:'Update',rightMenu: false,icon:'ActionReName',clickEvent: CommonFnUtil.onClickRestore},
-    'relatedDoc':{name:'연관문서',auth: 'Read',rightMenu: false,icon: 'ActionRelateDoc',clickEvent: CommonFnUtil.onClickRelatedDoc},
-    'setViewOnly':{name:'읽기 전용 설정',auth:'Update',rightMenu: false,icon:['ActionSetViewOnlyOFF', 'ActionSetViewOnlyON'],clickEvent: CommonFnUtil.onClickSetViewOnly},
-    'setPassword':{name:'보안설정', auth:'Read',rightMenu: true,icon:'ActionSetPW',clickEvent: CommonFnUtil.onClickSetPassword},
-    'setTag':{name:'태그설정', auth:'Read',rightMenu: false,icon:'docTag',clickEvent: CommonFnUtil.onClickSetTag},
-    'docDetailInfo':{name:'문서상세정보', auth:'Read',rightMenu: true,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDetailDocInfo},
-    'docInfo':{name:'문서정보', auth:'Read',rightMenu: false,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDocInfo},
-    'docHistory':{name:'문서이력', auth:'Read',rightMenu: false,icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDocHistory},
-    'openLink' : { name: '오픈링크', icon: 'OpenLink', rightItem : true, menuEvent: CommonFnUtil.onClickOnOffLink},
-    'openLinkRead' : { name: '읽기', icon: '', value: 'R', rightItem : false, menuEvent: CommonFnUtil.onChangeOpenAuth},
-    'openLinkUpdate' : { name: '수정', icon: '', value: 'U', rightItem : false, menuEvent: CommonFnUtil.onChangeOpenAuth},
-    'groupNuserShare' : { name: '부서/사용자 공유', icon: 'ActionGroupNUserShare', rightItem : true, menuEvent: CommonFnUtil.onChangeOpenAuth},
+    'share':{name:'원커넥트',auth: 'Read',rightMenu: true, folderMenu: true, icon:'ActionShare',clickEvent: CommonFnUtil.onClickShare},
+    'linkCopy':{name:'링크복사',auth:'Read',rightMenu: false, folderMenu: false, icon:'ActionLinkCopy',clickEvent: CommonFnUtil.linkCopyEvent},
+    'ONECHAMBER(PDF)':{name:'PDF', auth:'Read',rightMenu: false, folderMenu: false, icon:'ActionOneSave',clickEvent: CommonFnUtil.onClickOneChamberSave},
+    'move':{name:'이동',auth: 'Read',rightMenu: false, folderMenu: true, icon:'ActionMove',clickEvent: CommonFnUtil.onClickMoveOpen},
+    'copy':{name:'사본 만들기',auth:'Update',rightMenu: false, folderMenu: false, icon:'ActionCopy',clickEvent: CommonFnUtil.onClickCopy},
+    'changeName':{name:'이름 변경', auth:'Read',rightMenu: false, folderMenu: true, icon:'ActionReName',clickEvent: CommonFnUtil.onClickRename},
+    'addOwnForm':{name:'나만의 양식 추가',auth: 'Read',rightMenu: false,folderMenu: false, icon:'ActionSetViewOnlyOFF',clickEvent: CommonFnUtil.onClickAddOwnForm},
+    'deleteInTrash':{name:'영구삭제',auth:'Update',rightMenu: false, folderMenu: false, icon:'deleteBtn',clickEvent: CommonFnUtil.onClickDeleteInTrash},
+    'restore':{name:'복원',auth:'Update',rightMenu: false, folderMenu: false, icon:'ActionReName',clickEvent: CommonFnUtil.onClickRestore},
+    'relatedDoc':{name:'연관문서',auth: 'Read',rightMenu: false, folderMenu: false, icon: 'ActionRelateDoc',clickEvent: CommonFnUtil.onClickRelatedDoc},
+    'setViewOnly':{name:'읽기 전용 설정',auth:'Update',rightMenu: false, folderMenu: false, icon:['ActionSetViewOnlyON', 'ActionSetViewOnlyOFF'],clickEvent: CommonFnUtil.onClickSetViewOnly},
+    'setPassword':{name:'보안설정', auth:'Read',rightMenu: true, folderMenu: false, icon:'ActionSetPW',clickEvent: CommonFnUtil.onClickSetPassword},
+    'setTag':{name:'태그설정', auth:'Read',rightMenu: false, folderMenu: false, icon:'docTag',clickEvent: CommonFnUtil.onClickSetTag},
+    'docDetailInfo':{name:'문서상세정보', auth:'Read',rightMenu: true, folderMenu: false, icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDetailDocInfo},
+    'docInfo':{name:'문서정보', auth:'Read',rightMenu: false, folderMenu: false, icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDocInfo},
+    'docHistory':{name:'문서이력', auth:'Read',rightMenu: false, folderMenu: false, icon:'ActionInfo',clickEvent: CommonFnUtil.onClickDocHistory},
+    'openLink' : { name: '오픈링크', icon: 'OpenLink', rightItem : true, folderMenu: false, menuEvent: CommonFnUtil.onClickOnOffLink},
+    'openLinkRead' : { name: '읽기', icon: '', value: 'R', rightItem : false, folderMenu: false, menuEvent: CommonFnUtil.onChangeOpenAuth},
+    'openLinkUpdate' : { name: '수정', icon: '', value: 'U', rightItem : false, folderMenu: false, menuEvent: CommonFnUtil.onChangeOpenAuth},
+    'groupNuserShare' : { name: '부서/사용자 공유', icon: 'ActionGroupNUserShare', rightItem : true, folderMenu: false, menuEvent: CommonFnUtil.onChangeOpenAuth},
 };
 
 const ActionMenu = () => {
@@ -77,6 +77,8 @@ const ActionMenu = () => {
             setIsActionMenu, 
             setAlertDialog,
             sortMenuState,
+            swipeItemState,
+            setSwipeItem,
             selectedTargetState } = useContext(CommonContext);
 
     // const [ clickMenu, setClickMenu] = useState([]);
@@ -109,7 +111,20 @@ const ActionMenu = () => {
     };
 
     const searchClickMenu = () => {
-        setOptions( renderMoreMenu( menus.length === 0 ? moreMenus : menus));
+        const folderMenus: any = [];
+        const folderMoreMenus: any = myDocMenuInfo.forEach(( menu:any) => {
+            // if( menu.folderMenu){
+            //     folderMenus.push( menu.)
+            // }
+            console.log( menu)
+        });
+
+        setOptions( 
+            renderMoreMenu( menus.length === 0 
+                            ? selectedTargetState.selectedTarget?.doc_type === "0" ? folderMoreMenus : moreMenus 
+                            : menus
+            )
+        );
     }
 
     // const renderMoreMenu = ( clickMenu:any) => {
@@ -167,6 +182,7 @@ const ActionMenu = () => {
             
             return newArray;
         };
+
         let menus = division( clickMenu, 4);
 
         let options:any = [];
@@ -181,7 +197,7 @@ const ActionMenu = () => {
                                 { !CommonUtil.strIsNull( myDocMenuInfo[menus[i][j]].icon) &&
                                     <View style={ moreMenuStyles.menuItemContainer}>
                                         { myDocMenuInfo[menus[i][j]].name === '읽기 전용 설정' ?
-                                            <SvgIcon name={ selectedTargetState.selectedTarget?.readonly ? myDocMenuInfo[menus[i][j]].icon[1] : myDocMenuInfo[menus[i][j]].icon[0]} width={20} height={20}/>
+                                            <SvgIcon name={ selectedTargetState.selectedTarget?.readonly ? myDocMenuInfo[menus[i][j]].icon[0] : myDocMenuInfo[menus[i][j]].icon[1]} width={20} height={20}/>
                                             :
                                             <SvgIcon name={ myDocMenuInfo[menus[i][j]].icon} width={20} height={20}/>
                                         }
@@ -265,8 +281,15 @@ const ActionMenu = () => {
                 const docUID = selectedTargetState.selectedTarget.docUID;
                 const isReadOnly = !selectedTargetState.selectedTarget.readonly ? 1 : 0;
 
-                CommonFnUtil.setReadOnly( docUID, isReadOnly);
-                    
+                const result = CommonFnUtil.setReadOnly( docUID, isReadOnly);
+                
+                setTimeout(() =>{
+                    setSwipeItem({
+                        ...swipeItemState,
+                        setReadOnly: result,
+                    });
+                }, 1000);
+
                 setOptions( []);
                 hiddenActionMenu();
 

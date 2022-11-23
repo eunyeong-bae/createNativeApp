@@ -52,7 +52,7 @@ const CommonContext = createContext<CommonContextType>({
     },
     swipeItemState: {
         setFavorite: false,
-        setDelete : false,
+        setReadOnly : false,
     },
     
     setCurrentFolder : ( targetFolder : null) : void => {},
@@ -62,7 +62,7 @@ const CommonContext = createContext<CommonContextType>({
     setCenterDialog : ( dialogName : string, dialogItem : any) : void => {},
     setRightDialog : ( dialogName : string, dialogItem : any) : void => {},
     setAlertDialog : ( alertName : string, alertItem : any) : void => {},
-    setSwipeItem : ( setFavorite: boolean, setDelete: boolean ) : void => {},
+    setSwipeItem : ( setFavorite: boolean, setReadOnly: boolean ) : void => {},
     // setIsActionMenu : ( isActionMenu : boolean, setIsActionMenu : any, contextName : '', navigation : any) : void => {},
     setIsActionMenu : ( isActionMenu: boolean, navigation:any ) : void => {},
     setReViewDoc : ( isVisible : boolean, onClickFileView : any, onClickClose : any, onClickChangeTarget : any, setIsActionMenu : any) : void => {},
@@ -77,7 +77,7 @@ const CommonProvider = ({children} : CommonProviderProps): JSX.Element => {
     const [centerDialogState, setCenterDialogState] = useState<CenterDialogState>({ dialogName : '', dialogItem : null});
     const [rightDialogState, setRightDialogState] = useState<RightDialogState>({ dialogName : '', dialogItem : null});
     const [alertDialogState, setAlertDialogState] = useState<AlertDialogState>({ alertName : '', alertItem : null});
-    const [swipeItemState, setSwipeItemState] = useState<SwipeFuncState>({ setFavorite: false, setDelete: false });
+    const [swipeItemState, setSwipeItemState] = useState<SwipeFuncState>({ setFavorite: false, setReadOnly: false });
     // const [actionMenuState, setIsActionMenuState] = useState<ActionMenuState>({ isActionMenu : false, setIsActionMenu : null, contextName : '', navigation : null});
     const [actionMenuState, setIsActionMenuState] = useState<ActionMenuState>({ isActionMenu : false, navigation:null});
     const [reViewDocState, setReViewDocState] = useState<ReViewDocState>({ isVisible : false, onClickFileView : null, onClickClose : null, onClickChangeTarget : null, setIsActionMenu : null});
@@ -111,8 +111,8 @@ const CommonProvider = ({children} : CommonProviderProps): JSX.Element => {
         setAlertDialogState({...alertDialogState, alertName, alertItem});
     }, [alertDialogState, setAlertDialogState]);
 
-    const setSwipeItem = useCallback(( setFavorite: boolean, setDelete : boolean) => {
-        setSwipeItemState({...swipeItemState, setFavorite, setDelete});
+    const setSwipeItem = useCallback(( setFavorite: boolean, setReadOnly : boolean) => {
+        setSwipeItemState({...swipeItemState, setFavorite, setReadOnly});
     }, [ swipeItemState, setSwipeItemState ]);
 
     // const setIsActionMenu = useCallback(( isActionMenu : boolean, setIsActionMenu : any, contextName : string, navigation : any) : void => {

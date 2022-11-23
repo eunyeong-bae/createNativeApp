@@ -63,7 +63,7 @@ type AlertDialogState = {
 
 type SwipeFuncState = {
     setFavorite : boolean,
-    setDelete : boolean,
+    setReadOnly : boolean,
 }
 
 type ActionMenuState = {

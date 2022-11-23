@@ -415,6 +415,8 @@ export default class CommonFnUtil{
     }
 
     public static setReadOnly = async( docUID: any, isReadOnly: any) => {
+        let result: boolean = false;
+
         const data: any = {
             protocolId : 'P620',
             data: {"docUID": docUID, "readonly": isReadOnly},
@@ -422,6 +424,8 @@ export default class CommonFnUtil{
 
         await Adapter.fetch.protocol(data).then((res) => {
             if( res) {
+                result = isReadOnly ? true : false ;
+
                 Toast.show({
                     type: 'success',
                     text1: isReadOnly ? '읽기 전용로 설정되었습니다.' : '읽기 전용이 해제되었습니다.',
@@ -438,7 +442,7 @@ export default class CommonFnUtil{
             });
         })
 
-        return;
+        return result;
     }
 
     public static searchDataList = async( sendata : any) => {
