@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useState } from 'react';
+import React, { useContext, useLayoutEffect, useMemo, useState } from 'react';
 import { View, Text,} from 'react-native';
 import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
@@ -58,8 +58,8 @@ export const DocInfoDialog = () => {
         ]);        
     };
 
-    return (
-        <View style={ dialogStyles.container}>
+    return useMemo(() => (
+        <View style={[dialogStyles.container, { height:450}]}>
             <CommonHeader 
                 headerName = { '문서정보'}
                 multiSelectedState = { null}
@@ -71,8 +71,8 @@ export const DocInfoDialog = () => {
                 sortMenu ={ null}
             />
 
-            <View style={{ width:'100%', height:'100%', padding:20, backgroundColor:"pink"}}>
-                <View style={{ width:'100%', padding:10, height:50, flexDirection:'row',alignItems:'center'}}>
+            <View style={{ width:'100%', padding:20}}>
+                <View style={{ width:'100%', padding:10, height:40, flexDirection:'row',alignItems:'center', borderWidth:1, borderColor:'#DCE7FB', backgroundColor:'#fff', borderRadius:20, marginBottom: 10}}>
                     <Text style={{ marginRight:40, fontSize:15, fontWeight:'600'}}>문서 상태</Text>
                     <View style={{ flexDirection:'row', alignItems:'center', height:20}}>
                         { selectedTargetState.selectedTarget.share_type === 1 ? 
@@ -87,19 +87,21 @@ export const DocInfoDialog = () => {
                         { selectedTargetState.selectedTarget.security_key && <SvgIcon name = "docSecurity" width={25} height={25} /> }
                     </View>
                 </View>
-                <View style={{ width:'100%', padding:10}}>
-                    <Text style={{ fontSize:15, fontWeight:'600'}}>문서 정보</Text>
-                    { docInfoArr.map(( item: any, index: number) => {
-                        return (
-                            <View key={ item['name'] + index} style={{ width:'100%', height: 40, paddingLeft:5, flexDirection:'row', alignItems:'center'}}>
-                                <Text style={{ width:100, fontSize:15, fontWeight:'bold'}}>{ item['name']}</Text>
-                                <Text style={{ fontSize:14, fontWeight:'600'}}>{ item['value']}</Text>
-                            </View>
-                        )
-                    })}  
+                <View style={{ width:'100%',padding:10, borderWidth:1, borderColor:'#DCE7FB', backgroundColor:'#fff', borderRadius:20}}>
+                    <Text style={{ fontSize:15, fontWeight:'600', marginBottom:10, marginTop:10}}>문서 정보</Text>
+                    <View style={{ paddingLeft:10, paddingRight:10}}>
+                        { docInfoArr.map(( item: any, index: number) => {
+                            return (
+                                <View key={ item['name'] + index} style={{ width:'100%', height: 40, paddingLeft:5, paddingRight:5, borderBottomColor:'#DCE7FB', borderBottomWidth:1, flexDirection:'row', alignItems:'center'}}>
+                                    <Text style={{ width:100, fontSize:15, fontWeight:'bold'}}>{ item['name']}</Text>
+                                    <Text style={{ fontSize:14, fontWeight:'600'}}>{ item['value']}</Text>
+                                </View>
+                            )
+                        })}  
+                    </View>
                 </View>
             </View>
 
         </View>
-    )
+    ), [ docInfoArr]);
 }
