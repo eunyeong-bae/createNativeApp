@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View,} from 'react-native';
 import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
@@ -16,7 +16,7 @@ const copyDialogHeaderInfo : any = {
 export const DocHistory = () => {
     const [ isActiveAccordion, setIsActiveAccordion] = useState( false); //문서이력 타이틀 클릭 상태 값 체크
 
-    return (
+    return useMemo(() => (
         <View style={dialogStyles.container}>
             <CommonHeader 
                 headerName = { '문서이력'}
@@ -32,5 +32,5 @@ export const DocHistory = () => {
             <CommonCollapsible isActiveStateNM = {'DocHistory'} isActiveAccordion={ isActiveAccordion} setIsActiveAccordion={ setIsActiveAccordion}/>
 
         </View>
-    )
+    ), [ isActiveAccordion])
 }
