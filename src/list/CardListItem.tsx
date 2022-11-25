@@ -1,10 +1,9 @@
 import React, { useContext} from 'react';
-import {View, Text, TouchableHighlight} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {MyDocStyles} from '../content/style/style';
 import ThumbnailImg from '../thumbnailImg';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import { CommonContext } from '../context/CommonContext';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const CardListItem = (props : any) => {
     const { setIsActionMenu, actionMenuState, setSelectedTarget, selectedTargetState} = useContext(CommonContext);
@@ -38,9 +37,9 @@ const CardListItem = (props : any) => {
                                     fileExt={props.data.file_type}
                         />
                         <View style={{paddingTop:10,paddingRight:5}}>
-                            <TouchableHighlight onPress={ onClickActionMenu} >
+                            <TouchableOpacity onPress={ onClickActionMenu} >
                                 <SvgIcon name="DocMoreBtn" width={22} height={22}/>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View style={MyDocStyles.docTitle}>
