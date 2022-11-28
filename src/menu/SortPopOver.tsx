@@ -79,7 +79,7 @@ const SortPopOver = (props: any) => {
         }
 
         setShowPopover(false);
-        setSortMenu( sortMenuState.contextName, { sortItem:sortItem, fileTypes:fileTypes, sortOrder:sortOrder}, sortMenuState.sortMenuInfo)
+        setSortMenu( sortMenuState.contextName, { sortItem:sortItem, fileTypes:fileTypes, sortOrder:sortOrder}, sortMenuState.sortMenuInfo);
     }
 
     const renderPopOverTitle = useCallback(() => {

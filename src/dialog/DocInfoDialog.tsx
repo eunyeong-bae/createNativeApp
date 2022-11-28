@@ -48,7 +48,6 @@ export const DocInfoDialog = () => {
         }
 
         setDocInfoArr([
-            ...docInfoArr,
             { name: '소유자', value: selectedTargetState.selectedTarget.creatorName},
             { name: '문서 제목', value: selectedTargetState.selectedTarget.doc_name},
             { name: '문서 타입', value: selectedTargetState.selectedTarget.file_type === 'O' ? 'ONEFFICE 문서' : 'ONEFFICE 프레젠테이션'},

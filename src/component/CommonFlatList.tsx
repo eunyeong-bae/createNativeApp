@@ -130,7 +130,7 @@ const CommonFlatList = ( props: FlatListProps) => {
                 setSwipeItem({
                     ...swipeItemState,
                     setFavorite: resultData,
-                })
+                });
             }, (1000));
         }
         else {

@@ -2,7 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { View,} from 'react-native';
 import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
-import CommonCollapsible from '../component/CommonCollapsible';
+import CommonAccordion from '../component/CommonAccordion';
+// import CommonCollapsible from '../component/CommonCollapsible';
 
 const CONTEXT_NAME = 'DocHistory';
 const copyDialogHeaderInfo : any = {
@@ -29,7 +30,7 @@ export const DocHistory = () => {
                 sortMenu ={ null}
             />
 
-            <CommonCollapsible isActiveStateNM = {'DocHistory'} isActiveAccordion={ isActiveAccordion} setIsActiveAccordion={ setIsActiveAccordion}/>
+            <CommonAccordion />
 
         </View>
     ), [ isActiveAccordion])

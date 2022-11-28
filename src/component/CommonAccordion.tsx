@@ -15,46 +15,45 @@ const CommonAccordion = ( ) => {
         data: [],
     });
 
-    useLayoutEffect(() => {
+    useEffect(() => {
+        const getDocHistory = async( docUID: any) => {
+            let result: any = [];
+    
+            const data: any = {
+                protocolId : 'P538',
+                data : {
+                    docUID: docUID,
+                    targetObjectType:'DO',
+                    termValue :'Y',					
+                }
+            };
+    
+            await Adapter.fetch.protocol( data).then((res) =>{
+                if( res) {
+                    result = res.list;
+    
+                    setIsResultData({
+                        ...isResultData,
+                        data: result
+                    });
+                }
+            }).catch((error) => {
+                console.log( error);
+            })
+            return result;
+        };
+       
         if( isResultData.data?.length === 0) {
             getDocHistory( selectedTargetState.selectedTarget?.docUID);
         }
-      });
+    }, []);
     
     useEffect(() => {
         if( !isResultData.isSetClear && isResultData.data.length > 0 ) {
             getDocHistoryContent();
         }
-
     }, [ isResultData]);
 
-    const getDocHistory = async( docUID: any) => {
-        let result: any = [];
-
-        const data: any = {
-            protocolId : 'P538',
-            data : {
-                docUID: docUID,
-                targetObjectType:'DO',
-                termValue :'Y',					
-            }
-        };
-
-        await Adapter.fetch.protocol( data).then((res) =>{
-            if( res) {
-                result = res.list;
-
-                setIsResultData({
-                    ...isResultData,
-                    data: result
-                });
-            }
-        }).catch((error) => {
-            console.log( error);
-        })
-        return result;
-    };
-   
     const convertHistoryData = ( _obj : any) => {
         let _iconUrl = "";
         let _action_name ="";
@@ -182,11 +181,9 @@ const CommonAccordion = ( ) => {
       }
       
       const getDocHistoryContent = () => {
-      
           const docHistoryData = isResultData.data;
-          
+
           let dayGroupLists = [];
-      
           for( let i =0; i < docHistoryData.length; i++) {
             let isDataInclude = false;
       
@@ -206,7 +203,6 @@ const CommonAccordion = ( ) => {
                 isDataInclude = true;
               }
             }
-      
             if(!isDataInclude) dayGroupLists.push(addHistoryDataObj);      
           }
       
@@ -279,28 +275,21 @@ const CommonAccordion = ( ) => {
 
       const [ expanded, setExpanded] = useState( false);
               
-      const handlePress = () => setExpanded(!expanded);
+      const handlePress = () => {
+        alert( expanded);
+        setExpanded( !expanded);
+      }
               
 
       return useMemo(() => (
         isResultData.isSetClear && isResultData.data.length > 0 &&
-            // <List.AccordionGroup>
-            //     {/* { isResultData.data.map(( data: any, index: number) => {
-            //         return (
-            //                 <List.Accordion title={ data.month} id={ data.month + index}>
-            //                     <List.Item title={ getListItemContent.bind(this, data)} />
-            //                 </List.Accordion>
-            //             )
-            //         })
-            //     } */}
-            // </List.AccordionGroup>
-            <List.Section style={{ borderWidth:1, width:'100%', height:'100%'}}>
+            <List.Section style={{ borderWidth:1, width:'95%', height:'90%', padding:5}}>
                 { isResultData.data.map(( data: any) => {
                     return (
                             <List.Accordion
                                 title={ data.month}
-                                id={ data.date}
-                                // left={props => <List.Icon {...props} icon="folder" />}
+                                id={ data.month + data.date}
+                                left={ props => <List.Icon {...props} icon="folder" />}
                                 expanded={ expanded}
                                 onPress={ handlePress}
                                 style={{ borderWidth:1, borderColor:'pink', marginBottom:10, backgroundColor:'#fff',}}
@@ -310,23 +299,34 @@ const CommonAccordion = ( ) => {
                                     description="Item description"
                                     left={props => <List.Icon {...props} icon="folder" style={{ width:'100%', height:80, borderWidth:1, backgroundColor:'#fff',}}/>}
                                 /> */}
-                            <View style={{ borderWidth:1, borderColor:'red',height:200,}}>
-                                { data.history.map(( dayHistory: any) => {
-                                        <List.Item key={ data.date} title={ dayHistory.name + dayHistory.action} description={ data.date} style={{ width:'100%', height:80, borderWidth:1, backgroundColor:'#fff',}}  />
-                                    })
-                                }
-                            </View>
+                                {/* <View style={{ borderWidth:1, borderColor:'red',height:150,marginBottom:10}}> */}
+                                    { data.history.map(( dayHistory: any) => {
+                                           return <List.Item key={ data.date} title={ dayHistory.name + dayHistory.action} description={ data.date} style={{ width:'100%', height:80, borderWidth:1, backgroundColor:'#fff',}}  />
+                                        })
+                                    }
+                                {/* </View> */}
                                 {/* <List.Item title={ getListItemContent.bind(this, data)} /> */}
                             </List.Accordion>
                         )
                     })
-                }                
+                }
             </List.Section>
               
       ), [ isResultData]);
 };
 
 export default CommonAccordion;
+
+// <List.AccordionGroup>
+//     {/* { isResultData.data.map(( data: any, index: number) => {
+//         return (
+//                 <List.Accordion title={ data.month} id={ data.month + index}>
+//                     <List.Item title={ getListItemContent.bind(this, data)} />
+//                 </List.Accordion>
+//             )
+//         })
+//     } */}
+// </List.AccordionGroup>
 
 
 
