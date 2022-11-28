@@ -2,7 +2,6 @@ import React, { useContext, useMemo} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import { MyDocListViewStyles} from '../content/style/style';
 import SvgIcon from '../component/svgIcon/SvgIcon';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import { CommonContext } from '../context/CommonContext';
 import Toast from 'react-native-toast-message';
 
@@ -69,9 +68,9 @@ const DefaultListItem = ( props:any) => {
                        <View style={ MyDocListViewStyles.docInfo}>
                            <Text style={ MyDocListViewStyles.title} numberOfLines={1}>{ props.data.doc_name}</Text>
                            <View style={{ flexDirection:'row', marginTop:3}}>
-                               <View style={{ flexDirection:'row', alignItems:'center',}}>
+                               <View style={{ flexDirection:'row', alignItems:'center'}}>
                                     { props.data.share_type === 1 ? 
-                                        <SvgIcon name = "docShareSend" width={13} height={13} style={{ marginRight:2}}/> 
+                                        <SvgIcon name = "docShareSend" width={13} height={13} /> 
                                     : 
                                     props.data.share_type === 2 ? 
                                         <SvgIcon name = "docShareReceive" width={13} height={13}/>
@@ -79,7 +78,9 @@ const DefaultListItem = ( props:any) => {
                                     }
                                     { props.data.flagOpenLink && <SvgIcon name = "docOpenLink" width={13} height={13} /> }
                                     { props.data.important && <SvgIcon name = "docFavorite" width={13} height={13} /> }
+                                    {(props.data && Number(props.data.commentCount) > 0) && <SvgIcon name = "docComment" width={13} height={13} /> }
                                     { props.data.security_key && <SvgIcon name = "docSecurity" width={13} height={13} /> }
+                                    { props.data.readonly && <SvgIcon name = "docSecurity" width={13} height={13} /> }
                                </View>
                                 { sortMenuState && sortMenuState.contextName !== 'TrashDoc' 
                                     ? <Text style={ MyDocListViewStyles.text}> { props.data.mod_name} {'|'} { props.data.mod_date}</Text>
@@ -98,11 +99,11 @@ const DefaultListItem = ( props:any) => {
                </TouchableOpacity>
                
                { !props.fullpath ?
-                       <TouchableHighlight onPress={ onClickActionMenu}>
+                       <TouchableOpacity onPress={ onClickActionMenu}>
                            <View>
                                <SvgIcon name="DocMoreBtn" width={22} height={22}/>
                            </View> 
-                       </TouchableHighlight>
+                       </TouchableOpacity>
                    :
                     <View></View>
                }

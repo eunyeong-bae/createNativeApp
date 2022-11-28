@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from 'react';
 import { View, Text, SafeAreaView, TextInput} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
@@ -43,15 +43,24 @@ const MyDoc = ( props : any) => {
             setTargetFullPath, 
             alertDialogState, 
             centerDialogState,
-            swipeItemState} = useContext(CommonContext);
+            swipeItemState,
+            actionMenuState} = useContext(CommonContext);
     
     const { navigation} = props;
 
     const flatListRef = useRef<any>();
 
-    const [ listViewMode, setListViewMode] = useState(false);
-    
-    const [ isLoading, setLoading] = useState( false); //문서 리스트 추가 호출 시 사용
+    const [ listViewMode, setListViewMode] = useState(false); //리스트 or 썸넬 모드
+    const [ isLoading, setLoading] = useState( false); //scrollEnd 시점 문서 리스트 새로 불러오기
+    const [ isActive, setIsActive] = useState({ //문서함 리스트 클릭 시, 상태 값 체크
+        'Home': false,
+        'MyDoc': true,
+        'ShareDoc': false,
+        'FavoriteDoc': false,
+        'SecurtyDoc': false,
+        'TrashDoc': false,
+    });
+
     const { reqListData, setDataList} = useDocList({
         folderSeq: '',
         listType: '',
@@ -67,17 +76,12 @@ const MyDoc = ( props : any) => {
     });
     const { sortItem, sortOrder, fileTypes} = reqListData;
 
-    const [ isActive, setIsActive] = useState({
-        'Home': false,
-        'MyDoc': true,
-        'ShareDoc': false,
-        'FavoriteDoc': false,
-        'SecurtyDoc': false,
-        'TrashDoc': false,
-    });
-
-    //딱 한번 실행 됌 
-    useLayoutEffect( () => {
+    /**
+     * useLayoutEffect : Dom 조작 완료 후 동기적으로 딱 한번 실행됌
+     * useEffect : 두번째 배열 []의 경우, 마운트 시점에 한번 실행(?)
+     */
+    useEffect(() => {
+        //정렬 메뉴 & 폴더 경로 셋팅
         if( CommonUtil.strIsNull( sortMenuState.contextName) || sortMenuState.contextName !== CONTEXT_NAME) {
             setSortMenu( CONTEXT_NAME, { sortItem:'1', fileTypes:'', sortOrder:'d'}, myDocMenuInfo[ 'sortMenu'])
             setTargetFullPath( [''], ['내 문서함'], null)
@@ -127,11 +131,19 @@ const MyDoc = ( props : any) => {
         }
     }, [ swipeItemState]);
 
-    const ViewModeCheck = () => {
-        setListViewMode( !listViewMode);
-    };
+    useEffect(() => {
+        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
+        if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && !actionMenuState.isActionMenu && !actionMenuState.navigation) {
+            setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+            // flatListRef.current.yScrollOffset = 0;
+        }
+    }, [ actionMenuState]);
 
-    const onEndReached = async() => {
+    const ViewModeCheck = useCallback(() => {
+        setListViewMode( !listViewMode);
+    }, [ listViewMode]);
+
+    const onEndReached = useCallback(() => async() => {
         if( isLoading) {
             return;
         }
@@ -139,7 +151,7 @@ const MyDoc = ( props : any) => {
             setLoading(true);
             setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
         }
-    }
+    }, [ isLoading]); 
     
     return useMemo(() => (
         <>

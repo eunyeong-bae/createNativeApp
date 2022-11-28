@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from 'react';
 import { View, Text, SafeAreaView} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
@@ -67,8 +67,8 @@ const TrashDoc = ( props : any) => {
         'TrashDoc': true,
     });
 
-    //딱 한번 실행 됌 
-    useLayoutEffect( () => {
+    useEffect(() => {
+        //정렬 메뉴 & 폴더 경로 셋팅
         if( CommonUtil.strIsNull( sortMenuState.contextName) || sortMenuState.contextName !== CONTEXT_NAME) {
             setSortMenu( CONTEXT_NAME, { sortItem:'6', fileTypes:'', sortOrder:'d'}, trashDocMenuInfo[ 'sortMenu']);
         }
@@ -91,19 +91,19 @@ const TrashDoc = ( props : any) => {
         }
     }, [ alertDialogState.alertName]);
 
-    const ViewModeCheck = () => {
+    const ViewModeCheck = useCallback(() => {
         setListViewMode( !listViewMode);
-    };
+    }, [ listViewMode]);
 
-    const onEndReached = async() => {
+    const onEndReached = useCallback(() => async() => {
         if( isLoading) {
             return;
         }
         else {
             setLoading(true);
-            // setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
+            setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
         }
-    }
+    }, [ isLoading]); 
     
     return useMemo(() => (
         <>
