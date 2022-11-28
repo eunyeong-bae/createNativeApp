@@ -286,29 +286,24 @@ const CommonAccordion = ( ) => {
             <List.Section style={{ borderWidth:1, width:'95%', height:'90%', padding:5}}>
                 { isResultData.data.map(( data: any) => {
                     return (
-                            <List.Accordion
-                                title={ data.month}
-                                id={ data.month + data.date}
-                                left={ props => <List.Icon {...props} icon="folder" />}
-                                expanded={ expanded}
-                                onPress={ handlePress}
-                                style={{ borderWidth:1, borderColor:'pink', marginBottom:10, backgroundColor:'#fff',}}
-                            >
-                                {/* <List.Item
-                                    title="First Item"
-                                    description="Item description"
-                                    left={props => <List.Icon {...props} icon="folder" style={{ width:'100%', height:80, borderWidth:1, backgroundColor:'#fff',}}/>}
-                                /> */}
-                                {/* <View style={{ borderWidth:1, borderColor:'red',height:150,marginBottom:10}}> */}
-                                    { data.history.map(( dayHistory: any) => {
-                                           return <List.Item key={ data.date} title={ dayHistory.name + dayHistory.action} description={ data.date} style={{ width:'100%', height:80, borderWidth:1, backgroundColor:'#fff',}}  />
-                                        })
-                                    }
-                                {/* </View> */}
-                                {/* <List.Item title={ getListItemContent.bind(this, data)} /> */}
-                            </List.Accordion>
-                        )
-                    })
+                        <List.Accordion
+                            title={ data.month}
+                            id={ data.month + data.date}
+                            left={ props => <List.Icon {...props} icon="folder" />}
+                            // expanded={ expanded}
+                            // onPress={ handlePress}
+                            style={{ borderWidth:1, borderColor:'#DCE7FB', marginBottom:5, backgroundColor:'#fff',}}
+                        >
+                            { data.history.map(( dayHistory: any) => {
+                                return (
+                                    <View style={{ flexDirection:'row',alignItems:'center', borderWidth:1,borderColor:'#DCE7FB', borderRadius:10, paddingLeft:10, backgroundColor:'#fff', height:65, marginBottom:5}}>
+                                        <SvgIcon name={ dayHistory.icon} width={40} height={40}/>
+                                        <List.Item key={ data.date} title={ dayHistory.name + dayHistory.action} description={ data.date} style={{ width: '80%', height:'100%', backgroundColor:'#fff',}}  />
+                                    </View>
+                                )
+                            })}
+                        </List.Accordion>
+                    )})
                 }
             </List.Section>
               
