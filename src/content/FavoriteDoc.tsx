@@ -67,8 +67,8 @@ const FavoriteDoc = ( props : any) => {
         contextName: CONTEXT_NAME
     });
     const { sortItem, sortOrder, fileTypes} = reqListData;
-
-    const [ isActiveAccordion, setIsActiveAccordion] = useState( false); //카테고리 타이틀 클릭 상태 값 체크
+    
+    const [ isActiveCategory, setIsActiveCategory] = useState( false);//카테고리 타이틀 클릭 상태 값 체크
 
     const [ isActive, setIsActive] = useState({
         'Home': false,
@@ -124,7 +124,7 @@ const FavoriteDoc = ( props : any) => {
         setListViewMode( !listViewMode);
     }, [ listViewMode]);
 
-    const onEndReached = useCallback(() => async() => {
+    const onEndReached = async() => {
         if( isLoading) {
             return;
         }
@@ -132,7 +132,7 @@ const FavoriteDoc = ( props : any) => {
             setLoading(true);
             setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
         }
-    }, [ isLoading]); 
+    };
     
     return useMemo(() => (
         <>
@@ -154,9 +154,9 @@ const FavoriteDoc = ( props : any) => {
 
                     <CommonDocBoxList isActive={isActive} setIsActive={setIsActive} navigation={ navigation} />
 
-                    <CommonCollapsible isActiveStateNM = {'FavoriteDoc'} isActiveAccordion={ isActiveAccordion} setIsActiveAccordion={ setIsActiveAccordion}/>
+                    <CommonCollapsible isActiveCategory={ isActiveCategory} setIsActiveCategory={ setIsActiveCategory}/>
                     
-                    <View style={[ MyDocStyles.docListContainer, isActiveAccordion && MyDocStyles.docListOpen]}>
+                    <View style={[ MyDocStyles.docListContainer, isActiveCategory && MyDocStyles.docListOpen]}>
                         { reqListData.dataList.length > 0 ? 
                             <>
                                 { targetFullPathState.fullPathUIDs.length > 1 &&
@@ -182,7 +182,7 @@ const FavoriteDoc = ( props : any) => {
             {/* </ScrollView> */}
         </SafeAreaView>
     </>
-    ), [ reqListData.dataList, listViewMode, isActiveAccordion]);
+    ), [ reqListData.dataList, listViewMode, isActiveCategory]);
 }
 
 export default FavoriteDoc;

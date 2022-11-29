@@ -143,7 +143,7 @@ const MyDoc = ( props : any) => {
         setListViewMode( !listViewMode);
     }, [ listViewMode]);
 
-    const onEndReached = useCallback(() => async() => {
+    const onEndReached = async() => {
         if( isLoading) {
             return;
         }
@@ -151,7 +151,7 @@ const MyDoc = ( props : any) => {
             setLoading(true);
             setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
         }
-    }, [ isLoading]); 
+    };
     
     return useMemo(() => (
         <>

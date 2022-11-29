@@ -145,3 +145,14 @@ export { default as docShare} from '../../assets/oneffice/homeIcons/ic_doc_share
 export { default as docOpenLink} from '../../assets/oneffice/homeIcons/ic_doc_openlink.svg';
 export { default as docFavorite} from '../../assets/oneffice/homeIcons/ic_card_bookmark_on.svg';
 export { default as docSecurity} from '../../assets/oneffice/homeIcons/ic_doc_security.svg';
+export { default as docComment} from '../../assets/oneffice/homeIcons/ic_doc_cmt.svg';
+export { default as docReadOnly} from '../../assets/oneffice/homeIcons/icon-doc-readonly.svg';
+
+//docHistory icons
+export { default as docHistoryShare} from '../../assets/oneffice/homeIcons/ic_history_share.svg';
+export { default as docHistoryEdit} from '../../assets/oneffice/homeIcons/ic_history_edit.svg';
+export { default as docHistoryMove} from '../../assets/oneffice/homeIcons/ic_history_move.svg';
+export { default as docHistoryView} from '../../assets/oneffice/homeIcons/ic_history_view.svg';
+export { default as docHistoryDelete} from '../../assets/oneffice/homeIcons/ic_history_delete.svg';
+export { default as docHistoryCreate} from '../../assets/oneffice/homeIcons/ic_history_create.svg';
+export { default as docHistoryCopy} from '../../assets/oneffice/homeIcons/ic_history_copy.svg';

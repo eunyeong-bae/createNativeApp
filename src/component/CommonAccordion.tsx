@@ -1,14 +1,13 @@
 import { CommonContext } from '../context/CommonContext';
-import React, { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,Dimensions} from 'react-native';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { View} from 'react-native';
 import { List} from 'react-native-paper';
 import Adapter from '../ecmadapter';
 import { format, parseISO} from 'date-fns';
 import SvgIcon from '../component/svgIcon/SvgIcon';
-import { SwipeListView } from 'react-native-swipe-list-view';
 
 const CommonAccordion = ( ) => {
-    const { setAlertDialog, selectedTargetState} = useContext( CommonContext);
+    const { selectedTargetState} = useContext( CommonContext);
 
     const [ isResultData, setIsResultData] = useState({
         isSetClear: false,
@@ -75,7 +74,7 @@ const CommonAccordion = ( ) => {
       
           case '4': //문서 공유
             _iconUrl = "docHistoryShare";
-            _sharedUser = _obj.shareDetailItem?_obj.shareDetailItem.summary:"";
+            _sharedUser = _obj.shareDetailItem ? _obj.shareDetailItem.summary : "";
             _shareComment = `${_sharedUser}에게 공유`;  
             
             if(isGroup(_sharedUser)) _shareComment = `${_sharedUser} 공유`;
@@ -83,7 +82,7 @@ const CommonAccordion = ( ) => {
             break;
           case '29': // 공유 변경
             _iconUrl = "docHistoryShare";
-            _sharedUser = _obj.shareDetailItem?_obj.shareDetailItem.summary:"";
+            _sharedUser = _obj.shareDetailItem ? _obj.shareDetailItem.summary : "";
             _shareComment = `${_sharedUser}의 공유 변경`;
       
             if(isGroup(_sharedUser)) _shareComment = `${_sharedUser} 공유 변경`;
@@ -92,7 +91,7 @@ const CommonAccordion = ( ) => {
             break;
           case '5':// 공유해제
             _iconUrl = "docHistoryShare";
-            _sharedUser = _obj.shareDetailItem?_obj.shareDetailItem.summary:"";
+            _sharedUser = _obj.shareDetailItem ? _obj.shareDetailItem.summary : "";
             _shareComment = `${_sharedUser}의 공유 해제`;
       
             if(isGroup(_sharedUser)) _shareComment = `${_sharedUser} 공유 해제`;
@@ -133,19 +132,19 @@ const CommonAccordion = ( ) => {
           case '30': // 오픈 링크 공유
             _iconUrl = "docHistoryShare";
             _action_name = "님이 오픈 링크 공유했습니다."
-            _sharedUser = _obj.shareDetailItem?_obj.shareDetailItem.summary:"";
+            _sharedUser = _obj.shareDetailItem ? _obj.shareDetailItem.summary : "";
             _shareComment = `${_sharedUser} 공유`;
             break;
           case '31': // 오픈 링크 해제
             _iconUrl = "docHistoryShare";
             _action_name = "님이 오픈 링크 공유 해제했습니다."
-            _sharedUser = _obj.shareDetailItem?_obj.shareDetailItem.summary:"";
+            _sharedUser = _obj.shareDetailItem ? _obj.shareDetailItem.summary : "";
             _shareComment = `${_sharedUser} 공유 해제`;
             break;
           case '32': // 오픈 링크 변경
               _iconUrl = "docHistoryShare";
             _action_name = "님이 오픈 링크 공유 변경했습니다."
-            _sharedUser = _obj.shareDetailItem?_obj.shareDetailItem.summary:"";
+            _sharedUser = _obj.shareDetailItem ? _obj.shareDetailItem.summary : "";
             _shareComment = `${_sharedUser} 공유 변경`;
             break;
       
@@ -212,93 +211,24 @@ const CommonAccordion = ( ) => {
                 data: dayGroupLists
             });
           }
-      
-          console.log(dayGroupLists);
       };
-
-      const favDocAccordionContent = () => {
-          return (
-              <View>
-                  <Text>dfsdf</Text>
-              </View>
-          )
-      }
-
-      const docHistoryAccordionContent = () => {
-        return (
-            isResultData.data.length > 0 &&
-            <>
-                { isResultData.data.map(( data: any) => {
-                    return (
-                        <List.AccordionGroup>
-                            <List.Accordion title={ data.month} id="1">
-                                <>
-                                    { data.hisotry.length > 0 && 
-                                      data.hisotry.map(( dayHistory: any) => {
-                                        <View>
-                                            <SvgIcon name={ dayHistory.icon} width={20} height={20}/>
-                                            <View>
-                                                <Text>{ dayHistory.name} {dayHistory.action}</Text>
-                                                <Text>{ data.date}</Text>
-                                            </View>
-                                        </View>
-                                      })
-
-                                    }
-                                </>
-                            </List.Accordion>
-                        </List.AccordionGroup>
-                        )
-                    })
-                } 
-            </>
-        )
-      }
-
-      const getListItemContent = ( data: any) => {
-        return (
-            <>
-                { data.history?.length > 0 && 
-                    data.history.map(( dayHistory: any, index: number) => {
-                    <View key={ dayHistory.icon + index} style={{ borderWidth:1, width:'100%', height:100}}>
-                        <SvgIcon name={ dayHistory.icon} width={20} height={20}/>
-                        <View>
-                            <Text>{ dayHistory.name} {dayHistory.action}</Text>
-                            <Text>{ data.date}</Text>
-                        </View>
-                    </View>
-                    })
-                }
-            </>
-        );
-      };
-
-      const [ expanded, setExpanded] = useState( false);
-              
-      const handlePress = () => {
-        alert( expanded);
-        setExpanded( !expanded);
-      }
-              
 
       return useMemo(() => (
         isResultData.isSetClear && isResultData.data.length > 0 &&
-            <List.Section style={{ borderWidth:1, width:'95%', height:'90%', padding:5}}>
+            <List.Section style={{ width:'95%', height:'90%',marginLeft:8}}>
                 { isResultData.data.map(( data: any) => {
                     return (
                         <List.Accordion
                             title={ data.month}
                             id={ data.month + data.date}
                             left={ props => <List.Icon {...props} icon="folder" />}
-                            // expanded={ expanded}
-                            // onPress={ handlePress}
-                            style={{ borderWidth:1, borderColor:'#DCE7FB', marginBottom:5, backgroundColor:'#fff',}}
-                        >
+                            style={{ borderWidth:1, borderColor:'#DCE7FB',borderRadius:10, marginBottom:5, backgroundColor:'#fff', }}
+                        >                            
                             { data.history.map(( dayHistory: any) => {
                                 return (
                                     <View style={{ flexDirection:'row',alignItems:'center', borderWidth:1,borderColor:'#DCE7FB', borderRadius:10, paddingLeft:10, backgroundColor:'#fff', height:65, marginBottom:5}}>
-                                        <SvgIcon name={ dayHistory.icon} width={40} height={40}/>
-                                        <List.Item key={ data.date} title={ dayHistory.name + dayHistory.action} description={ data.date} style={{ width: '80%', height:'100%', backgroundColor:'#fff',}}  />
+                                        <SvgIcon name={ dayHistory.icon} width={35} height={35}/>
+                                        <List.Item key={ data.date} title={ dayHistory.name + dayHistory.action} description={ data.date} style={{ width: '85%', height:'100%', backgroundColor:'#fff',}}  />
                                     </View>
                                 )
                             })}
@@ -311,67 +241,3 @@ const CommonAccordion = ( ) => {
 };
 
 export default CommonAccordion;
-
-// <List.AccordionGroup>
-//     {/* { isResultData.data.map(( data: any, index: number) => {
-//         return (
-//                 <List.Accordion title={ data.month} id={ data.month + index}>
-//                     <List.Item title={ getListItemContent.bind(this, data)} />
-//                 </List.Accordion>
-//             )
-//         })
-//     } */}
-// </List.AccordionGroup>
-
-
-
-const collapsibleStyles = StyleSheet.create({
-    isActive: {
-      height: 200,
-    },
-    mainContainerStyle:{
-      width: '100%',
-      height:40,
-      padding:10,
-      marginTop: 5,
-      borderWidth: 1,
-      borderColor: '#DCE7FB', //#E4ECF9
-      backgroundColor:'#fff',
-      borderRadius: 10,
-    },
-    titleContainerStyle : {
-      flexDirection:'row',
-      justifyContent:'space-between',
-      paddingLeft:10,
-      paddingBottom:5,
-      alignItems:'center'
-    },
-    titleOn: {
-      borderBottomWidth:1,
-      borderBottomColor:'#DCE7FB'
-    }, 
-    textStyle: {
-      fontSize: 14,
-      fontWeight:'700',
-      color: '#75b9f4',
-    },
-    contentContainerStyle: { 
-      width:'100%',
-      height: 150,
-      marginTop:5,
-      padding:10,
-    },
-  });
-  
-  const styles = StyleSheet.create({
-    backRightBtn: {
-        position: 'absolute',
-        top:0,
-        bottom:0,
-        right:0,
-        width: 40,
-        height: 37,
-        justifyContent:'center',
-        alignItems:'center',
-    },
-  });
