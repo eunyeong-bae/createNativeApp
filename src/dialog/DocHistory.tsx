@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { View,} from 'react-native';
+import { View, ScrollView} from 'react-native';
 import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
 import CommonAccordion from '../component/CommonAccordion';
@@ -30,7 +30,9 @@ export const DocHistory = () => {
                 sortMenu ={ null}
             />
 
-            <CommonAccordion />
+            <ScrollView style={{ width:'95%', marginLeft:0, marginRight:0, marginTop:'auto', marginBottom:'auto'}}>
+                <CommonAccordion />
+            </ScrollView>
 
         </View>
     ), [ isActiveAccordion])
