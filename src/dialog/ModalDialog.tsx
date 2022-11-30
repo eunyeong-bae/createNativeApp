@@ -1,12 +1,13 @@
 import { CommonContext } from '../context/CommonContext';
 import { AppScreens } from '../navigation';
 import React, { useContext, useMemo } from 'react';
-import { Modal, ModalContent } from 'react-native-modals';
+import { Modal, ModalContent } from 'react-native-jsmodal';
 import { CopyDialog} from '../dialog/copyDialog';
 import { MoveDialog} from '../dialog/MoveDialog';
 import { UserInfoDialog } from '../dialog/UserInfoDialog';
 import { DocInfoDialog} from '../dialog/DocInfoDialog';
 import { DocHistory} from '../dialog/DocHistory';
+import { TagDialog} from '../dialog/TagDialog';
 import CommonUtil from '../utils/CommonUtil'
 
 export const ModalDialog = () => {
@@ -17,7 +18,7 @@ export const ModalDialog = () => {
             //isVisible Props에 State 값을 물려주어 On/off control
             visible={ !CommonUtil.strIsNull( centerDialogState.dialogName)}
             useNativeDriver={ true}
-            hideModalContentWhileAnimating={ true}
+            // hideModalContentWhileAnimating={ true}
             // onBackdropPress={ this.onClickClose}
             style={{ flex: 1, justifyContent: "center", alignItems: "center", height: 400, width: 400, margin: 0, zIndex: 9999}}
         >{console.log( centerDialogState.dialogName)}
@@ -36,6 +37,9 @@ export const ModalDialog = () => {
                 }
                 { centerDialogState.dialogName === AppScreens.DocHistory &&
                     <DocHistory />
+                }
+                { centerDialogState.dialogName === AppScreens.TagDialog &&
+                    <TagDialog />
                 }
             </ModalContent>
         </Modal>

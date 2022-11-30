@@ -216,24 +216,24 @@ const CommonAccordion = ( ) => {
       return useMemo(() => (
         isResultData.isSetClear && isResultData.data.length > 0 &&
             <List.Section style={{ width:'95%', height:'90%',marginLeft:8}}>
-                { isResultData.data.map(( data: any) => {
-                    return (
-                        <List.Accordion
-                            title={ data.month}
-                            id={ data.month + data.date}
-                            left={ props => <List.Icon {...props} icon="folder" />}
-                            style={{ borderWidth:1, borderColor:'#DCE7FB',borderRadius:10, marginBottom:5, backgroundColor:'#fff', }}
-                        >                            
-                            { data.history.map(( dayHistory: any) => {
-                                return (
-                                    <View style={{ flexDirection:'row',alignItems:'center', borderWidth:1,borderColor:'#DCE7FB', borderRadius:10, paddingLeft:10, backgroundColor:'#fff', height:65, marginBottom:5}}>
-                                        <SvgIcon name={ dayHistory.icon} width={35} height={35}/>
-                                        <List.Item key={ data.date} title={ dayHistory.name + dayHistory.action} description={ data.date} style={{ width: '85%', height:'100%', backgroundColor:'#fff',}}  />
-                                    </View>
-                                )
-                            })}
-                        </List.Accordion>
-                    )})
+              { isResultData.data.map(( data: any) => {
+                  return (
+                      <List.Accordion
+                          title={ data.month}
+                          id={ data.month + data.date}
+                          left={ props => <List.Icon {...props} icon="folder" />}
+                          style={{ borderWidth:1, borderColor:'#DCE7FB',borderRadius:10, marginBottom:5, backgroundColor:'#fff', }}
+                      >                            
+                          { data.history.map(( dayHistory: any) => {
+                              return (
+                                  <View style={{ flexDirection:'row',alignItems:'center', borderWidth:1,borderColor:'#DCE7FB', borderRadius:10, paddingLeft:10, backgroundColor:'#fff', height:65, marginBottom:5}}>
+                                      <SvgIcon name={ dayHistory.icon} width={35} height={35}/>
+                                      <List.Item key={ data.date} title={ dayHistory.name + dayHistory.action} description={ data.date} style={{ width: '85%', height:'100%', backgroundColor:'#fff',}}  />
+                                  </View>
+                              )
+                          })}
+                      </List.Accordion>
+                  )})
                 }
             </List.Section>
               

@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native"; // 전체 네비
 import StackNavigation from './src/navigation/StackNavigation';
 import { CommonProvider } from "./src/context/CommonContext";
 import CommonState from "./src/component/CommonState";
-import { ModalPortal } from 'react-native-modals';
+import { ModalPortal } from 'react-native-jsmodal';
 
 const AppRoute = () => {
     return (
