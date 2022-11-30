@@ -445,6 +445,48 @@ export default class CommonFnUtil{
         return result;
     }
 
+    public static updateTag = async( dataInfo: any) => {
+        let result: boolean = false;
+        
+        const data: any = {
+            protocolId : 'P791',
+            data : {
+				uid : '',
+				tagName : '',
+                //values.join(',')
+			}
+        };
+
+        await Adapter.fetch.protocol(data).then(( res) => {
+            if( res) {
+                result = true;
+            }
+        }).catch((error) => {
+            console.log( error);
+        })
+
+        return result;
+    }
+
+    public static getTagData = async( docUID: any) => {
+        let result: any = [];
+
+        const data: any = {
+            protocolId : 'P791',
+            data : { tdoc_uid: docUID}
+        };
+
+        await Adapter.fetch.protocol(data).then(( res) => {
+            if( res) {
+                result = res;
+            }
+        }).catch(( error) => {
+            console.log( error)
+        })
+
+        return result;
+    }
+
     public static searchDataList = async( sendata : any) => {
         let searchDataList : any = [];                                          
 

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { View, ScrollView} from 'react-native';
 import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
@@ -15,9 +15,8 @@ const copyDialogHeaderInfo : any = {
 };
 
 export const DocHistory = () => {
-    const [ isActiveAccordion, setIsActiveAccordion] = useState( false); //문서이력 타이틀 클릭 상태 값 체크
 
-    return useMemo(() => (
+    return (
         <View style={dialogStyles.container}>
             <CommonHeader 
                 headerName = { '문서이력'}
@@ -30,10 +29,10 @@ export const DocHistory = () => {
                 sortMenu ={ null}
             />
 
-            <ScrollView style={{ width:'95%', marginLeft:0, marginRight:0, marginTop:'auto', marginBottom:'auto'}}>
+            <ScrollView showsVerticalScrollIndicator={ true} style={{ width:'95%'}}>
                 <CommonAccordion />
             </ScrollView>
 
         </View>
-    ), [ isActiveAccordion])
+    )
 }

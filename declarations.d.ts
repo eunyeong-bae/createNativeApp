@@ -10,3 +10,4 @@ declare module '*.png' {
 }
 
 declare module 'react-native-modals';
+declare module 'react-native-jsmodal';

@@ -4,7 +4,6 @@ import { View, Dimensions, TextInput} from 'react-native';
 import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
 import useDocList from '../hooks/useDocList';
-import FullPath from '../fullPath/index';
 import CommonFlatList from '../component/CommonFlatList';
 import FloatingMenu from '../menu/FloatingMenu';
 import CommonMovePath from '../component/CommonMovePath';
