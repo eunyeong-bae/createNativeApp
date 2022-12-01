@@ -449,7 +449,7 @@ export default class CommonFnUtil{
         let result: boolean = false;
         
         const data: any = {
-            protocolId : 'P791',
+            protocolId : 'P728',
             data : {
 				uid : '',
 				tagName : '',
@@ -472,13 +472,13 @@ export default class CommonFnUtil{
         let result: any = [];
 
         const data: any = {
-            protocolId : 'P791',
-            data : { tdoc_uid: docUID}
+            protocolId : 'P733',
+            data : {uid: docUID}
         };
 
         await Adapter.fetch.protocol(data).then(( res) => {
             if( res) {
-                result = res;
+                result = res.tag;
             }
         }).catch(( error) => {
             console.log( error)
@@ -791,7 +791,7 @@ export default class CommonFnUtil{
 
     public static onClickSetTag= async() => {
         // console.log(' onClickCategory');
-        return 'newWindow|SetTagDialog';
+        return 'newWindow|TagDialog';
     }
     public static onClickSetPassword = async() => {
         // console.log(' onClickCategory');
