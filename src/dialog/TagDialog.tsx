@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { View, TextInput, Text } from 'react-native';
+import { View, Text } from 'react-native';
+import { TextInput} from 'react-native-paper';
 import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
 import { CommonContext } from '../context/CommonContext';
@@ -26,6 +27,7 @@ const tagDialogHeaderInfo : any = {
 };
 
 const tagDescription = new Map ()
+    .set(0, '• 기존에 작성된 태그 값은 문서정보에서 확인 가능합니다.')
     .set(1, '• 태그는 10개까지 입력 가능합니다. (쉼표 구분)')
     .set(2, '• 태그는 1개당 20자를 초과할 수 없습니다.')
     .set(3, '• 태그 추가 시, 공백 및 모든 특수문자는 제한됩니다.')
@@ -49,7 +51,7 @@ export const TagDialog = () => {
         _tagDataLists = CommonFnUtil.getTagData( selectedTargetState.selectedTarget.docUID);
 
         setTimeout(() => {
-            if( _tagDataLists){
+            if( _tagDataLists && _tagDataLists._W){
                 let result : any = [];
 
                 for(let i=0; i < _tagDataLists._W.length; i++) { 
@@ -59,15 +61,10 @@ export const TagDialog = () => {
                 _tagDataLists = result.join(', ');
 
                 setIsTagDataLists( _tagDataLists);
-                setTagValue( _tagDataLists);
             }
 
         }, 1000);
     });
-
-    const onChangeText = ( text: any) => { 
-        console.log( text)
-    };
 
     return (
         <View style={dialogStyles.container}>
@@ -84,7 +81,7 @@ export const TagDialog = () => {
                 sortMenu ={ null}
             />
 
-            <View style={{ margin:10, width:'90%', borderWidth:1, borderColor:'#DCE7FB', borderRadius:10, backgroundColor:'#fff', height:150, padding:5}}>
+            {/* <View style={{ margin:10, width:'90%', maxHeight:200, borderWidth:1, borderColor:'#DCE7FB', borderRadius:10, backgroundColor:'#fff', height:150, padding:5}}>
                 <TextInput 
                     multiline
                     numberOfLines={ 7}
@@ -93,9 +90,21 @@ export const TagDialog = () => {
                     style={{ padding: 10}}
                     editable
                 />
-            </View>
+            </View> */}
 
-            <View style={{ borderWidth:1, borderColor:'#DCE7FB', borderRadius:10, width: '90%', padding:10, height:150, margin: 10, backgroundColor:'#fff',}}> 
+            <TextInput 
+                label="Tag"
+                placeholder="태그를 입력하세요."
+                mode="outlined"
+                multiline={true} //android only
+                value={ tagValue}
+                numberOfLines={ 3}
+                onChangeText={ text => setTagValue( text) }
+                style={{ width: 320, height: 150,}}
+            />
+
+            <View style={{ borderWidth:1, borderColor:'#DCE7FB', borderRadius:10, width: '90%', padding:10, height:190, margin: 10, backgroundColor:'#fff',}}> 
+                <Text style={{ height:40, paddingBottom:3, display:'flex', flexWrap: 'wrap' }}>{ tagDescription.get(0)}</Text>
                 <Text style={{ height:30, paddingTop:3 }}>{ tagDescription.get(1)}</Text>
                 <Text style={{ height:30, paddingTop:3}}>{ tagDescription.get(2)}</Text>
                 <Text style={{ height:30, paddingTop:3}}>{ tagDescription.get(3)}</Text>

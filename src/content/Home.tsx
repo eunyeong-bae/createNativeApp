@@ -34,7 +34,12 @@ const CONTEXT_NAME = "Home";
 
 const Home = ( props : any) => {    
     const { navigation} = props;
-    const { sortMenuState, setSortMenu, centerDialogState, targetFullPathState, setTargetFullPath, alertDialogState} = useContext( CommonContext);
+    const { sortMenuState, 
+            setSortMenu, 
+            centerDialogState, 
+            targetFullPathState, 
+            setTargetFullPath, 
+            alertDialogState } = useContext( CommonContext);
 
     const flatListRef = useRef<any>();
     
@@ -53,10 +58,21 @@ const Home = ( props : any) => {
         contextName: CONTEXT_NAME
     });
 
+    const [ isActive, setIsActive] = useState({ //문서함 리스트 클릭 시, 상태 값 체크
+        'Home': true,
+        'MyDoc': false,
+        'ShareDoc': false,
+        'FavoriteDoc': false,
+        'SecurtyDoc': false,
+        'TrashDoc': false,
+    });
+
+
     //딱 한번 실행 됌 
     useLayoutEffect( () => {
         if( CommonUtil.strIsNull( sortMenuState.contextName) || sortMenuState.contextName !== CONTEXT_NAME) {
             setSortMenu( CONTEXT_NAME, null, null);
+            setTargetFullPath( [''], ['ONEFFICE'], null);
         }
     }, []);
 
@@ -107,7 +123,7 @@ const Home = ( props : any) => {
                         ViewModeCheck={ null}
                 />
 
-                <CommonDocBoxList navigation={ navigation} />
+                <CommonDocBoxList isActive={ isActive} setIsActive={ setIsActive} navigation={ navigation} />
                 
                 <TextInput style={ MyDocStyles.textInputStyle} placeholder="Search" />
                 
