@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { View, Text } from 'react-native';
 import { TextInput} from 'react-native-paper';
 import { dialogStyles} from './style/style';
@@ -6,7 +6,7 @@ import CommonHeader from '../component/header/CommonHeader';
 import { CommonContext } from '../context/CommonContext';
 import CommonFnUtil from '../utils/CommonFnUtil';
 
-const CONTEXT_NAME = 'tagDialog';
+const CONTEXT_NAME = 'TagDialog';
 const tagDialogHeaderInfo : any = {
     'headerInfo': {
         leftBtn : [
@@ -16,14 +16,6 @@ const tagDialogHeaderInfo : any = {
             {iconName: "CommonSaveBtn", visibility: true}
         ],
     },
-    'headerDataInfo': {
-        currTagDataList: '',
-        tagErrorMsgs: [
-            '※ 태그 1개당 20자를 초과할 수 없습니다.',
-            '※ 태그는 10개까지 입력 가능합니다.',
-            '※ 특수문자는 태그로 등록할 수 없습니다.'
-        ]
-    }
 };
 
 const tagDescription = new Map ()
@@ -32,6 +24,11 @@ const tagDescription = new Map ()
     .set(2, '• 태그는 1개당 20자를 초과할 수 없습니다.')
     .set(3, '• 태그 추가 시, 공백 및 모든 특수문자는 제한됩니다.')
     .set(4, '• 문서함에서 [태그설정]으로 일괄등록 시, 기존태그는 삭제 됩니다.')
+
+const tagErrorMsgs = new Map()
+    .set( 'error1', '※ 태그 1개당 20자를 초과할 수 없습니다.')
+    .set( 'error2', '※ 태그는 10개까지 입력 가능합니다.')
+    .set( 'error3', '※ 특수문자는 태그로 등록할 수 없습니다.')
 
 // const tagDescription : any = [
 //     '• 태그는 10개까지 입력 가능합니다. (쉼표 구분)',
@@ -66,7 +63,7 @@ export const TagDialog = () => {
         }, 1000);
     });
 
-    return (
+    return useMemo(() => (
         <View style={dialogStyles.container}>
             <CommonHeader 
                 headerName = { '태그설정'}
@@ -74,33 +71,28 @@ export const TagDialog = () => {
                 setMultiSelected = { null}
                 headerMenuInfo={ tagDialogHeaderInfo.headerInfo}
                 contextName={ CONTEXT_NAME}
-                headerDataInfo={ null}
+                headerDataInfo={ tagValue}
                 navigation={ null}
                 fullpath={ null}
                 setFullpath={ null}
                 sortMenu ={ null}
             />
 
-            {/* <View style={{ margin:10, width:'90%', maxHeight:200, borderWidth:1, borderColor:'#DCE7FB', borderRadius:10, backgroundColor:'#fff', height:150, padding:5}}>
-                <TextInput 
-                    multiline
-                    numberOfLines={ 7}
-                    onChangeText={ onChangeText}
-                    value={ tagValue}
-                    style={{ padding: 10}}
-                    editable
-                />
-            </View> */}
-
             <TextInput 
                 label="Tag"
                 placeholder="태그를 입력하세요."
                 mode="outlined"
                 multiline={true} //android only
-                value={ tagValue}
-                numberOfLines={ 3}
-                onChangeText={ text => setTagValue( text) }
+                autoFocus={ true}
+                autoCorrect={ false}
+                value={ tagValue ? tagValue : isTagDataLists}
+                onChangeText={ text =>  setTagValue( text)}
                 style={{ width: 320, height: 150,}}
+                theme={{
+                    colors: {
+                        primary: '#aac6fa' // Outline color here
+                    }
+                }}
             />
 
             <View style={{ borderWidth:1, borderColor:'#DCE7FB', borderRadius:10, width: '90%', padding:10, height:190, margin: 10, backgroundColor:'#fff',}}> 
@@ -111,5 +103,5 @@ export const TagDialog = () => {
                 <Text style={{ height:40, paddingTop:3, display:'flex', flexWrap: 'wrap' }}>{ tagDescription.get(4)}</Text>
             </View>
         </View>
-    )
+    ), [ isTagDataLists, tagValue]); 
 }
