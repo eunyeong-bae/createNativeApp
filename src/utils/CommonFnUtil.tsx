@@ -445,24 +445,42 @@ export default class CommonFnUtil{
         return result;
     }
 
-    public static updateTag = async( dataInfo: any) => {
+    public static updateTag = async( uid: any, tagName: any) => {
         let result: boolean = false;
         
         const data: any = {
             protocolId : 'P728',
             data : {
-				uid : '',
-				tagName : '',
-                //values.join(',')
-			}
+                uid : uid,
+                tagName : tagName.join(',')
+            }
         };
 
         await Adapter.fetch.protocol(data).then(( res) => {
-            if( res) {
+            if( res && res.list) {
                 result = true;
+
+                Toast.show({
+                    type: 'success',
+                    text1: '태그등록을 완료했습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+            } else {
+                Toast.show({
+                    type: 'success',
+                    text1: '태그등록에 실패했습니다.',
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
             }
         }).catch((error) => {
-            console.log( error);
+            Toast.show({
+                type: 'success',
+                text1: '실패했습니다.',
+                visibilityTime: 1000,
+                autoHide: true
+            });
         })
 
         return result;
