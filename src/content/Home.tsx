@@ -153,8 +153,8 @@ const Home = ( props : any) => {
                     }
                 </View>
 
-                <FloatingMenu />
             </View>
+            <FloatingMenu />
         </SafeAreaView>
     ), [ reqListData.dataList])
 }

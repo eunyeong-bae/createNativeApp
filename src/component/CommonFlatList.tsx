@@ -70,6 +70,7 @@ const CommonFlatList = ( props: FlatListProps) => {
             <DefaultListItem data={ data.item}
                              key={ data.item.fileUID}
                              index={ data.index}
+                             listItemFrom={ 'dialog'}
                              // 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐
                              fullpath={ fullpath} 
                              setFullpath={ setFullpath}

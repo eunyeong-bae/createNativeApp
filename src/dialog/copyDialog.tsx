@@ -98,55 +98,57 @@ export const CopyDialog = () => {
     }, [ isLoading]);
     
     return useMemo(() => (
-        <View style={dialogStyles.container}>
-            <CommonHeader 
-                headerName = { '사본 만들기'}
-                multiSelectedState = { null}
-                setMultiSelected = { null}
-                headerMenuInfo={ copyDialogHeaderInfo.headerInfo}
-                contextName={ CONTEXT_NAME}
-                headerDataInfo={ copyDialogHeaderInfo.copyDataInfo}
-                navigation={ null}
-                fullpath={ fullpath}
-                setFullpath={ setFullpath}
-                sortMenu ={ null}
-            />
-            <TextInput style={{  width: width - 50, height: 40, padding:10, borderWidth:1, borderColor:'#EFF3FB', borderRadius:10, backgroundColor:'#fff' }}
-                onChangeText={ text => setInputTxt( text)}
-                placeholder="제목을 입력하세요."
-                value={ inputTxt}
-                // onChangeText={ onChangeText}
-                // placeholder={ selectedTargetState.selectedTarget.doc_name + "(복사본)"}
-                // value={ !inputTxt ? selectedTargetState.selectedTarget.doc_name + "(복사본)" : inputTxt}
-            />
-            
-            {/* 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐 */}
-            {/* <View style={{ borderColor:'#eee', borderTopWidth:1}}>
-                <FullPath fullpath= { fullpath} setFullPath={ setFullpath}/>
-            </View> */}
-            
-            {/* 문서 리스트 영역 */}
-            <View style={ dialogStyles.folderListContainer}>
-                { reqListData.dataList.length > 0 ?
-                    <>
-                        { fullpath.fullPathUIDs.length > 1 &&
-                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
-                        }
-                        <CommonFlatList
-                            flatListRef ={ flatListRef}
-                            reqListData ={ reqListData}
-                            onEndReached={ onEndReached}
-                            fullpath={ fullpath}
-                            setFullpath={ setFullpath}
-                        />
-                    </>
-                    :
-                        <View>
-                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
-                        </View>
-                }
+        <>
+            <View style={dialogStyles.container}>
+                <CommonHeader 
+                    headerName = { '사본 만들기'}
+                    multiSelectedState = { null}
+                    setMultiSelected = { null}
+                    headerMenuInfo={ copyDialogHeaderInfo.headerInfo}
+                    contextName={ CONTEXT_NAME}
+                    headerDataInfo={ copyDialogHeaderInfo.copyDataInfo}
+                    navigation={ null}
+                    fullpath={ fullpath}
+                    setFullpath={ setFullpath}
+                    sortMenu ={ null}
+                />
+                <TextInput style={{  width: width - 50, height: 40, padding:10, borderWidth:1, borderColor:'#EFF3FB', borderRadius:10, backgroundColor:'#fff' }}
+                    onChangeText={ text => setInputTxt( text)}
+                    placeholder="제목을 입력하세요."
+                    value={ inputTxt}
+                    // onChangeText={ onChangeText}
+                    // placeholder={ selectedTargetState.selectedTarget.doc_name + "(복사본)"}
+                    // value={ !inputTxt ? selectedTargetState.selectedTarget.doc_name + "(복사본)" : inputTxt}
+                />
+                
+                {/* 문서함의 폴더 경로와 다이얼로그 창의 폴더 경로 값 구분을 위해 props 로 던짐 */}
+                {/* <View style={{ borderColor:'#eee', borderTopWidth:1}}>
+                    <FullPath fullpath= { fullpath} setFullPath={ setFullpath}/>
+                </View> */}
+                
+                {/* 문서 리스트 영역 */}
+                <View style={ dialogStyles.folderListContainer}>
+                    { reqListData.dataList.length > 0 ?
+                        <>
+                            { fullpath.fullPathUIDs.length > 1 &&
+                                <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
+                            }
+                            <CommonFlatList
+                                flatListRef ={ flatListRef}
+                                reqListData ={ reqListData}
+                                onEndReached={ onEndReached}
+                                fullpath={ fullpath}
+                                setFullpath={ setFullpath}
+                            />
+                        </>
+                        :
+                            <View>
+                                <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
+                            </View>
+                    }
+                </View>
             </View>
             <FloatingMenu fullpath={ fullpath} />
-        </View>
+        </>
     ), [ reqListData.dataList])
 }

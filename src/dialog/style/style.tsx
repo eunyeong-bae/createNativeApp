@@ -10,6 +10,7 @@ export const dialogStyles = StyleSheet.create({
         backgroundColor:'#EFF3FB',
         alignItems:'center',
         // borderWidth:1,
+        // borderColor:'red'
         // backgroundColor:'white',
     },
     header:{
@@ -21,7 +22,8 @@ export const dialogStyles = StyleSheet.create({
         height: height - 400,
         // marginTop: 10,
         paddingTop: 10,
-        // borderWidth:1
+        // borderWidth:1,
+        // borderColor:'blue'
     },
     docBoxListContainer: {
         width: width-50, 

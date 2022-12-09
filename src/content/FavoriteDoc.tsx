@@ -177,8 +177,8 @@ const FavoriteDoc = ( props : any) => {
                             </View>
                         }
                     </View>
-                    <FloatingMenu />
                 </View>
+                <FloatingMenu />
             {/* </ScrollView> */}
         </SafeAreaView>
     </>

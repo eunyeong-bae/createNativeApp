@@ -181,7 +181,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                     </View>
                 }
 
-                { !CommonUtil.objectIsNull( headerMenuInfo.rightDialogBtn) &&
+                { CommonUtil.objectIsNull( headerMenuInfo.rightDialogBtn) &&
                     <View>
                         <View>
                             <Text style={[ CommonHeaderStyles.headerTitle, {marginLeft: (headerMenuInfo.rightBtn && 7)}]}>{ multiSelectedState ? headerMenuInfo.centerText.title : headerName}</Text>
