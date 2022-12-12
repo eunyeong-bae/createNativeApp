@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext} from 'react';
+import React, { useState, useEffect, useCallback, useContext, useMemo} from 'react';
 import { View, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import CardListItem from '../list/CardListItem';
 import DefaultListItem from '../list/DefaultListItem';
@@ -27,7 +27,8 @@ const CommonFlatList = ( props: FlatListProps) => {
     const { swipeItemState, 
             setSwipeItem,
             sortMenuState,
-            setAlertDialog } = useContext( CommonContext);
+            setAlertDialog, 
+            centerDialogState } = useContext( CommonContext);
 
     const { flatListRef, 
             reqListData, 
@@ -171,14 +172,28 @@ const CommonFlatList = ( props: FlatListProps) => {
         );
     };
 
-    return (
+    return useMemo(() => (
         <>
-        { sortMenuState.contextName !== 'TrashDoc' ?
+        { sortMenuState.contextName === 'TrashDoc' || centerDialogState.dialogName !== '' ?
+                <FlatList 
+                    ref={ flatListRef}
+                    data={ reqListData.dataList}
+                    renderItem={ fullpath ? dialogRenderListItem : renderListItem}
+                    keyExtractor={ keyExtractor}
+                    onEndReached={ onEndReached}
+                    onEndReachedThreshold={ 0.9}
+                    initialNumToRender = { 10}
+                    maxToRenderPerBatch ={ 10}
+                    windowSize= { 21}
+                    removeClippedSubviews = { true}
+                    // ListFooterComponent={} rn 에서 제공하는 로딩 컴포넌트
+                />
+            :
                 <SwipeListView 
                     ref={ flatListRef}
                     showsVerticalScrollIndicator={ false}
                     data={ reqListData.dataList}
-                    renderItem={ fullpath ? dialogRenderListItem : renderListItem}
+                    renderItem={ renderListItem}
                     renderHiddenItem={ renderHiddenItem}
                     leftOpenValue={ 40}
                     rightOpenValue={ -40}
@@ -190,23 +205,9 @@ const CommonFlatList = ( props: FlatListProps) => {
                     windowSize= { 21}
                     removeClippedSubviews = { true}
                 />
-            :
-                <FlatList 
-                    ref={ flatListRef}
-                    data={ reqListData.dataList}
-                    renderItem={ renderListItem}
-                    keyExtractor={ keyExtractor}
-                    onEndReached={ onEndReached}
-                    onEndReachedThreshold={ 0.9}
-                    initialNumToRender = { 10}
-                    maxToRenderPerBatch ={ 10}
-                    windowSize= { 21}
-                    removeClippedSubviews = { true}
-                    // ListFooterComponent={} rn 에서 제공하는 로딩 컴포넌트
-                />
         }
         </>
-    )
+    ), [ reqListData.dataList]);
 };
 
 const styles = StyleSheet.create({

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity} from 'react-native';
 import { MyDocListViewStyles} from '../content/style/style';
 import SvgIcon from '../component/svgIcon/SvgIcon';
+import { CommonContext } from '../context/CommonContext';
 
 interface MovePathProps {
     targetFullPathState? : any,
@@ -10,6 +11,7 @@ interface MovePathProps {
 
 const CommonMovePath = ( props: MovePathProps) => {
     const { targetFullPathState, setTargetFullPath} = props;
+    const { centerDialogState} = useContext( CommonContext);
 
     const onClickFolderBack = ( fullPathUID: string) => {
         const tempTarget = {
@@ -31,7 +33,7 @@ const CommonMovePath = ( props: MovePathProps) => {
 
     return (
         <TouchableOpacity onPress={ onClickFolderBack.bind( this, targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 2])}>
-            <View style={ MyDocListViewStyles.docListContainer}>
+            <View style={[ MyDocListViewStyles.docListContainer, centerDialogState.dialogName !== '' && MyDocListViewStyles.dialogDocListCon]}>
                     <View style={ MyDocListViewStyles.docListStyle}>
                         <View style ={ MyDocListViewStyles.ThumImg}>
                             <SvgIcon name="folderPrev" width={22} height={22} />
