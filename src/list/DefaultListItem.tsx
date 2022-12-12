@@ -59,7 +59,7 @@ const DefaultListItem = ( props:any) => {
             important: 0//x, 1// o
         */
        <View>
-           <View style={ MyDocListViewStyles.docListContainer} key={ props.data.fileUID}>
+           <View style={[ props.listItemFrom === 'dialog' && MyDocListViewStyles.dialogDocListCon, MyDocListViewStyles.docListContainer]} key={ props.data.fileUID}>
                <TouchableOpacity onPress={ onClickFolder.bind( this, props.data)}>
                    <View style={ MyDocListViewStyles.docListStyle}>
                        <View style ={ MyDocListViewStyles.ThumImg}>

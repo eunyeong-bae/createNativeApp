@@ -197,8 +197,8 @@ const ShareDoc = ( props : any) => {
                         </View>
                     }
                 </View>
-                <FloatingMenu />
             </View>
+            <FloatingMenu />
         </SafeAreaView>
     </>
     ), [ reqListData.dataList, listViewMode])

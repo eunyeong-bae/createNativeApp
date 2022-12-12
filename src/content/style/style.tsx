@@ -98,7 +98,7 @@ export const MyDocListViewStyles = StyleSheet.create({
         // borderWidth:1,
         backgroundColor:'#fff',
         borderWidth:1,
-        borderColor:'#DCE7FB',
+        // borderColor:'red',
         borderRadius:10,
         // marginBottom:5,
         // marginTop:5,
@@ -112,6 +112,9 @@ export const MyDocListViewStyles = StyleSheet.create({
         // shadowOpacity: 0.25,
         // shadowRadius:3.84,
         // elevation:5,
+    },
+    dialogDocListCon: {
+        width: windowWidth - 60,  
     },
     docListStyle: { 
         width: windowWidth - 80, 
