@@ -69,8 +69,6 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
 
                     setTimeout(() => {
                         if( resultData) {
-                            console.log( resultData);
-            
                             setFullpath({ fullPathUIDs : [ ''], fullPathNames : [ '내 문서함'], treeTypes : []});
                             setCenterDialog( '', null);
                         }
@@ -82,6 +80,12 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                     if( tagLists) { 
                         resultData = CommonFnUtil.updateTag( selectedTargetState.selectedTarget.docUID, tagLists);
                     }
+
+                    setTimeout(() => {
+                        if( resultData) {
+                            setCenterDialog( '', null);
+                        }
+                    }, 300);
                     break;
 
                 default:
