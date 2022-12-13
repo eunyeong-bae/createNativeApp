@@ -99,58 +99,59 @@ export const MoveDialog = () => {
     };
 
     return useMemo(() => (
-        <View style={dialogStyles.container}>
-            <CommonHeader 
-                headerName = { '이동'}
-                multiSelectedState = { null}
-                setMultiSelected = { null}
-                headerMenuInfo={ moveDialogHeaderInfo.headerInfo}
-                contextName={ CONTEXT_NAME}
-                headerDataInfo={ null}
-                navigation={ null}
-                fullpath={ fullpath}
-                setFullpath={ setFullpath}
-                sortMenu= { null}
-            />
-            <View style={ dialogStyles.docBoxListContainer}>
-                <>
-                    { !CommonUtil.objectIsNull( DOCUMENT_BOX_LIST) &&
-                        DOCUMENT_BOX_LIST.map( list => {
-                            return (
-                                <TouchableOpacity key={ list.title} onPress={ onClickDocBox.bind( this, list.listType)}>
-                                    <View style={ dialogStyles.docBoxList}>
-                                        <Text style={ dialogStyles.docBoxListText}>{ list.title}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
-                </>
-            </View>
+        <>
+            <View style={dialogStyles.container}>
+                <CommonHeader 
+                    headerName = { '이동'}
+                    multiSelectedState = { null}
+                    setMultiSelected = { null}
+                    headerMenuInfo={ moveDialogHeaderInfo.headerInfo}
+                    contextName={ CONTEXT_NAME}
+                    headerDataInfo={ null}
+                    navigation={ null}
+                    fullpath={ fullpath}
+                    setFullpath={ setFullpath}
+                    sortMenu= { null}
+                />
+                <View style={ dialogStyles.docBoxListContainer}>
+                    <>
+                        { !CommonUtil.objectIsNull( DOCUMENT_BOX_LIST) &&
+                            DOCUMENT_BOX_LIST.map( list => {
+                                return (
+                                    <TouchableOpacity key={ list.title} onPress={ onClickDocBox.bind( this, list.listType)}>
+                                        <View style={ dialogStyles.docBoxList}>
+                                            <Text style={ dialogStyles.docBoxListText}>{ list.title}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+                    </>
+                </View>
 
-            {/* 문서 리스트 영역 */}
-            <View style={ dialogStyles.folderListContainer}>
-                { reqListData.dataList.length > 0 ?
-                        <>
-                            { fullpath.fullPathUIDs.length > 1 &&
+                {/* 문서 리스트 영역 */}
+                <View style={ dialogStyles.folderListContainer}>
+                    { reqListData.dataList.length > 0 ?
+                            <>
+                                { fullpath.fullPathUIDs.length > 1 &&
+                                    <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
+                                }
+                                <CommonFlatList
+                                    flatListRef ={ flatListRef}
+                                    reqListData ={ reqListData}
+                                    onEndReached={ onEndReached}
+                                    fullpath={ fullpath}
+                                    setFullpath={ setFullpath}
+                                />
+                            </>
+                        :
+                            <View>
                                 <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
-                            }
-                            <CommonFlatList
-                                flatListRef ={ flatListRef}
-                                reqListData ={ reqListData}
-                                onEndReached={ onEndReached}
-                                fullpath={ fullpath}
-                                setFullpath={ setFullpath}
-                            />
-                        </>
-                    :
-                        <View>
-                            <CommonMovePath targetFullPathState={ fullpath} setTargetFullPath={ setFullpath} />
-                        </View>
-                }
+                            </View>
+                    }
+                </View>
             </View>
-
             <FloatingMenu fullpath={ fullpath}  />
-        </View>
+        </>
     ), [ reqListData.dataList])
 }

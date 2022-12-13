@@ -8,6 +8,7 @@ import { UserInfoDialog } from '../dialog/UserInfoDialog';
 import { DocInfoDialog} from '../dialog/DocInfoDialog';
 import { DocHistory} from '../dialog/DocHistory';
 import { TagDialog} from '../dialog/TagDialog';
+import { SecurityDialog} from '../dialog/SecurityDialog';
 import CommonUtil from '../utils/CommonUtil'
 
 export const ModalDialog = () => {
@@ -40,6 +41,9 @@ export const ModalDialog = () => {
                 }
                 { centerDialogState.dialogName === AppScreens.TagDialog &&
                     <TagDialog />
+                }
+                { centerDialogState.dialogName === AppScreens.SecurityDialog &&
+                    <SecurityDialog />
                 }
             </ModalContent>
         </Modal>

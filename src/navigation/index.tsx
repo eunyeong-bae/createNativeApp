@@ -3,19 +3,25 @@ import { createStackNavigator, StackNavigationProp } from "@react-navigation/sta
 
 export enum AppScreens {
     MyDoc = 'MyDoc',
-    CopyDialog = "CopyDialog",
-    MoveDialog = "MoveDialog",
     FavoriteDoc = 'FavoriteDoc',
     SecurityDoc = 'SecurityDoc',
     TrashDoc = 'TrashDoc',
+    ShareDoc = 'ShareDoc',
+    SharedDoc = 'SharedDoc',
+    ReceivedShareDoc = 'ReceivedShareDoc',
+    CopyDialog = "CopyDialog",
+    MoveDialog = "MoveDialog",
+    DocInfoDialog = 'DocInfoDialog',
+    DocHistory = 'DocHistory',
     UserInfoDialog = 'UserInfoDialog',
+    TagDialog = 'TagDialog',
+    SecurityDialog = 'SecurityDialog',
 
     Login = 'Login',
     Home = 'Home',
     Splash = 'Splash',
     GroupDoc = 'GroupDoc',
     CompanyDoc = 'CompanyDoc',
-    ShareDoc = 'ShareDoc',
     ShareReceiveDoc = 'ShareReceiveDoc',
     ShareConfig = "ShareConfig",
     ShareMessage = "ShareMessage",
@@ -29,19 +35,25 @@ export enum AppScreens {
   
 export type AppStackParamList = {
     MyDoc: undefined;
-    CopyDialog: undefined;
-    MoveDialog: undefined;
     FavoriteDoc: undefined;
     SecurityDoc: undefined;
     TrashDoc: undefined;
+    ShareDoc : undefined;
+    SharedDoc : undefined;
+    ReceivedShareDoc : undefined;
+    CopyDialog: undefined;
+    MoveDialog: undefined;
+    DocInfoDialog: undefined;
+    DocHistory: undefined;
     UserInfoDialog: undefined;
+    TagDialog: undefined;
+    SecurityDialog: undefined;
 
     Splash: undefined;
     Login: undefined;
     Home: undefined;
     GroupDoc: undefined;
     CompanyDoc: undefined;
-    ShareDoc: undefined;
     ShareReceiveDoc: undefined;
     FileView: undefined;
     LastViewDoc: undefined;
