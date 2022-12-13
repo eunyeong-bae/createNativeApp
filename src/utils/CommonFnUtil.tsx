@@ -785,7 +785,7 @@ export default class CommonFnUtil{
     }
     
     public static linkCopyEvent = async() => {
-        // console.log(' linkCopyEvent');
+        return 'toast|linkCopy';
     }
     
     // public static onClickCopyOpen = async() => {

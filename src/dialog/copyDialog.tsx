@@ -88,14 +88,14 @@ export const CopyDialog = () => {
     }; 
 
 
-    const onEndReached = useCallback(() => {
+    const onEndReached = () => {
         if( isLoading) {
-            return;
+            setLoading( !isLoading);
         }else {
-            setLoading( true);
+            setLoading( !isLoading);
             setDataList({...reqListData, pageNum: reqListData.pageNum + 1});
         }
-    }, [ isLoading]);
+    };
     
     return useMemo(() => (
         <>

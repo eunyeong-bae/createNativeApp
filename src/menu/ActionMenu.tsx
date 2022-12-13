@@ -6,6 +6,9 @@ import SvgIcon from '../component/svgIcon/SvgIcon';
 import CommonUtil from '../utils/CommonUtil';
 import { moreMenuStyles} from '../menu/style/style';
 import { CommonContext } from '../context/CommonContext';
+import Clipboard from '@react-native-clipboard/clipboard';
+import AsyncStorage from '@react-native-community/async-storage';
+import Toast from 'react-native-toast-message';
 {/*
    1.어떤 문서함인지
    2.정렬버튼 on/off(하단 메뉴가 나오고 안나오고 상태) 
@@ -90,6 +93,8 @@ const ActionMenu = () => {
 
     const actionSheetRef = useRef( null);
 
+    let userData: any = null;
+
     useEffect(() => {
         if( actionMenuState.isActionMenu){
             if( !CommonUtil.strIsNull(nextActionMenu)) {
@@ -107,6 +112,7 @@ const ActionMenu = () => {
     }, [ menus]);
 
     const hiddenActionMenu = () => {
+        //현재 스크롤 위치만 top(0,0) 으로 잡아주면 됌
         setIsActionMenu( false, null);
         
         actionSheetRef.current.hide();
@@ -284,17 +290,34 @@ const ActionMenu = () => {
                 break;
 
             case 'toast':
-                const docUID = selectedTargetState.selectedTarget.docUID;
-                const isReadOnly = !selectedTargetState.selectedTarget.readonly ? 1 : 0;
+                if( naviVal[1] === 'setViewOnly') {
+                    const docUID = selectedTargetState.selectedTarget.docUID;
+                    const isReadOnly = !selectedTargetState.selectedTarget.readonly ? 1 : 0;
+    
+                    const result = CommonFnUtil.setReadOnly( docUID, isReadOnly);
+                    
+                    setTimeout(() =>{
+                        setSwipeItem({
+                            ...swipeItemState,
+                            setReadOnly: result,
+                        });
+                    }, 1000);
 
-                const result = CommonFnUtil.setReadOnly( docUID, isReadOnly);
-                
-                setTimeout(() =>{
-                    setSwipeItem({
-                        ...swipeItemState,
-                        setReadOnly: result,
+                } else if( naviVal[1] === 'linkCopy') {
+                    userData = await AsyncStorage.getItem( 'baseData');
+                    userData = JSON.parse(userData);
+
+                    let strUrl = getDocumentShareOpenURL( selectedTargetState.selectedTarget.docUID, userData.result.groupSeq);
+					
+                    Clipboard.setString( strUrl);
+
+                    Toast.show({
+                        type: 'success',
+                        text1: '링크가 복사되었습니다.',
+                        visibilityTime: 3000,
+                        autoHide: true
                     });
-                }, 1000);
+                }
 
                 setOptions( []);
                 hiddenActionMenu();
@@ -304,7 +327,33 @@ const ActionMenu = () => {
             default:
                 return;
         }
-    }
+    };
+
+    const getDocumentShareOpenURL = ( fileSeq: any, strGroupSeq: any) => { //, strRef: any: QR 코드에 사용
+		let strPageURL = "";
+        let nCurDocSeq = fileSeq ? fileSeq : '';
+                        
+        // if( typeof(strRef) != "undefined") {
+        //     nCurDocSeq += "&ref="+strRef;
+        // }
+        
+        // 캐시를 방지하기 위해 임의의 문자+숫자 조합 4자리 추가
+        const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let randStr = "";
+        
+        for( let i=0 ; i < 4 ; i++)
+            randStr += possible.charAt( Math.floor( Math.random() * possible.length));
+        nCurDocSeq += "&_t="+randStr;
+
+        let filePath = "seq="+ nCurDocSeq;
+            filePath = window.btoa(filePath);
+
+        strPageURL =  "one003A06?" + encodeURIComponent( filePath);          
+        strPageURL =  userData.result.gwServerUrl+"/ecm/oneffice/"+strPageURL;
+        // strPageURL =  mobile_http.hybridBaseData.result.gwServerUrl+"/ecm/oneffice/"+strPageURL;
+
+        return strPageURL;
+	};
 
     const onCloseEvent = (index : any) =>{
         if(index == -1){
