@@ -96,7 +96,7 @@ export const protocolList = [
     {"protocolId":"P619","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw30A56"},
     {"protocolId":"P624","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw30A60"},
     {"protocolId":"P733","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw13A26"},
-    {"protocolId":"P728","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw13A76"},
+    {"protocolId":"P728","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw30A76"},
     {"protocolId":"P777","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw30A85"},
     {"protocolId":"P528","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw30A14"},
     {"protocolId":"P544","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw30A03"},

@@ -457,7 +457,7 @@ export default class CommonFnUtil{
         };
 
         await Adapter.fetch.protocol(data).then(( res) => {
-            if( res && res.list) {
+            if( res && res.result) {
                 result = true;
 
                 Toast.show({
