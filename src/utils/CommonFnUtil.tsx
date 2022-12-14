@@ -813,7 +813,7 @@ export default class CommonFnUtil{
     }
     public static onClickSetPassword = async() => {
         // console.log(' onClickCategory');
-        return 'newWindow|SetPasswordDialog';
+        return 'newWindow|SecurityDialog';
     }
     
     public static onClickRelatedDoc = async() => {
