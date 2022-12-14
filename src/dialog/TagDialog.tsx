@@ -5,6 +5,8 @@ import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
 import { CommonContext } from '../context/CommonContext';
 import CommonFnUtil from '../utils/CommonFnUtil';
+import Toast from 'react-native-toast-message';
+import { CommonDialogToast} from '../component/CommonDialogToast';
 
 const CONTEXT_NAME = 'TagDialog';
 const tagDialogHeaderInfo : any = {
@@ -95,6 +97,7 @@ export const TagDialog = () => {
                 <Text style={{ height:30, paddingTop:3}}>{ tagDescription.get(3)}</Text>
                 <Text style={{ height:40, paddingTop:3, display:'flex', flexWrap: 'wrap' }}>{ tagDescription.get(4)}</Text>
             </View>
+            <CommonDialogToast />
         </View>
     ), [ isTagDataLists, tagValue]); 
 }
