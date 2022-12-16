@@ -58,7 +58,7 @@ export const SecurityDialog = () => {
                 sortMenu ={ null}
             />
 
-            <View style={{ borderWidth:1, width:'100%', height:'100%',}}>
+            <View style={{ borderTopWidth:1, borderTopColor:'#DCE7FB', width:'100%', height:'100%',}}>
                 { selectedTargetState && selectedTargetState.selectedTarget.security_key && 
                     <RadioButton.Group onValueChange={ newValue => setValue( newValue)} value={ value}>
                         <View style={ sctyDialogStyle.sctyMenuRow}>
@@ -79,7 +79,7 @@ export const SecurityDialog = () => {
                     return (
                         <View style={[ sctyDialogStyle.sctyMenuRow, ( password.previousPW !== '' || password.currentPW !== '' || password.doubleChkPW !== '') && sctyDialogStyle.sctyMenuRowErrorOn]} key={ txt}>
                             <Text style={{ width:80}}>{ txt}</Text>
-                            <View style={{ width:'100%'}}>
+                            <View style={[ password.currentPW !== '' && { paddingTop:10}, { width:'100%'}]}>
                                 { selectedTargetState.selectedTarget.security_key ?
                                     <>
                                         <TextInput 
@@ -170,6 +170,7 @@ const sctyDialogStyle = StyleSheet.create({
         paddingLeft:10, 
         paddingRight:10,
         borderBottomWidth:1,
+        borderBottomColor:'#DCE7FB',
     },
     sctyMenuRowErrorOn: {
         height: 100,
