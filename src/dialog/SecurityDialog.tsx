@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RadioButton, Text, TextInput} from 'react-native-paper';
 import { dialogStyles} from './style/style';
@@ -16,6 +16,10 @@ const securityDialogHeaderInfo : any = {
             {iconName: "CommonSaveBtn", visibility: true}
         ],
     },
+    'headerDataInfo': {
+        currErrorStatus: false,
+        currSelectedStatus: null
+    },
 };
 
 /**
@@ -28,7 +32,7 @@ const radioBtnValues = [{ text: '변경', value: 'change'}, { text: '해제', va
 
 export const SecurityDialog = () => {
     const { selectedTargetState} = useContext( CommonContext);
-    const [ value, setValue] = useState( selectedTargetState.selectedTarget.security_key ? 'change' : ''); //문서보안설정 상태 값
+    const [ value, setValue] = useState( selectedTargetState.selectedTarget.security_key ? 'change' : 'setting'); //문서보안설정 상태 값
     const [ password, setPassword] = useState({ //비밀번호 상태 값
         previousPW: '',
         currentPW: '',
@@ -39,9 +43,43 @@ export const SecurityDialog = () => {
                      :
                         ['암호','암호 확인'];
 
-    const changeSettingMode = () => {
-        //변경, 해제 클릭 시, textinput ui 변경 필요
+    const changeSettingMode = ( typeNM: any) => {
+        if( typeNM === 'change'){
+            securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = typeNM;
+            setValue( typeNM);
+        } else if( typeNM === 'unSetting'){
+            securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = typeNM;
+            setValue( typeNM);
+        } else {
+            securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = 'setting';
+            setValue( 'setting');
+        }
     };
+
+    useEffect(() => {
+        if( selectedTargetState && selectedTargetState.selectedTarget.security_key) { 
+            if(( password.previousPW !== '' && password.currentPW !== '' && password.doubleChkPW !== '' ) 
+                && password.previousPW !== password.currentPW && password.currentPW === password.doubleChkPW
+            ) {
+                securityDialogHeaderInfo.headerDataInfo.currErrorStatus = true;
+                securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = value;
+            } else {
+                securityDialogHeaderInfo.headerDataInfo.currErrorStatus = false;
+                securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = null;
+            }
+        } else {
+            if(( password.currentPW !== '' && password.currentPW !== '') 
+                && password.currentPW === password.doubleChkPW
+            ) {
+                securityDialogHeaderInfo.headerDataInfo.currErrorStatus = true;
+                securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = value;
+            } else {
+                securityDialogHeaderInfo.headerDataInfo.currErrorStatus = false;
+                securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = null;
+            }
+        }
+
+    }, [ password.previousPW, password.currentPW, password.doubleChkPW]);
 
     return (
         <View style={[ dialogStyles.container, { height: 500}]}>
@@ -51,7 +89,7 @@ export const SecurityDialog = () => {
                 setMultiSelected = { null}
                 headerMenuInfo={ securityDialogHeaderInfo.headerInfo}
                 contextName={ CONTEXT_NAME}
-                headerDataInfo={ null}
+                headerDataInfo={[ securityDialogHeaderInfo.headerDataInfo, password]}
                 navigation={ null}
                 fullpath={ null}
                 setFullpath={ null}
@@ -66,7 +104,7 @@ export const SecurityDialog = () => {
                             { radioBtnValues.map( (value, index) => {
                                 return (
                                     <View key={ value.value} style={{ flexDirection:'row', alignItems:'center', marginLeft:10}}>
-                                        <RadioButton value={ value.value} status= "checked" onPress={ changeSettingMode}/>
+                                        <RadioButton value={ value.value} status= "checked" onPress={ changeSettingMode.bind( this, value.value)}/>
                                         <Text>{ value.text}</Text>
                                     </View>
                                 )
@@ -96,6 +134,7 @@ export const SecurityDialog = () => {
                                             secureTextEntry
                                             placeholder={ txt}
                                             right={<TextInput.Icon icon="eye" />}
+                                            disabled={ value === 'unSetting' && ( txt === '새 암호' || txt === '새 암호 확인')}
                                         />
                                         {( password.previousPW !== '' || password.currentPW !== '' || password.doubleChkPW !== '' ) &&
                                             <View style={{ width:'100%', height:30, justifyContent:'center'}}>

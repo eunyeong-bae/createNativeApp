@@ -42,6 +42,8 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
             setCenterDialog, 
             selectedTargetState} = useContext(CommonContext);
 
+    const [ headerDataInfos, password] = contextName === 'SecurityDialog' ? headerDataInfo : [];
+
     const onClickLeftBtn = ( iconName: any) => { // 문서함 뒤로가기 or 팝업 닫기 버튼
         if( iconName === 'UserInfoICon') {
             // navigation.openDrawer();
@@ -88,19 +90,44 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                     }, 300);
                     break;
 
+                case 'SecurityDialog':
+                    if( headerDataInfos.currErrorStatus){
+                        switch( headerDataInfos.currSelectedStatus) {
+                            case 'change':
+                            case 'unSetting':
+                                const nSettingType = headerDataInfos.currSelectedStatus === 'change' ? 1 : 2;
+                                resultData = CommonFnUtil.setSecurityPassword( selectedTargetState.selectedTarget.docUID, selectedTargetState.selectedTarget.folder_no,
+                                    nSettingType, password.previousPW, password.currentPW);
+                                break;
+                            case 'setting':
+                                resultData = CommonFnUtil.setSecurityPassword( selectedTargetState.selectedTarget.docUID, selectedTargetState.selectedTarget.folder_no,
+                                        0, password.currentPW, password.doubleChkPW);
+                                break;
+                            default:
+                                break;
+                        }
+                        setTimeout(() => {
+                            fnCallback( resultData);
+                        }, (1000));
+                    }
+                    break;
+
                 default:
                     return;
-
-                // case 'MoveDialog':
-                //     resultData = CommonFnUtil.moveDocumentFolder( selectedTargetState.selectedTarget, props);
-                //     break; 
-                // case 'CopyDialog':
-                //     resultData = CommonFnUtil.copyDocument( selectedTargetState.selectedTarget, props);
-                //     break;
             }
 
         } else{
 
+        }
+    };
+
+    const fnCallback = ( resMsg: any) => {
+        if( !resMsg._W){
+            return;
+        }
+        else { 
+            //암호가 일치하지않음 다이얼로그 띄워주고, 포커스 넣기
+            setCenterDialog( '', null);
         }
     };
 
@@ -118,7 +145,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
         }
         if( pattern.test( result)) { //특수문자 체크
             Toast.show({
-                type:'success',
+                type:'error',
                 text1: '※ 특수문자는 태그로 등록할 수 없습니다.',
                 visibilityTime: 1000,
                 autoHide: true
@@ -136,7 +163,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
             for( let i = 0; i < values.length; i++) {
                 if( values[i].length > 21) {
                     Toast.show({
-                        type:'success',
+                        type:'error',
                         text1: '※ 태그 1개당 20자를 초과할 수 없습니다.',
                         visibilityTime: 1000,
                         autoHide: true
@@ -147,7 +174,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
         }
         if ( values && values.length > 10) { //태그 갯수 제한
             Toast.show({
-                type:'success',
+                type:'error',
                 text1: '※ 태그는 10개까지 입력 가능합니다.',
                 visibilityTime: 1000,
                 autoHide: true
@@ -209,7 +236,12 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                 <View>
                     {
                         headerMenuInfo.rightDialogBtn.map(( btnInfo: any) => {
-                            if(btnInfo.visibility){
+                            if( contextName === 'SecurityDialog' && headerDataInfos.currErrorStatus) {
+                                <View>
+                                    <SvgIcon name = { btnInfo.iconName} width={20} height={20}/>
+                                </View>
+                            }
+                            else if( btnInfo.visibility){
                                 return(
                                     <TouchableOpacity key={ btnInfo.iconName} onPress={ onClickRightBtn.bind( this, 'dialog')}>
                                         <View>
