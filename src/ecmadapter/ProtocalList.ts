@@ -117,6 +117,7 @@ export const protocolList = [
     {"protocolId":"P620","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw30A57"},
     {"protocolId":"P538","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw30A38"},
     {"protocolId":"P627","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw30A61"},
+    {"protocolId":"P617","protocolNm":"UpdateUserImg","protocolUrl":"https://dev.amaranth10.co.kr/proxymgw/proxymgw30A54"},
 ];
 
 

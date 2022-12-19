@@ -5,7 +5,6 @@ import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
 import { CommonContext } from '../context/CommonContext';
 import CommonFnUtil from '../utils/CommonFnUtil';
-import Toast from 'react-native-toast-message';
 import { CommonDialogToast} from '../component/CommonDialogToast';
 
 const CONTEXT_NAME = 'TagDialog';

@@ -468,7 +468,7 @@ export default class CommonFnUtil{
                 });
             } else {
                 Toast.show({
-                    type: 'success',
+                    type: 'error',
                     text1: '태그등록에 실패했습니다.',
                     visibilityTime: 1000,
                     autoHide: true
@@ -476,7 +476,7 @@ export default class CommonFnUtil{
             }
         }).catch((error) => {
             Toast.show({
-                type: 'success',
+                type: 'error',
                 text1: '실패했습니다.',
                 visibilityTime: 1000,
                 autoHide: true
@@ -500,6 +500,75 @@ export default class CommonFnUtil{
             }
         }).catch(( error) => {
             console.log( error)
+        })
+
+        return result;
+    }
+
+    public static setSecurityPassword = async( strDocSeq: any, strFolderSeq: any, bAct: any, strPassword: any, strNewPassword:any ) => {
+        let result: any = null;
+        const sctyInfo = {"docUID" : strDocSeq, "security_key" : strPassword, "security_new_key" : strNewPassword, "security_type": bAct+""};
+        switch ( bAct) {
+            case 0:		sctyInfo.security_new_key = strNewPassword;		break; //설정
+            case 1:		sctyInfo.security_new_key = strNewPassword;	    break; //변경
+            case 2:		sctyInfo.security_new_key = "";				    break; //해제
+        }
+
+        const data:any = {
+            protocolId : 'P617',
+            data : {"docUID" : sctyInfo.docUID, "security_key" : sctyInfo.security_key, "security_new_key" : sctyInfo.security_new_key,"security_type" : sctyInfo.security_type}
+        };
+
+        await Adapter.fetch.protocol(data).then((res) => {
+            if( res === 0 || res === 1 ) {
+                /**
+                 * History 서버 등록 추후 작업 필요
+                 * 
+                 * oneffice.currFileSecurityStatus = true; 
+                 * 
+                 * let nHistoryCode = '';
+                    if (bAct === 2) { //해제
+                        nHistoryCode = '10';
+                        // oneffice.currFileSecurityStatus = false;
+                    } else if (bAct === 0) { //설정
+                        nHistoryCode = '8';
+                    } else {
+                        nHistoryCode = '9';
+                    }
+                 * 
+                 * onefficeMGW.accessDocumentHistory(responseData, nHistoryCode);
+                 */
+
+                let strMsg = '';
+                
+                switch (bAct) {
+                    case 0:		strMsg = '암호가 설정되었습니다.';		break;	//설정
+                    case 1:		strMsg = '암호가 변경되었습니다.';		break;	//변경
+                    case 2:		strMsg = '암호가 해제되었습니다.';		break;	//해제			
+                }
+
+                Toast.show({
+                    type: 'success',
+                    text1: strMsg,
+                    visibilityTime: 1000,
+                    autoHide: true
+                });
+
+                result = strMsg;
+                
+                return result;
+            }
+        }).catch((error) => {
+            // console.log( error);
+            Toast.show({
+                type: 'error',
+                text1: error.message,
+                visibilityTime: 1000,
+                autoHide: true
+            });
+            result = false;
+
+            return result;
         })
 
         return result;
