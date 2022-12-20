@@ -13,7 +13,7 @@ const securityDialogHeaderInfo : any = {
             {iconName : "CommonCloseBtn", visibility: true},
         ],
         rightDialogBtn: [
-            {iconName: "CommonSaveBtn", visibility: true}
+            {iconName: "CommonSaveBtn", visibility: true},
         ],
     },
     'headerDataInfo': {
@@ -43,40 +43,23 @@ export const SecurityDialog = () => {
                      :
                         ['암호','암호 확인'];
 
-    const changeSettingMode = ( typeNM: any) => {
-        if( typeNM === 'change'){
-            securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = typeNM;
-            setValue( typeNM);
-        } else if( typeNM === 'unSetting'){
-            securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = typeNM;
-            setValue( typeNM);
-        } else {
-            securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = 'setting';
-            setValue( 'setting');
-        }
-    };
-
     useEffect(() => {
         if( selectedTargetState && selectedTargetState.selectedTarget.security_key) { 
-            if(( password.previousPW !== '' && password.currentPW !== '' && password.doubleChkPW !== '' ) 
-                && password.previousPW !== password.currentPW && password.currentPW === password.doubleChkPW
-            ) {
+            if( password.previousPW !== '' && password.currentPW === '' && password.doubleChkPW === '') { 
                 securityDialogHeaderInfo.headerDataInfo.currErrorStatus = true;
                 securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = value;
+
             } else {
-                securityDialogHeaderInfo.headerDataInfo.currErrorStatus = false;
-                securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = null;
+                securityDialogHeaderInfo.headerDataInfo.currErrorStatus = (password.previousPW !== '' && password.currentPW !== '' && password.doubleChkPW !== '' ) &&
+                    (password.previousPW !== password.currentPW && password.currentPW === password.doubleChkPW) ? true : false ;
+
+                securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = (password.previousPW !== '' && password.currentPW !== '' && password.doubleChkPW !== '' ) &&
+                    (password.previousPW !== password.currentPW && password.currentPW === password.doubleChkPW) ? value : null;
             }
+
         } else {
-            if(( password.currentPW !== '' && password.currentPW !== '') 
-                && password.currentPW === password.doubleChkPW
-            ) {
-                securityDialogHeaderInfo.headerDataInfo.currErrorStatus = true;
-                securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = value;
-            } else {
-                securityDialogHeaderInfo.headerDataInfo.currErrorStatus = false;
-                securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = null;
-            }
+            securityDialogHeaderInfo.headerDataInfo.currErrorStatus = (password.currentPW !== '' && password.currentPW !== '') && password.currentPW === password.doubleChkPW ? true : false ;
+            securityDialogHeaderInfo.headerDataInfo.currSelectedStatus = (password.currentPW !== '' && password.currentPW !== '') && password.currentPW === password.doubleChkPW ? value : null ;
         }
 
     }, [ password.previousPW, password.currentPW, password.doubleChkPW]);
@@ -101,10 +84,10 @@ export const SecurityDialog = () => {
                     <RadioButton.Group onValueChange={ newValue => setValue( newValue)} value={ value}>
                         <View style={ sctyDialogStyle.sctyMenuRow}>
                             <Text>문서보안설정</Text>
-                            { radioBtnValues.map( (value, index) => {
+                            { radioBtnValues.map( value => {
                                 return (
                                     <View key={ value.value} style={{ flexDirection:'row', alignItems:'center', marginLeft:10}}>
-                                        <RadioButton value={ value.value} status= "checked" onPress={ changeSettingMode.bind( this, value.value)}/>
+                                        <RadioButton value={ value.value} status= "checked"/>
                                         <Text>{ value.text}</Text>
                                     </View>
                                 )
@@ -133,7 +116,7 @@ export const SecurityDialog = () => {
                                             style={ sctyDialogStyle.textInput}
                                             secureTextEntry
                                             placeholder={ txt}
-                                            right={<TextInput.Icon icon="eye" />}
+                                            right={ <TextInput.Icon icon="eye" />}
                                             disabled={ value === 'unSetting' && ( txt === '새 암호' || txt === '새 암호 확인')}
                                         />
                                         {( password.previousPW !== '' || password.currentPW !== '' || password.doubleChkPW !== '' ) &&
@@ -141,16 +124,16 @@ export const SecurityDialog = () => {
                                                 {( password.previousPW !== '' && password.previousPW.length < 4 && txt === '현재 암호') &&
                                                     <Text style={{ fontSize:12, color:'red'}}>※ 4자 이상 20자 이하로 입력해주세요.</Text>
                                                 }
-                                                {( password.currentPW !== '' && password.currentPW.length < 4 && txt === '새 암호') &&
+                                                {( password.currentPW !== '' && password.currentPW.length < 4 && value !== 'unSetting' && txt === '새 암호') &&
                                                     <Text style={{ fontSize:12, color:'red'}}>※ 4자 이상 20자 이하로 입력해주세요.</Text>
                                                 }
-                                                {( password.doubleChkPW !== '' && password.doubleChkPW.length < 4 && txt === '새 암호 확인') &&
+                                                {( password.doubleChkPW !== '' && password.doubleChkPW.length < 4 && value !== 'unSetting' && txt === '새 암호 확인') &&
                                                     <Text style={{ fontSize:12, color:'red'}}>※ 4자 이상 20자 이하로 입력해주세요.</Text>
                                                 }
-                                                { password.previousPW !== '' && password.currentPW !== '' && txt === '새 암호' && password.previousPW === password.currentPW && 
+                                                { password.previousPW !== '' && password.currentPW !== '' && value !== 'unSetting' && txt === '새 암호' && password.previousPW === password.currentPW && 
                                                     <Text style={{ fontSize:12, color:'red'}}>※ 현재암호와 동일한 암호는 사용하실 수 없습니다.</Text>
                                                 } 
-                                                { password.currentPW !== '' && password.doubleChkPW !== '' && txt === '새 암호 확인' && password.currentPW !== password.doubleChkPW && 
+                                                { password.currentPW !== '' && password.doubleChkPW !== '' && value !== 'unSetting' && txt === '새 암호 확인' && password.currentPW !== password.doubleChkPW && 
                                                     <Text style={{ fontSize:12, color:'red'}}>※ 새 암호와 일치하지 않습니다.</Text>
                                                 } 
                                             </View>

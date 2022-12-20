@@ -236,12 +236,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                 <View>
                     {
                         headerMenuInfo.rightDialogBtn.map(( btnInfo: any) => {
-                            if( contextName === 'SecurityDialog' && headerDataInfos.currErrorStatus) {
-                                <View>
-                                    <SvgIcon name = { btnInfo.iconName} width={20} height={20}/>
-                                </View>
-                            }
-                            else if( btnInfo.visibility){
+                            if( btnInfo.visibility){
                                 return(
                                     <TouchableOpacity key={ btnInfo.iconName} onPress={ onClickRightBtn.bind( this, 'dialog')}>
                                         <View>
