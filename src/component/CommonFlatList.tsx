@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext, useMemo} from 'react';
+import React, { useCallback, useContext, useMemo} from 'react';
 import { View, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import CardListItem from '../list/CardListItem';
 import DefaultListItem from '../list/DefaultListItem';
@@ -126,7 +126,7 @@ const CommonFlatList = ( props: FlatListProps) => {
             :
                 strFolderSeq ? strFolderSeq+"||FO" : strDocSeq+"||DO";
 
-            resultData = bFavorite ? CommonFnUtil.setFavorite( data.item.doc_type === '0', objFavoriteInfo) : CommonFnUtil.setUnFavorite( objFavoriteInfo);       
+            resultData = bFavorite ? await CommonFnUtil.setFavorite( data.item.doc_type === '0', objFavoriteInfo) : await CommonFnUtil.setUnFavorite( objFavoriteInfo);       
     
             setTimeout(() => {
                 setSwipeItem({

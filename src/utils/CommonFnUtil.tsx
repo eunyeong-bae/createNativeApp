@@ -13,15 +13,16 @@ export default class CommonFnUtil{
 
         const isFolder = docData.doc_type === '0';
         const protocolId = isFolder ? 'P624' : 'P619';
+        const folderID = fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1] === "" ? '1aF1Fe5FF866' : fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1];
         const dataInfo = isFolder ? 
             {
                 "folder_no": docData.docUID,
-                "new_folder_no": fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1],
+                "new_folder_no": folderID,
             }
         :
             {
                 "docUID": docData.docUID,
-                "folder_id": fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1],
+                "folder_id": folderID,
             };
         
         const data = {
@@ -33,8 +34,8 @@ export default class CommonFnUtil{
 
         await Adapter.fetch.protocol( data)
          .then( res => {
-            if( res && res.list) {
-                moveDocumentFolder = res.list;
+            if( res && ( res.list || res.result)) {
+                moveDocumentFolder = isFolder ? res.result : res.list;
 
                 Toast.show({
                     type:'success',

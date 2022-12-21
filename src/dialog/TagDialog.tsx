@@ -39,22 +39,22 @@ export const TagDialog = () => {
     let _tagDataLists: any = [];
     
     useLayoutEffect(() => {
-        _tagDataLists = CommonFnUtil.getTagData( selectedTargetState.selectedTarget.docUID);
-
-        setTimeout(() => {
-            if( _tagDataLists && _tagDataLists._W){
-                let result : any = [];
-
-                for(let i=0; i < _tagDataLists._W.length; i++) { 
-                    result.push( _tagDataLists._W[i].name);
+        ( async() => {
+            _tagDataLists = await CommonFnUtil.getTagData( selectedTargetState.selectedTarget.docUID);
+            
+            setTimeout(() => {
+                if( _tagDataLists){
+                    let result : any = [];
+    
+                    for(let i=0; i < _tagDataLists.length; i++) { 
+                        result.push( _tagDataLists[i].name);
+                    }
+                    _tagDataLists = result.join(', ');
+    
+                    setIsTagDataLists( _tagDataLists);
                 }
-
-                _tagDataLists = result.join(', ');
-
-                setIsTagDataLists( _tagDataLists);
-            }
-
-        }, 1000);
+            }, 1000);
+        })();
     });
 
     return useMemo(() => (

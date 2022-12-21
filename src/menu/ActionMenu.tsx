@@ -294,7 +294,7 @@ const ActionMenu = () => {
                     const docUID = selectedTargetState.selectedTarget.docUID;
                     const isReadOnly = !selectedTargetState.selectedTarget.readonly ? 1 : 0;
     
-                    const result = CommonFnUtil.setReadOnly( docUID, isReadOnly);
+                    const result = await CommonFnUtil.setReadOnly( docUID, isReadOnly);
                     
                     setTimeout(() =>{
                         setSwipeItem({
