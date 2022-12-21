@@ -1,5 +1,5 @@
 import { CommonContext } from '../context/CommonContext';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View , Text, StyleSheet} from 'react-native';
 import Dialog from 'react-native-dialog';
 import CommonFnUtil from '../utils/CommonFnUtil';
@@ -18,11 +18,11 @@ const AlertDialog = () => {
 
     const onClickCancel = () => {
         // if( CommonUtil.strIsNull( alertDialogState.alertName)){
-            setAlertDialog( '', null);
         // }
+        setAlertDialog( '', null);
     };
 
-    const onClickConfirm = () => {
+    const onClickConfirm = async() => {
         let resultData : any = null;
 
         if( CommonUtil.strIsNull( inputVal) && ( inputVal === (selectedTargetState && selectedTargetState.selectedTarget.doc_name)
@@ -38,15 +38,15 @@ const AlertDialog = () => {
         else {
             switch( alertDialogState.alertItem.menuNM) { 
                 case 'rename':
-                    resultData = CommonFnUtil.updateDocumentFolderName( inputVal, selectedTargetState.selectedTarget);
+                    resultData = await CommonFnUtil.updateDocumentFolderName( inputVal, selectedTargetState.selectedTarget);
                     break;
                 case 'newFolder':
-                    resultData = CommonFnUtil.createNewFolder( inputVal, alertDialogState.alertItem.folderId);
+                    resultData = await CommonFnUtil.createNewFolder( inputVal, alertDialogState.alertItem.folderId);
                     break;
                 case 'newDocument':
                     break;
                 case 'addCategory':
-                    resultData = CommonFnUtil.createCategory( inputVal, categoryUid);
+                    resultData = await CommonFnUtil.createCategory( inputVal, categoryUid);
                     break;
             
             }
@@ -55,27 +55,28 @@ const AlertDialog = () => {
                     if( alertDialogState.alertItem.menuNM === 'rename') {
                         selectedTargetState.selectedTarget.doc_name = inputVal;
                     }
-                }
-                else if( alertDialogState.alertItem.menuNM === 'addCategory') {
-                    const { isCategoryLists, setIsCategoryLists } = alertDialogState.alertItem;
-                    const pushArr = { name: resultData.name, uid: resultData.uid, parentUID: resultData.parentUID};
-                    setIsCategoryLists([
-                        ...isCategoryLists,
-                        pushArr
-                    ]);
+                    else if( alertDialogState.alertItem.menuNM === 'addCategory') {
+                        const { isCategoryLists, setIsCategoryLists } = alertDialogState.alertItem;
+                        const pushArr = { name: resultData.name, uid: resultData.uid, parentUID: resultData.parentUID};
+                       
+                        setIsCategoryLists([
+                            ...isCategoryLists,
+                            pushArr
+                        ]);
+                    }
                 }
                 else {
                     return;
                 }
+
                 setAlertDialog( '', null);
 
             }, 500);
         }
-
         setInputVal( '');
     };
 
-    const onClickDeleteConfirm = ( menuNM: any) => {
+    const onClickDeleteConfirm = async( menuNM: any) => {
         //여러개 선택한 케이스도 나중에 구현 필요 ( 다중선택)
         let docType : boolean = false;
         let docUID : any = '';
@@ -101,16 +102,16 @@ const AlertDialog = () => {
                     data : docType ? {"folder_no":folderUID} : {"docUID":docUID},
                 };
                 
-                resData = CommonFnUtil.deleteFile( data);
+                resData = await CommonFnUtil.deleteFile( data);
                 break;
             case 'deleteInTrash':
-                resData = CommonFnUtil.deleteTrashDocument( docUID, folderUID);
+                resData = await CommonFnUtil.deleteTrashDocument( docUID, folderUID);
                 break;
             case 'empty':
-                resData = CommonFnUtil.emptyTrash();
+                resData = await CommonFnUtil.emptyTrash();
                 break;
             case 'restore':
-                resData = CommonFnUtil.recoverTrashDocument( docUID, folderUID);
+                resData = await CommonFnUtil.recoverTrashDocument( docUID, folderUID);
                 break;
         }
 
@@ -144,7 +145,6 @@ const AlertDialog = () => {
             { alertDialogState && alertDialogState.alertName === 'alert' && alertDialogState.alertItem.alertType === 'Trash' &&
                 <Dialog.Container contentStyle={ style.container} footerStyle={{ backgroundColor:'#e5edf7'}} visible={true}>
                     <Dialog.Title>알림</Dialog.Title>
-
                     { alertDialogState.alertItem.menuNM === 'deleteFile' ?
                         <View style={ style.deleteContainer}>
                             <Dialog.Description style={{ padding:5, fontSize:14, marginBottom:5}}>{ alertDialogState.alertItem.description[0]}</Dialog.Description>
@@ -174,10 +174,8 @@ const AlertDialog = () => {
                             }
                         </View>
                     }
-
                     <Dialog.Button label="취소" onPress={ onClickCancel}/>
                     <Dialog.Button label="확인" onPress={ onClickDeleteConfirm.bind( this, alertDialogState.alertItem.menuNM)}/>
-
                 </Dialog.Container>
             }
         

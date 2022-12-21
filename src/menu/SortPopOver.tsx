@@ -88,17 +88,13 @@ const SortPopOver = (props: any) => {
                 { sortMenuState.contextName !== 'Home' &&
                     <>
                         <TouchableOpacity onPress={ () => onClickSortTItle('S')}>
-                            <View> 
-                                {/*  style={{ flexDirection: 'row'}
-                                <Text style={{ lineHeight: 22, paddingRight: 4}}>{ActionMenuName.get(CommonUtil.strIsNull(sortMenuState.selectedValue) ? '1' : sortMenuState.selectedValue.sortItem)}</Text>
-                                <SvgIcon name={ showPopover && sortType === 'S' ? "DocSortArrowBtn" : "DocSortArrowBtn"} width={20} height={20}/> */}
+                            <View>
                                 <SvgIcon name = "sortMenu" width={17} height={17}/>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={ () => onClickSortTItle('F')}>
                             <View>
                                 <SvgIcon name = "AllDocTypeIcon" width={17} height={17}/>
-                                {/* <Text style={{ lineHeight: 22, paddingRight: 4}}>{ActionMenuName.get(CommonUtil.strIsNull(sortMenuState.selectedValue) ? '' : sortMenuState.selectedValue.fileTypes)}</Text> */}
                             </View>
                         </TouchableOpacity>
                     </>

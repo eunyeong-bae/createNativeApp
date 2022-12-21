@@ -21,10 +21,6 @@ interface CommonHeaderInfo {
     ViewModeCheck?: any // 문서 보기 모드 ( 리스트/썸넬)
 }
 
-// const callFunctions = new Map()
-//     .set('MoveDialog', CommonFnUtil.moveDocumentFolder)
-//     .set('CopyDialog', CommonFnUtil.copyDocument)
-
 const CommonHeader = ( props: CommonHeaderInfo) => {
     const { headerName, 
             multiSelectedState, 
@@ -32,15 +28,12 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
             contextName, 
             sortMenu, 
             ViewModeCheck, 
-            setMultiSelected, 
             headerDataInfo, 
-            navigation, 
-            fullpath, 
-            setFullpath} = props;
+            setFullpath } = props;
 
     const { centerDialogState, 
             setCenterDialog, 
-            selectedTargetState} = useContext(CommonContext);
+            selectedTargetState } = useContext(CommonContext);
 
     const [ headerDataInfos, password] = contextName === 'SecurityDialog' ? headerDataInfo : [];
 
@@ -58,7 +51,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
         }
     };
     
-    const onClickRightBtn = ( location: any) => { // 아이콘 이벤트
+    const onClickRightBtn = async( location: any) => { // 아이콘 이벤트
         let resultData:any = null;
 
         if( location === 'dialog') {
@@ -66,8 +59,8 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                 case 'MoveDialog':
                 case 'CopyDialog':
                     resultData = centerDialogState.dialogName === 'MoveDialog' 
-                                ? CommonFnUtil.moveDocumentFolder( selectedTargetState.selectedTarget, props)
-                                : CommonFnUtil.copyDocument( selectedTargetState.selectedTarget, props);
+                                ? await CommonFnUtil.moveDocumentFolder( selectedTargetState.selectedTarget, props)
+                                : await CommonFnUtil.copyDocument( selectedTargetState.selectedTarget, props);
 
                     setTimeout(() => {
                         if( resultData) {
@@ -76,11 +69,11 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                         }
                     }, 300);
                     break; 
+
                 case 'TagDialog':
                     const tagLists = onTagValueErrorChk( headerDataInfo);
-
                     if( tagLists) { 
-                        resultData = CommonFnUtil.updateTag( selectedTargetState.selectedTarget.docUID, tagLists);
+                        resultData = await CommonFnUtil.updateTag( selectedTargetState.selectedTarget.docUID, tagLists);
                     }
 
                     setTimeout(() => {
@@ -96,11 +89,12 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                             case 'change':
                             case 'unSetting':
                                 const nSettingType = headerDataInfos.currSelectedStatus === 'change' ? 1 : 2;
-                                resultData = CommonFnUtil.setSecurityPassword( selectedTargetState.selectedTarget.docUID, selectedTargetState.selectedTarget.folder_no,
+                                resultData = await CommonFnUtil.setSecurityPassword( selectedTargetState.selectedTarget.docUID, selectedTargetState.selectedTarget.folder_no,
                                     nSettingType, password.previousPW, password.currentPW);
                                 break;
+
                             case 'setting':
-                                resultData = CommonFnUtil.setSecurityPassword( selectedTargetState.selectedTarget.docUID, selectedTargetState.selectedTarget.folder_no,
+                                resultData = await CommonFnUtil.setSecurityPassword( selectedTargetState.selectedTarget.docUID, selectedTargetState.selectedTarget.folder_no,
                                         0, password.currentPW, password.doubleChkPW);
                                 break;
                             default:
@@ -115,14 +109,11 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                 default:
                     return;
             }
-
-        } else{
-
         }
     };
 
     const fnCallback = ( resMsg: any) => {
-        if( !resMsg._W){
+        if( !resMsg){
             return;
         }
         else { 
