@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from 'react';
+import React, { useContext, useState, useEffect, useMemo, useRef } from 'react';
 import { View, Text, SafeAreaView, TextInput} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
@@ -94,7 +94,7 @@ const MyDoc = ( props : any) => {
             setDataList({ ...reqListData, pageNum: 1, sortItem:sortMenuState.selectedValue.sortItem, fileTypes:sortMenuState.selectedValue.fileTypes, sortOrder: sortMenuState.selectedValue.sortOrder, dataList: []});
             // flatListRef.current?.scrollToOffset({ animated: false, offset: 0 }); //스크롤 초기화
         }
-    }, [ sortMenuState]);
+    }, [ sortMenuState.selectedValue]);
 
     useEffect(() => {
         // && reqListData.dataList && reqListData.dataList.length > 0
@@ -111,7 +111,7 @@ const MyDoc = ( props : any) => {
             setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
             // flatListRef.current.yScrollOffset = 0;
         }
-    }, [ centerDialogState]);
+    }, [ centerDialogState.dialogName]);
 
     useEffect(() => {
         //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
@@ -121,7 +121,7 @@ const MyDoc = ( props : any) => {
             setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
             // flatListRef.current.yScrollOffset = 0;
         }
-    }, [ alertDialogState]);
+    }, [ alertDialogState.alertName]);
 
     useEffect(() => {
         //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
@@ -139,9 +139,9 @@ const MyDoc = ( props : any) => {
         }
     }, [ actionMenuState]);
 
-    const ViewModeCheck = useCallback(() => {
+    const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
-    }, [ listViewMode]);
+    };
 
     const onEndReached = async() => {
         if( isLoading) {

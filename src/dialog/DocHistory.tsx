@@ -3,7 +3,6 @@ import { View, ScrollView} from 'react-native';
 import { dialogStyles} from './style/style';
 import CommonHeader from '../component/header/CommonHeader';
 import CommonAccordion from '../component/CommonAccordion';
-// import CommonCollapsible from '../component/CommonCollapsible';
 
 const CONTEXT_NAME = 'DocHistory';
 const copyDialogHeaderInfo : any = {

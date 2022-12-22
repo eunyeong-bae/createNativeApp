@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useMemo, useRef, useState } from 'react';
 import { View, TouchableOpacity, Text, ScrollView} from 'react-native';
 import { dialogStyles} from './style/style';
 import CommonUtil from '../../utils/CommonUtil';
@@ -39,7 +39,7 @@ const CommonDocBoxList = ( props : CommonDocBoxListProps) => {
     const { sortMenuState, setSortMenu, setTargetFullPath} = useContext( CommonContext);
 
     const scrollViewRef = useRef<ScrollView>(null);
-    const [scorllIndex,setScrollIndex] = useState(0);
+    // const [scorllIndex,setScrollIndex] = useState(0);
 
     // useEffect(() => {
     //     console.log('test');

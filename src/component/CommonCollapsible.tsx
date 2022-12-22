@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Adapter from '../ecmadapter';
@@ -81,7 +81,7 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
   const hiddenItemEvent = ( menuName: any, item: any) => {
   };
 
-  const renderHeader = useCallback(( category: any) => {
+  const renderHeader = ( category: any) => {
     return (
       <View style={[ collapsibleStyles.titleContainerStyle, isActiveCategory && collapsibleStyles.titleOn ]}>
         <Text style={ collapsibleStyles.textStyle}>{ category.title}</Text>
@@ -90,7 +90,7 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
         </View>
       </View>
     );
-  }, [ isActiveCategory]);
+  };
 
   const renderItem = ( data: any) => {
     return (
@@ -139,7 +139,7 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
   
   const keyExtractor = useCallback((item : any, index : any) => item.uid + index, []);
 
-  const renderContent = useCallback(( category: any) => {
+  const renderContent = ( category: any) => {
     return (
       isActiveCategory ?
         <View style={ collapsibleStyles.contentContainerStyle}>
@@ -157,13 +157,13 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
       : 
         null
     );
-  }, [ isActiveCategory]);
+  };
 
   const updateSections = () => {
     setIsActiveCategory( !isActiveCategory);
   };
   
-  return (
+  return useMemo(() => (
     <View style={ [collapsibleStyles.mainContainerStyle, isActiveCategory && collapsibleStyles.isActive]}>
       <Accordion
           activeSections={[0]}
@@ -173,7 +173,7 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
           onChange={ updateSections}
       />
     </View>
-  )
+  ), [ isActiveCategory]);
 };
 
 export default CommonCollapsible;

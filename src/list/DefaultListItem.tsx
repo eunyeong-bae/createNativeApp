@@ -87,13 +87,6 @@ const DefaultListItem = ( props:any) => {
                                     : <Text style={ MyDocListViewStyles.text}> { props.data.creatorName} {'|'} { props.data.delete_date}</Text>
                                 }
                            </View>
-                           {/* { sortMenuState && sortMenuState.contextName !== 'TrashDoc' 
-                               ? <Text style={ MyDocListViewStyles.text}>{ props.data.mod_name} {'|'} { props.data.mod_date.split(' ')[0]}</Text>
-                               : <Text style={ MyDocListViewStyles.text}>{ actionMenuState.isActionMenu ? props.data.mod_name: props.data.creatorName} {'|'} 
-                                   { actionMenuState.isActionMenu ? props.data.mod_date.split(' ')[0] : props.data.delete_date.split(' ')[0]}</Text>
-                           }
-                           휴지통 조회한 데이터와 더보기메뉴 클릭시, 현재 선택한 문서 정보 리스트가 달라서 생긴 이슈  
-                           */}
                        </View>
                    </View>
                </TouchableOpacity>
@@ -113,9 +106,3 @@ const DefaultListItem = ( props:any) => {
 } 
 
 export default DefaultListItem;
-
-{/**
-    source = uri = '' // 서버에서 받은 이미지 적용
-    source = '' // 로컬 파일 이미지 적용
-    
-*/}

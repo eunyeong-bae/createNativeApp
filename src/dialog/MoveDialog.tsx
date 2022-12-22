@@ -48,7 +48,6 @@ export const MoveDialog = () => {
     });   //이동 폴더 path 상태 관리
 
     const setFullpath = useCallback(( fullPathUIDs : any, fullPathNames : any, treeTypes : any) : void => {
-        console.log(fullPathUIDs)
         setFullPath({...fullpath, fullPathUIDs, fullPathNames, treeTypes});
     },[ fullpath, setFullPath]);
 
