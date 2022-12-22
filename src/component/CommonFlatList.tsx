@@ -45,7 +45,7 @@ const CommonFlatList = ( props: FlatListProps) => {
      *  따라서 renderItem, keyExtractor, 그리고 ListHeaderComponent 등의 속성을 구성할 때 useCallback을 사용하여 꼭 필요할 때만 업데이트 되도록 하는 것이 좋음
      */
     const keyExtractor = useCallback((item : any, index : any) => item.fileUID + index, []);
-    const renderListItem =  useCallback(( data : any) => {
+    const renderListItem =  ( data : any) => {
         if( listViewMode){
             return (
                 <CardListItem data={ data.item}
@@ -64,7 +64,7 @@ const CommonFlatList = ( props: FlatListProps) => {
                 />
             )
         }
-    }, [ listViewMode, reqListData.dataList]);
+    };
 
     const dialogRenderListItem = ( data: any) => {
         return (
@@ -207,7 +207,7 @@ const CommonFlatList = ( props: FlatListProps) => {
                 />
         }
         </>
-    ), [ reqListData.dataList]);
+    ), [ reqListData.dataList, listViewMode]);
 };
 
 const styles = StyleSheet.create({

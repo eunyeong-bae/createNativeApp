@@ -111,13 +111,6 @@ const ActionMenu = () => {
         searchClickMenu();
     }, [ menus]);
 
-    const hiddenActionMenu = () => {
-        //현재 스크롤 위치만 top(0,0) 으로 잡아주면 됌
-        setIsActionMenu( false, null);
-        
-        actionSheetRef.current.hide();
-    };
-
     const searchClickMenu = () => {
 
         if( sortMenuState.contextName !== 'TrashDoc'){
@@ -132,7 +125,14 @@ const ActionMenu = () => {
                                     ? folderMoreMenus 
                                     : ( menus.length === 0 ? moreMenus : menus)
         ));
-    }
+    };
+
+    const hiddenActionMenu = () => {
+        //현재 스크롤 위치만 top(0,0) 으로 잡아주면 됌
+        setIsActionMenu( false, null);
+        
+        actionSheetRef.current.hide();
+    };
 
     // const renderMoreMenu = ( clickMenu:any) => {
     //     let options:any = [];
@@ -321,7 +321,6 @@ const ActionMenu = () => {
 
                 setOptions( []);
                 hiddenActionMenu();
-
                 break;
 
             default:
@@ -362,7 +361,7 @@ const ActionMenu = () => {
 
             hiddenActionMenu();
         }
-    }
+    };
 
     return useMemo(() => (
         <>

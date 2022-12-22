@@ -1,25 +1,15 @@
 import { CommonContext } from '../context/CommonContext';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import Popover, {PopoverMode} from 'react-native-popover-view';
-import {TouchableOpacity, Text, ScrollView, View, Dimensions} from 'react-native';
+import {TouchableOpacity, Text, ScrollView, View} from 'react-native';
 import SvgIcon from '../component/svgIcon/SvgIcon';
 import CommonUtil from '../utils/CommonUtil';
 import {sortMenuStyleSheet} from '../menu/style/style';
-
-// const ActionMenuName = new Map()
-//     .set('1','문서 제목')
-//     .set('2','최종 수정 날짜')
-//     .set('7','최근 조회 문서')
-//     .set('O','ONEFFICE')
-//     .set('S','ONE SLIDE')
-//     .set('','모든 문서 타입')
 
 const docSortMenu : any = [
     {name:'모든 문서 타입', value:''},
     {name:'ONEFFICE', value:'O'},
     {name:'ONE SLIDE', value:'S'}
-    // {name:'ONEFFICE 문서', value:'O'},
-    // {name:'ONEFFICE 프레젠테이션', value:'S'}
 ];
 
 const moreMenus: any = [
@@ -27,7 +17,7 @@ const moreMenus: any = [
     {name:'리스트 보기', iconName:'DocListViewBtn', value:'listView', visibility: false},
     {name:'전체삭제', value:'trash', visibility: false},
     {name:'이동', value:'move', visibility: false},
-]
+];
 
 const SortPopOver = (props: any) => {
     const { sortMenuState, setSortMenu} = useContext( CommonContext);
@@ -82,7 +72,7 @@ const SortPopOver = (props: any) => {
         setSortMenu( sortMenuState.contextName, { sortItem:sortItem, fileTypes:fileTypes, sortOrder:sortOrder}, sortMenuState.sortMenuInfo);
     }
 
-    const renderPopOverTitle = useCallback(() => {
+    const renderPopOverTitle = useMemo(() => {
         return (
             <View style={{width: sortMenuState.contextName !== 'Home' ? 90 : 30, flexDirection:'row', justifyContent:'space-between', alignItems:'center', height:40}}>
                 { sortMenuState.contextName !== 'Home' &&
@@ -128,7 +118,7 @@ const SortPopOver = (props: any) => {
         )
     }
 
-    return (
+    return useMemo(() => (
         <>
             <Popover
                 mode={ PopoverMode.RN_MODAL}
@@ -142,19 +132,6 @@ const SortPopOver = (props: any) => {
                 { (!CommonUtil.objectIsNull( sortType === 'F' ? docSortMenu : sortType === 'S' ? sortMenuState.sortMenuInfo : moreMenus) && showPopover) &&
                     <ScrollView style={{ maxHeight: 244}}>
                         <View style={[ sortMenuStyleSheet.sortItemContainer]}>
-                            {/* {
-                                 sortMenuState.sortMenuInfo.map(( sortMenu : any) => {
-                                    return( renderPopoverItem( sortMenu))
-                                })
-                            } */}
-                            {/* { sortType === 'F' 
-                                ? docSortMenu.map(( docType : any) => {
-                                    return( renderPopoverItem( docType))
-                                }) 
-                                : sortMenuState.sortMenuInfo.map(( sortMenu : any) => {
-                                    return( renderPopoverItem( sortMenu))
-                                })
-                            } */}
                             { selectMenu.length > 0 &&
                                 <>
                                     { selectMenu.map(( menu : any) => {
@@ -168,7 +145,7 @@ const SortPopOver = (props: any) => {
                 }
             </Popover>
         </>
-    );
+    ), [ showPopover]);
 }
 
 export default SortPopOver;

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from 'react';
+import React, { useContext, useState, useEffect, useMemo, useRef } from 'react';
 import { View, Text, SafeAreaView, TextInput} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
@@ -141,9 +141,9 @@ const ShareDoc = ( props : any) => {
         }
     }, [ actionMenuState]);
 
-    const ViewModeCheck = useCallback(() => {
+    const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
-    }, [ listViewMode]);
+    };
 
     const onEndReached = async() => {
         if( isLoading) {

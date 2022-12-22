@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from 'react';
+import React, { useContext, useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { View, Text, SafeAreaView} from 'react-native';
 import { CommonHeader} from '../component/header/index';
 import CommonDocBoxList from '../component/docBoxList/CommonDocBoxList';
@@ -91,9 +91,9 @@ const TrashDoc = ( props : any) => {
         }
     }, [ alertDialogState.alertName]);
 
-    const ViewModeCheck = useCallback(() => {
+    const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
-    }, [ listViewMode]);
+    };
 
     const onEndReached = useCallback(() => async() => {
         if( isLoading) {
