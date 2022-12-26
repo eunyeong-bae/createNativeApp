@@ -241,7 +241,7 @@ const ActionMenu = () => {
 
         switch( naviVal[0]) {
             case 'newWindow':
-                setCenterDialog( naviVal[1], null);
+                setCenterDialog( naviVal[1], null, false);
                 setOptions( []);
                 
                 hiddenActionMenu();
@@ -276,12 +276,12 @@ const ActionMenu = () => {
                 hiddenActionMenu();
 
                 setTimeout(() => {
-                    setAlertDialog( alertName, alertItem);
+                    setAlertDialog( alertName, alertItem, false);
                 },500)
                 break;
 
             case "dialog":
-                setCenterDialog( naviVal[1] === 'docInfo' ? 'DocInfoDialog': 'DocHistory',null);
+                setCenterDialog( naviVal[1] === 'docInfo' ? 'DocInfoDialog': 'DocHistory',null, false);
     
                 setOptions( []);
                 setNextActionMenu( '');

@@ -24,7 +24,7 @@ const FloatingMenu = ( props: FloatingMenuProps) => {
 
         switch( type) { 
             case 'folder':
-                setAlertDialog( 'inputAlert', { title: '새 폴더 추가', menuNM: 'newFolder', folderId: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1]});
+                setAlertDialog( 'inputAlert', { title: '새 폴더 추가', menuNM: 'newFolder', folderId: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1]}, false);
                 break;
             case 'doc':
                 alert('clickced')

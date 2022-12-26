@@ -45,7 +45,7 @@ const CommonFlatList = ( props: FlatListProps) => {
      *  따라서 renderItem, keyExtractor, 그리고 ListHeaderComponent 등의 속성을 구성할 때 useCallback을 사용하여 꼭 필요할 때만 업데이트 되도록 하는 것이 좋음
      */
     const keyExtractor = useCallback((item : any, index : any) => item.fileUID + index, []);
-    const renderListItem =  ( data : any) => {
+    const renderListItem =  useCallback(( data : any) => {
         if( listViewMode){
             return (
                 <CardListItem data={ data.item}
@@ -64,9 +64,9 @@ const CommonFlatList = ( props: FlatListProps) => {
                 />
             )
         }
-    };
+    }, [ reqListData]);
 
-    const dialogRenderListItem = ( data: any) => {
+    const dialogRenderListItem = useCallback(( data: any) => {
         return (
             <DefaultListItem data={ data.item}
                              key={ data.item.fileUID}
@@ -77,7 +77,7 @@ const CommonFlatList = ( props: FlatListProps) => {
                              setFullpath={ setFullpath}
             />
         )
-    };
+    }, [ reqListData]);
 
     const getContentTypeCtn = ( currentTarget: any) => {
         let responseData: any = null;
@@ -104,7 +104,6 @@ const CommonFlatList = ( props: FlatListProps) => {
     };
 
     const hiddenItemEvent = async ( menuNM : any, data: any) => {
-        console.log( data)
         const returnVal = await hiddenItemLists[menuNM].clickEvent();
         
         const bFavorite = !data.item.important;
@@ -146,9 +145,8 @@ const CommonFlatList = ( props: FlatListProps) => {
                 data: getContentTypeCtn( data.item),
             }; 
             
-            setAlertDialog( alertName, alertItem);
+            setAlertDialog( alertName, alertItem, false);
         }
-    
     };
 
     const renderHiddenItem = ( data : any) => {

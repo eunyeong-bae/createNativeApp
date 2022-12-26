@@ -16,7 +16,7 @@ const copyDialogHeaderInfo : any = {
 export const DocHistory = () => {
 
     return (
-        <View style={dialogStyles.container}>
+        <View style={ dialogStyles.container}>
             <CommonHeader 
                 headerName = { '문서이력'}
                 multiSelectedState = { null}

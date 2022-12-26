@@ -123,7 +123,7 @@ const CommonCollapsible = ( props: FavoriteDocProps) => {
       isCategoryLists, 
       setIsCategoryLists
     }; 
-    setAlertDialog( alertName, alertItem);
+    setAlertDialog( alertName, alertItem, false);
   };
 
   const renderListHeaderItem = () => {

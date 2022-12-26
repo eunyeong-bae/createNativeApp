@@ -106,7 +106,7 @@ const FavoriteDoc = ( props : any) => {
     useEffect(() => {
         //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
         if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME &&
-            ( centerDialogState.dialogName === '' || alertDialogState.alertName === '' )) 
+            ( centerDialogState.isAction || alertDialogState.isAction)) 
         {
             setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
         }

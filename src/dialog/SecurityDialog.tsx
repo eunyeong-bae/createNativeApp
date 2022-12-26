@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RadioButton, Text, TextInput} from 'react-native-paper';
 import { dialogStyles} from './style/style';
@@ -64,7 +64,7 @@ export const SecurityDialog = () => {
 
     }, [ password.previousPW, password.currentPW, password.doubleChkPW]);
 
-    return (
+    return useMemo(() => (
         <View style={[ dialogStyles.container, { height: 500}]}>
             <CommonHeader 
                 headerName = { '보안설정'}
@@ -153,7 +153,7 @@ export const SecurityDialog = () => {
                                             placeholder={ txt}
                                             right={<TextInput.Icon icon="eye" />}
                                         />
-                                        { (password.currentPW !== '' || password.currentPW !== '' ) &&
+                                        {( password.currentPW !== '' || password.currentPW !== '' ) &&
                                             <View style={{ width:250, height:35, justifyContent:'center'}}>
                                                 {( password.currentPW !== '' && password.currentPW.length < 4 && txt === '암호') &&
                                                     <Text style={{ fontSize:12, color:'red'}}>※ 4자 이상 20자 이하로 입력해주세요.</Text>
@@ -180,7 +180,7 @@ export const SecurityDialog = () => {
             </View>
             <CommonDialogToast />
         </View>
-    )
+    ), [ password]);
 }
 
 const sctyDialogStyle = StyleSheet.create({
