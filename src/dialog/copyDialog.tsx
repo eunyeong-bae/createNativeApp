@@ -33,11 +33,10 @@ const copyDialogHeaderInfo : any = {
     }
 };
 
-
 export const CopyDialog = () => {
     const flatListRef = useRef<any>();
 
-    const { alertDialogState, selectedTargetState, centerDialogState} = useContext( CommonContext);
+    const { alertDialogState} = useContext( CommonContext);
     const [ isLoading, setLoading] = useState( false);
     const [ inputTxt, setInputTxt] = useState( null);
 
@@ -46,8 +45,9 @@ export const CopyDialog = () => {
         fullPathUIDs : [ ''],
         fullPathNames : [ '내 문서함'],
         treeTypes : []
-    });   //이동 폴더 path 상태 관리
-
+    });
+    
+    //이동 폴더 path 상태 관리
     const setFullpath = useCallback(( fullPathUIDs : any, fullPathNames : any, treeTypes : any) : void => {
         setFullPath({...fullpath, fullPathUIDs, fullPathNames, treeTypes});
     },[ fullpath, setFullPath]);
@@ -78,9 +78,10 @@ export const CopyDialog = () => {
     }, [ inputTxt]);
 
     useEffect(() => {
-        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
-        setDataList({...reqListData, folderSeq: fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1], pageNum:1, dataList: []});
-    }, [ alertDialogState.alertItem]);
+        if( alertDialogState.isAction){ //새폴더생성
+            setDataList({...reqListData, folderSeq: fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+        }
+    }, [ alertDialogState]);
 
     const onChangeText = ( text : any) => {
         setInputTxt( text);

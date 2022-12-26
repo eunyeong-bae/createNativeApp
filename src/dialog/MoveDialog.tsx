@@ -34,7 +34,7 @@ const moveDialogHeaderInfo : any = {
 };
 
 export const MoveDialog = () => {
-    const { alertDialogState, centerDialogState} = useContext( CommonContext);
+    const { alertDialogState} = useContext( CommonContext);
     const [ isLoading, setLoading] = useState( false);
     const [ DocBoxListType, setDocBoxListType] = useState( '');
 
@@ -80,9 +80,11 @@ export const MoveDialog = () => {
     }, [ DocBoxListType]);
 
     useEffect(() => {
-        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
-        setDataList({...reqListData, folderSeq: fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1], pageNum:1, dataList: []});
-    }, [ alertDialogState.alertItem]);
+        // Ex) 새 폴더 생성
+        if( alertDialogState.isAction){
+            setDataList({...reqListData, folderSeq: fullpath.fullPathUIDs[fullpath.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+        }
+    }, [ alertDialogState]);
 
     const onClickDocBox = ( listType : any) => {
         setDocBoxListType( listType);

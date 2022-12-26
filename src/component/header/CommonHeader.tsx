@@ -1,5 +1,5 @@
 import { CommonContext } from '../../context/CommonContext';
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import {TouchableOpacity, View, Text, Dimensions, StyleSheet} from 'react-native';
 import SvgIcon from '../../component/svgIcon/SvgIcon';
 import CommonUtil from '../../utils/CommonUtil';
@@ -40,10 +40,10 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
     const onClickLeftBtn = ( iconName: any) => { // 문서함 뒤로가기 or 팝업 닫기 버튼
         if( iconName === 'UserInfoICon') {
             // navigation.openDrawer();
-            setCenterDialog('UserInfoDialog', null);
+            setCenterDialog('UserInfoDialog', null, false);
             
         } else if( iconName === 'CommonCloseBtn') {            
-            setCenterDialog('', null);
+            setCenterDialog('', null, false);
 
             if( centerDialogState.dialogName === 'DocInfoDialog'){
                 headerDataInfo([]);
@@ -65,7 +65,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                     setTimeout(() => {
                         if( resultData) {
                             setFullpath({ fullPathUIDs : [ ''], fullPathNames : [ '내 문서함'], treeTypes : []});
-                            setCenterDialog( '', null);
+                            setCenterDialog( '', null, true);
                         }
                     }, 300);
                     break; 
@@ -78,7 +78,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
 
                     setTimeout(() => {
                         if( resultData) {
-                            setCenterDialog( '', null);
+                            setCenterDialog( '', null, true);
                         }
                     }, 300);
                     break;
@@ -118,7 +118,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
         }
         else { 
             //암호가 일치하지않음 다이얼로그 띄워주고, 포커스 넣기
-            setCenterDialog( '', null);
+            setCenterDialog( '', null, true);
         }
     };
 
@@ -176,7 +176,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
         return values;
     };
 
-    return (
+    return useMemo(() => (
         <View style={ CommonHeaderStyles.mainContainer}>
             <View style={[ (headerMenuInfo && headerMenuInfo.rightDialogBtn) && CommonHeaderStyles.rightBtnStyle, CommonHeaderStyles.MenuContainer]}>
                 {/* { (!CommonUtil.objectIsNull( headerMenuInfo) || !centerDialogState.dialogName) &&
@@ -266,7 +266,7 @@ const CommonHeader = ( props: CommonHeaderInfo) => {
                 </View>
             }
         </View>
-    )
+    ), [ headerMenuInfo]);
 }
 
 export default CommonHeader;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { View, Text, TouchableOpacity} from 'react-native';
 import { MyDocListViewStyles} from '../content/style/style';
 import SvgIcon from '../component/svgIcon/SvgIcon';
@@ -31,7 +31,7 @@ const CommonMovePath = ( props: MovePathProps) => {
     };
 
 
-    return (
+    return useMemo(() => (
         <TouchableOpacity onPress={ onClickFolderBack.bind( this, targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 2])}>
             <View style={[ MyDocListViewStyles.docListContainer, centerDialogState.dialogName !== '' && MyDocListViewStyles.dialogDocListCon]}>
                     <View style={ MyDocListViewStyles.docListStyle}>
@@ -44,7 +44,7 @@ const CommonMovePath = ( props: MovePathProps) => {
                     </View>
             </View>
         </TouchableOpacity>
-    )
+    ), [ targetFullPathState]);
 };
 
 export default CommonMovePath;

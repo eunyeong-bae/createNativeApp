@@ -83,30 +83,27 @@ const CommonDocBoxList = ( props : CommonDocBoxListProps) => {
     };
 
     return useMemo(() => (
-        <>
-            {/* {console.log(isActive)} */}
-            <View style={ dialogStyles.docBoxListContainer}>
-                <ScrollView horizontal={ true} showsHorizontalScrollIndicator={ false} ref={ scrollViewRef}>
-                { !CommonUtil.objectIsNull( DOCUMENT_BOX_LIST) ?
-                    DOCUMENT_BOX_LIST.map( list => {
-                        // { console.log( list)}
-                        return (
-                            <TouchableOpacity key={ list.title} onPress={ onClickDocBox.bind( this, list.title, list.name, list.navi)}>
-                                <View style={ dialogStyles.docBoxList}>
-                                    <SvgIcon name={ isActive[list.name] ? list.icon.ON :list.icon.OFF} width={16} height={16} />
-                                    <Text style={ sortMenuState.contextName === list.name ? dialogStyles.selectedTextStyle : dialogStyles.docBoxListText}>
-                                        { list.title}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        )
-                    })
-                    :
-                    null
-                }
-                </ScrollView>
-            </View>
-        </>
+        <View style={ dialogStyles.docBoxListContainer}>
+            <ScrollView horizontal={ true} showsHorizontalScrollIndicator={ false} ref={ scrollViewRef}>
+            { !CommonUtil.objectIsNull( DOCUMENT_BOX_LIST) ?
+                DOCUMENT_BOX_LIST.map( list => {
+                    // { console.log( list)}
+                    return (
+                        <TouchableOpacity key={ list.title} onPress={ onClickDocBox.bind( this, list.title, list.name, list.navi)}>
+                            <View style={ dialogStyles.docBoxList}>
+                                <SvgIcon name={ isActive[list.name] ? list.icon.ON :list.icon.OFF} width={16} height={16} />
+                                <Text style={ sortMenuState.contextName === list.name ? dialogStyles.selectedTextStyle : dialogStyles.docBoxListText}>
+                                    { list.title}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    )
+                })
+                :
+                null
+            }
+            </ScrollView>
+        </View>
     ), [ sortMenuState.contextName])
 };
 

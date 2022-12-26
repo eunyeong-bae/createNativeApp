@@ -19,11 +19,12 @@ const CommonContext = createContext<CommonContextType>({
     },
     centerDialogState : {
         dialogName : '',
-        dialogItem : null
+        dialogItem : null,
+        isAction: false,
     },
     rightDialogState : {
         dialogName : '',
-        dialogItem : null
+        dialogItem : null,
     },
     actionMenuState : {
         isActionMenu : false,
@@ -48,7 +49,8 @@ const CommonContext = createContext<CommonContextType>({
     },
     alertDialogState: {
         alertName : '',
-        alertItem : null
+        alertItem : null,
+        isAction: false,
     },
     swipeItemState: {
         setFavorite: false,
@@ -59,9 +61,9 @@ const CommonContext = createContext<CommonContextType>({
     setTargetFullPath : ( fullPathUIDs : [], fullPathNames : [], treeTypes : []) : void => {},
     setSelectedTarget : (selectedTarget : null, index : number) : void => {},
     setMultiSelected : ( selectedTarget : [], index : []) : void => {},
-    setCenterDialog : ( dialogName : string, dialogItem : any) : void => {},
+    setCenterDialog : ( dialogName : string, dialogItem : any, isAction: boolean) : void => {},
     setRightDialog : ( dialogName : string, dialogItem : any) : void => {},
-    setAlertDialog : ( alertName : string, alertItem : any) : void => {},
+    setAlertDialog : ( alertName : string, alertItem : any, isAction: boolean) : void => {},
     setSwipeItem : ( setFavorite: boolean, setReadOnly: boolean ) : void => {},
     // setIsActionMenu : ( isActionMenu : boolean, setIsActionMenu : any, contextName : '', navigation : any) : void => {},
     setIsActionMenu : ( isActionMenu: boolean, navigation:any ) : void => {},
@@ -74,9 +76,9 @@ const CommonProvider = ({children} : CommonProviderProps): JSX.Element => {
     const [targetFullPathState, setTargetFullPathState] = useState<TargetFullPathState>({ fullPathUIDs : [], fullPathNames : [], treeTypes : []});
     const [selectedTargetState, setSelectedTargetState] = useState<SelectedTargetState>({ selectedTarget : null, index : -1});
     const [multiSelectedState, setMultiSelectedState] = useState<MultiSelectedState>({ selectedTargets : [], indexs : []});
-    const [centerDialogState, setCenterDialogState] = useState<CenterDialogState>({ dialogName : '', dialogItem : null});
+    const [centerDialogState, setCenterDialogState] = useState<CenterDialogState>({ dialogName : '', dialogItem : null, isAction: false});
     const [rightDialogState, setRightDialogState] = useState<RightDialogState>({ dialogName : '', dialogItem : null});
-    const [alertDialogState, setAlertDialogState] = useState<AlertDialogState>({ alertName : '', alertItem : null});
+    const [alertDialogState, setAlertDialogState] = useState<AlertDialogState>({ alertName : '', alertItem : null, isAction: false,});
     const [swipeItemState, setSwipeItemState] = useState<SwipeFuncState>({ setFavorite: false, setReadOnly: false });
     // const [actionMenuState, setIsActionMenuState] = useState<ActionMenuState>({ isActionMenu : false, setIsActionMenu : null, contextName : '', navigation : null});
     const [actionMenuState, setIsActionMenuState] = useState<ActionMenuState>({ isActionMenu : false, navigation:null});
@@ -99,16 +101,16 @@ const CommonProvider = ({children} : CommonProviderProps): JSX.Element => {
         setMultiSelectedState({...multiSelectedState, selectedTargets, indexs});
     },[multiSelectedState, setMultiSelectedState]);
 
-    const setCenterDialog = useCallback(( dialogName : '', dialogItem : any) : void => {
-        setCenterDialogState({...centerDialogState, dialogName, dialogItem});
+    const setCenterDialog = useCallback(( dialogName : '', dialogItem : any, isAction: boolean) : void => {
+        setCenterDialogState({...centerDialogState, dialogName, dialogItem, isAction});
     },[centerDialogState, setCenterDialogState]);
 
     const setRightDialog = useCallback(( dialogName : '', dialogItem : any) : void => {
         setRightDialogState({...rightDialogState, dialogName, dialogItem});
     },[rightDialogState, setRightDialogState]);
 
-    const setAlertDialog = useCallback(( alertName : '', alertItem: any) : void => {
-        setAlertDialogState({...alertDialogState, alertName, alertItem});
+    const setAlertDialog = useCallback(( alertName : '', alertItem: any, isAction: boolean) : void => {
+        setAlertDialogState({...alertDialogState, alertName, alertItem, isAction});
     }, [alertDialogState, setAlertDialogState]);
 
     const setSwipeItem = useCallback(( setFavorite: boolean, setReadOnly : boolean) => {
@@ -153,7 +155,7 @@ const CommonProvider = ({children} : CommonProviderProps): JSX.Element => {
             setIsActionMenu,
             setReViewDoc,
             setSortMenu,
-            setSwipeItem
+            setSwipeItem,
         }}>
             {children}
         </CommonContext.Provider>

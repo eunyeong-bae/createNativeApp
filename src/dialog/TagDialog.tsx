@@ -26,14 +26,9 @@ const tagDescription = new Map ()
     .set(3, '• 태그 추가 시, 공백 및 모든 특수문자는 제한됩니다.')
     .set(4, '• 문서함에서 [태그설정]으로 일괄등록 시, 기존태그는 삭제 됩니다.')
 
-const tagErrorMsgs = new Map()
-    .set( 'error1', '※ 태그 1개당 20자를 초과할 수 없습니다.')
-    .set( 'error2', '※ 태그는 10개까지 입력 가능합니다.')
-    .set( 'error3', '※ 특수문자는 태그로 등록할 수 없습니다.')
-
 export const TagDialog = () => {
     const { selectedTargetState} = useContext( CommonContext);
-    const [ isTagDataLists, setIsTagDataLists] = useState( ''); //[]
+    const [ isTagDataLists, setIsTagDataLists] = useState( '');
     const [ tagValue, setTagValue] = useState( '');
 
     let _tagDataLists: any = [];

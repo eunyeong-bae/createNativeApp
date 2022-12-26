@@ -107,23 +107,10 @@ const ShareDoc = ( props : any) => {
     }, [ targetFullPathState]);
 
     useEffect(() => {
-        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
-        if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && 
-            targetFullPathState.fullPathUIDs[0] === '' && centerDialogState.dialogName === '' ) {
+        if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && ( centerDialogState.isAction || alertDialogState.isAction)) {
             setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
-            // flatListRef.current.yScrollOffset = 0;
         }
-    }, [ centerDialogState]);
-
-    useEffect(() => {
-        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
-        if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && 
-            alertDialogState.alertName === '' ) 
-        {
-            setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
-            // flatListRef.current.yScrollOffset = 0;
-        }
-    }, [ alertDialogState]);
+    }, [ centerDialogState, alertDialogState]);
 
     useEffect(() => {
         //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
@@ -133,13 +120,32 @@ const ShareDoc = ( props : any) => {
         }
     }, [ swipeItemState]);
 
-    useEffect(() => {
-        //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
-        if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && !actionMenuState.isActionMenu && !actionMenuState.navigation) {
-            setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
-            // flatListRef.current.yScrollOffset = 0;
-        }
-    }, [ actionMenuState]);
+    // useEffect(() => {
+    //     //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
+    //     if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && 
+    //         targetFullPathState.fullPathUIDs[0] === '' && centerDialogState.dialogName === '' ) {
+    //         setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+    //         // flatListRef.current.yScrollOffset = 0;
+    //     }
+    // }, [ centerDialogState]);
+
+    // useEffect(() => {
+    //     //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
+    //     if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && 
+    //         alertDialogState.alertName === '' ) 
+    //     {
+    //         setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+    //         // flatListRef.current.yScrollOffset = 0;
+    //     }
+    // }, [ alertDialogState]);
+
+    // useEffect(() => {
+    //     //다이얼로그 닫혀도 데이터리스트 불러오지 않아도 되는 메뉴가 있을 경우 예외처리 필요
+    //     if( sortMenuState.contextName && sortMenuState.contextName === CONTEXT_NAME && !actionMenuState.isActionMenu && !actionMenuState.navigation) {
+    //         setDataList( {...reqListData, folderSeq: targetFullPathState.fullPathUIDs[targetFullPathState.fullPathUIDs.length - 1], pageNum:1, dataList: []});
+    //         // flatListRef.current.yScrollOffset = 0;
+    //     }
+    // }, [ actionMenuState]);
 
     const ViewModeCheck = () => {
         setListViewMode( !listViewMode);
