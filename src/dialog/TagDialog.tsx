@@ -6,6 +6,7 @@ import CommonHeader from '../component/header/CommonHeader';
 import { CommonContext } from '../context/CommonContext';
 import CommonFnUtil from '../utils/CommonFnUtil';
 import { CommonDialogToast} from '../component/CommonDialogToast';
+import { HelperText } from 'react-native-paper';
 
 const CONTEXT_NAME = 'TagDialog';
 const tagDialogHeaderInfo : any = {
@@ -25,6 +26,14 @@ const tagDescription = new Map ()
     .set(2, '• 태그는 1개당 20자를 초과할 수 없습니다.')
     .set(3, '• 태그 추가 시, 공백 및 모든 특수문자는 제한됩니다.')
     .set(4, '• 문서함에서 [태그설정]으로 일괄등록 시, 기존태그는 삭제 됩니다.')
+
+const tagErrorMsgs = [
+    '• 기존에 작성된 태그 값은 문서정보에서 확인 가능합니다.',
+    '• 태그는 10개까지 입력 가능합니다. (쉼표 구분)',
+    '• 태그는 1개당 20자를 초과할 수 없습니다.',
+    '• 태그 추가 시, 공백 및 모든 특수문자는 제한됩니다.',
+    '• 문서함에서 [태그설정]으로 일괄등록 시, 기존태그는 삭제 됩니다.',
+];
 
 export const TagDialog = () => {
     const { selectedTargetState} = useContext( CommonContext);
@@ -84,12 +93,12 @@ export const TagDialog = () => {
                 }}
             />
 
-            <View style={{ borderWidth:1, borderColor:'#DCE7FB', borderRadius:10, width: '90%', padding:10, height:190, margin: 10, backgroundColor:'#fff',}}> 
-                <Text style={{ height:40, paddingBottom:3, display:'flex', flexWrap: 'wrap' }}>{ tagDescription.get(0)}</Text>
-                <Text style={{ height:30, paddingTop:3 }}>{ tagDescription.get(1)}</Text>
-                <Text style={{ height:30, paddingTop:3}}>{ tagDescription.get(2)}</Text>
-                <Text style={{ height:30, paddingTop:3}}>{ tagDescription.get(3)}</Text>
-                <Text style={{ height:40, paddingTop:3, display:'flex', flexWrap: 'wrap' }}>{ tagDescription.get(4)}</Text>
+            <View style={{ borderWidth:1, borderColor:'#DCE7FB', borderRadius:10, width: '90%', padding:7, margin: 10, backgroundColor:'#fff',}}> 
+                { tagErrorMsgs.map( msg => {
+                    return (
+                        <HelperText type="error" visible={ true}>{ msg}</HelperText>
+                    )
+                })}
             </View>
             <CommonDialogToast />
         </View>
